@@ -61,7 +61,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 
 | Folder | Contents |
 | --- | --- |
-| `data/ber/table2/` | Held-out BER curves (seed 101), SNR at BER $10^{-3}$/$10^{-4}$ with bootstrap CIs, paired SNR differences, K-best with 128 candidates. |
+| `data/ber/table2/` | Held-out BER curves (seed 101), SNR at BER 10⁻³/10⁻⁴ with bootstrap CIs, paired SNR differences, K-best with 128 candidates. |
 | `data/ber/a5/`, `a54/`, `a55/`, `a56/` | The price-of-parallelism experiments: flip policies, colorings and budgets, schedule lengths, equal-cycle SA and first-accept, early stop and the 64-user runs. |
 | `data/ber/ablation/`, `mechanism/`, `regime/`, `energy/`, `equivalence/`, `fidelity/` | Ablation of copy coloring and pinning, oscillation traces, the PIMI regime map, energy inputs, kernel equivalence and fixed-point fidelity. |
 | `data/results/` | Later experiments by protocol: A5.8 (64 users), A5.9 and A5.10 (RTL cycles), A5.12 (parallel-trial cost), A5.13 (fixed point), A5.14–A5.16 (commit width, 32-user re-test), A5.17 (k-row commits). |
@@ -99,7 +99,7 @@ Every experiment was frozen in a protocol before its held-out runs. The protocol
 
 ## <a name="results"></a> 📈 Results
 
-### SNR (dB) at BER $10^{-3}$/$10^{-4}$, held-out seed 101 (Table III)
+### SNR (dB) at BER 10⁻³/10⁻⁴, held-out seed 101 (Table III)
 
 | Detector | 16-QAM 16×16 | 16-QAM 32×32 | QPSK 16×16 | QPSK 32×32 |
 | --- | ---: | ---: | ---: | ---: |
@@ -110,7 +110,7 @@ Every experiment was frozen in a protocol before its held-out runs. The protocol
 | MDI-AHC | 19.6/22.8 | 20.3/22.8 | 11.8/13.7 | 13.2/15.2 |
 | **Chord** | 19.0/22.1 | 18.6/20.8 | 11.1/12.6 | 10.6/12.1 |
 | SA, 128 sweeps | 18.6/20.7 | – | – | – |
-| *MDI, $N_\mathrm{s}=8$* | | | | |
+| *MDI, N<sub>s</sub> = 8* | | | | |
 | MDI-AHC | 21.8/24.6 | 23.0/25.6 | – | – |
 | **Chord** | 21.1/24.2 | 20.9/23.6 | – | – |
 | SA, 128 sweeps | – | 19.6/22.7 | – | – |
@@ -121,12 +121,12 @@ Every experiment was frozen in a protocol before its held-out runs. The protocol
 
 | Engine | Workload | BER | Clock, TT (SS), MHz | Die, mm² | Power, mW | Time/det., µs | Energy/det., nJ | pJ/decision |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| $D=32$ | 16×16 16-QAM, 31.02 dB, $K=1$, $N_\mathrm{s}=4$ | 8.7×10⁻⁴ | 870 (571) | 0.190 | 63.6 | 1.42 | 90.6 | 2.8 |
-| | 16×16 16-QAM, 31.02 dB, MDI, $N_\mathrm{s}=8$ | 0 obs. | | | 64.9 | 1.00 | 65.1 | 2.9 |
-| | 16×16 16-QAM, 20 dB, MDI, $N_\mathrm{s}=32$ | 6.7×10⁻⁴ | | | 71.1 | 77.2 | 5,490 | 2.7 |
-| $D=64$ | 32×32 QPSK, 14 dB, one-stage MDI, $N_\mathrm{s}=8$ | 0 obs. | 1,000 (667) | 0.366 | 179 | 2.55 | 456 | 3.5 |
-| | 32×32 16-QAM, 22 dB, MDI, $N_\mathrm{s}=8$ | 3.7×10⁻⁴ | | | 185 | 21.8 | 4,030 | 3.4 |
-| $D=128$ | 64×64 16-QAM, 22 dB, MDI, $N_\mathrm{s}=8$ | 3.1×10⁻⁴ | 833 (556) | 0.728 | 260 | 41.8 | 10,840 | 3.6 |
+| D = 32 | 16×16 16-QAM, 31.02 dB, K = 1, N<sub>s</sub> = 4 | 8.7×10⁻⁴ | 870 (571) | 0.190 | 63.6 | 1.42 | 90.6 | 2.8 |
+| | 16×16 16-QAM, 31.02 dB, MDI, N<sub>s</sub> = 8 | 0 obs. | | | 64.9 | 1.00 | 65.1 | 2.9 |
+| | 16×16 16-QAM, 20 dB, MDI, N<sub>s</sub> = 32 | 6.7×10⁻⁴ | | | 71.1 | 77.2 | 5,490 | 2.7 |
+| D = 64 | 32×32 QPSK, 14 dB, one-stage MDI, N<sub>s</sub> = 8 | 0 obs. | 1,000 (667) | 0.366 | 179 | 2.55 | 456 | 3.5 |
+| | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.7×10⁻⁴ | | | 185 | 21.8 | 4,030 | 3.4 |
+| D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.1×10⁻⁴ | 833 (556) | 0.728 | 260 | 41.8 | 10,840 | 3.6 |
 
 <img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 engines by RTL function">
 
