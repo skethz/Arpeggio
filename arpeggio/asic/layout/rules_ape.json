@@ -1,0 +1,7 @@
+{"strip": "^(FE_[A-Za-z]+[0-9]+_)*",
+ "rules": [["Coupling and schedule memory", "^BLOCK:"],
+           ["Multipliers (decision or MAC)", "^(MULT|d[0-9]|dec_)"],
+           ["Adders and nonlinear units", "^csa_tree"],
+           ["RNG and seeding", "^(crng|const_fmix|cseed|rqseed|cfa|sWl|paval|pbval|sW_reg|sgrp|scx|sst)"],
+           ["State and control registers", "^(c[a-zA-Z]+_reg|st_reg|rq|out|o[a-z]+_reg|diag_reg|hh_reg|f[0-9]|rr_reg)"]],
+ "default": "Unattributed logic and buffers"}

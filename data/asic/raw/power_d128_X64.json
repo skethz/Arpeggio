@@ -1,0 +1,151 @@
+{
+ "tag": "X64",
+ "die_um2": 727750.3584,
+ "core_um2": 639074.3008,
+ "std_logic_um2": 247755.289601,
+ "macro_um2": 86619.07896,
+ "p_tt_mw": 259.51583214,
+ "int_tt_mw": 121.3399106,
+ "sw_tt_mw": 137.29536471,
+ "leak_tt_mw": 0.88055683,
+ "groups_tt": {
+  "Sequential": {
+   "int_mw": 40.19,
+   "sw_mw": 5.39,
+   "leak_mw": 0.138,
+   "tot_mw": 45.72
+  },
+  "Macro": {
+   "int_mw": 9.572,
+   "sw_mw": 2.003,
+   "leak_mw": 0.2253,
+   "tot_mw": 11.8
+  },
+  "IO": {
+   "int_mw": 0.0,
+   "sw_mw": 0.0,
+   "leak_mw": 0.0,
+   "tot_mw": 0.0
+  },
+  "Physical-Only": {
+   "int_mw": 0.0,
+   "sw_mw": 0.0,
+   "leak_mw": 0.01095,
+   "tot_mw": 0.01095
+  },
+  "Combinational": {
+   "int_mw": 66.16,
+   "sw_mw": 119.1,
+   "leak_mw": 0.4883,
+   "tot_mw": 185.7
+  },
+  "Clock (Combinational)": {
+   "int_mw": 3.301,
+   "sw_mw": 10.41,
+   "leak_mw": 0.01412,
+   "tot_mw": 13.73
+  },
+  "Clock (Sequential)": {
+   "int_mw": 2.111,
+   "sw_mw": 0.4023,
+   "leak_mw": 0.003814,
+   "tot_mw": 2.517
+  }
+ },
+ "clock_network_mw": 16.247,
+ "clock_network_share": 0.06260504365388889,
+ "clock_period": 0.0012,
+ "clock_toggle_rate": 1666.6668,
+ "clock_toggle_rate_unit": "Mhz",
+ "design_annotation": [
+  330296,
+  412237
+ ],
+ "default_activity": {
+  "seq": 0.2,
+  "pi": 0.2
+ },
+ "primary_inputs_annotated": [
+  1808,
+  1808
+ ],
+ "sequential_outputs_annotated": [
+  48062,
+  48128
+ ],
+ "nets": {
+  "total": 412237,
+  "activity_file": 330296,
+  "propagated": 81875,
+  "default": 66,
+  "set_switching_activity": 0
+ },
+ "nets_activity_file_pct": 80.1228419574177,
+ "nets_propagated_pct": 19.861147834861985,
+ "flipflops": {
+  "total": 46567,
+  "annotated": 46567,
+  "pct": 100.0
+ },
+ "macros": {
+  "total": 17,
+  "outputs_from_file": 17
+ },
+ "drivers": {
+  "primary_inputs": 1808,
+  "sequential": 47056,
+  "combinational": 360460,
+  "ICG": 1072,
+  "memory": 1841,
+  "black_box": 0
+ },
+ "instance_classes": {
+  "inserted/propagated": 81723,
+  "synthesis/propagated": 32,
+  "synthesis/annotated": 315738,
+  "icg": 1072
+ },
+ "instance_class_power_mw": {
+  "inserted/propagated": 73.247077,
+  "synthesis/propagated": 0.032501,
+  "synthesis/annotated": 186.225311,
+  "icg": 2.517232
+ },
+ "inserted_kinds_count": {
+  "FE": 77806,
+  "synthesis": 315770,
+  "CTS": 1342,
+  "V2_TIE": 2575
+ },
+ "inserted_kinds_power_mw": {
+  "FE": 59.638834,
+  "synthesis": 186.257812,
+  "CTS": 13.608229,
+  "V2_TIE": 1.4e-05
+ },
+ "fe_subkinds_count": {
+  "PSBC": 721,
+  "PSC": 54,
+  "PDC": 97,
+  "RC": 32505,
+  "OCPC": 2620,
+  "OFC": 40141,
+  "USKC": 19,
+  "DBTC": 1649
+ },
+ "fe_subkinds_power_mw": {
+  "PSBC": 1.03775,
+  "PSC": 0.058656,
+  "PDC": 0.078683,
+  "RC": 20.96666,
+  "OCPC": 1.210163,
+  "OFC": 34.549771,
+  "USKC": 0.121275,
+  "DBTC": 1.615876
+ },
+ "power_share_propagated": 0.2823703480032632,
+ "power_share_inserted": 0.2822451103016692,
+ "instance_power_sum_mw": 259.5158421652301,
+ "instance_power_rows": 668394,
+ "instance_power_rows_unmatched": 0
+}

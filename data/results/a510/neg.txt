@@ -1,0 +1,2 @@
+NEG fx2nm check_exit=1 tb=TB_CAP_HIT
+NEG fx2st check_exit=1 tb=TB_DONE

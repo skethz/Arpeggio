@@ -1,0 +1,6 @@
+{
+ "HZ1_differ": 0.002,
+ "HZ2_differ": 0.002,
+ "bound": 0.005,
+ "PASS": true
+}

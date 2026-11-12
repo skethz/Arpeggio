@@ -1,0 +1,107 @@
+[
+ {
+  "job": "q32/mdiahck64/snr_12.00",
+  "uses": 16000,
+  "ber_b200": 0.003912109375,
+  "ber_5090": 0.0039638671875,
+  "vec_b200": 1660,
+  "vec_5090": 1690,
+  "diff_ci": [
+   -0.000328125,
+   0.00022170410156249987
+  ],
+  "ci_covers_0": true,
+  "mcnemar": {
+   "n10": 914,
+   "n01": 944,
+   "p": 0.501095746911425,
+   "m": 16000
+  },
+  "frac_identical_biterr": 0.852875,
+  "frac_identical_decision_when_both_err": 0.1769436997319035
+ },
+ {
+  "job": "q32/mdiane64/snr_12.00",
+  "uses": 16000,
+  "ber_b200": 0.0001279296875,
+  "ber_5090": 0.0001220703125,
+  "vec_b200": 117,
+  "vec_5090": 117,
+  "diff_ci": [
+   -2.9296875e-06,
+   2.1508789062499864e-05
+  ],
+  "ci_covers_0": true,
+  "mcnemar": {
+   "n10": 2,
+   "n01": 2,
+   "p": 1.0,
+   "m": 16000
+  },
+  "frac_identical_biterr": 0.99975,
+  "frac_identical_decision_when_both_err": 1.0
+ },
+ {
+  "job": "x16/mdiane64/snr_20.00",
+  "uses": 8000,
+  "ber_b200": 0.000455078125,
+  "ber_5090": 0.000556640625,
+  "vec_b200": 24,
+  "vec_5090": 27,
+  "diff_ci": [
+   -0.000294970703125,
+   8.203125e-05
+  ],
+  "ci_covers_0": true,
+  "mcnemar": {
+   "n10": 3,
+   "n01": 6,
+   "p": 0.5078124999999991,
+   "m": 8000
+  },
+  "frac_identical_biterr": 0.998875,
+  "frac_identical_decision_when_both_err": 1.0
+ },
+ {
+  "job": "x16/sic/snr_22.00",
+  "uses": 8000,
+  "ber_b200": 0.006142578125,
+  "ber_5090": 0.006142578125,
+  "vec_b200": 321,
+  "vec_5090": 321,
+  "diff_ci": [
+   0.0,
+   0.0
+  ],
+  "ci_covers_0": true,
+  "mcnemar": {
+   "n10": 0,
+   "n01": 0,
+   "p": 1.0,
+   "m": 8000
+  },
+  "frac_identical_biterr": 1.0,
+  "frac_identical_decision_when_both_err": 1.0
+ },
+ {
+  "job": "x32/mdiane8/snr_22.00",
+  "uses": 2000,
+  "ber_b200": 0.00040625,
+  "ber_5090": 0.00042578125,
+  "vec_b200": 6,
+  "vec_5090": 5,
+  "diff_ci": [
+   -0.0004765625,
+   0.00043359375
+  ],
+  "ci_covers_0": true,
+  "mcnemar": {
+   "n10": 5,
+   "n01": 4,
+   "p": 0.9999999999999996,
+   "m": 2000
+  },
+  "frac_identical_biterr": 0.995,
+  "frac_identical_decision_when_both_err": 0.0
+ }
+]

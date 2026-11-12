@@ -1,0 +1,456 @@
+{
+ "method": "Innovus 25.11 STA on the restored routed DB (hostD sha256-identical copies), analysis only. SS view = SSG 0.72 V 125 C std cells + SSG macro views + RCmax at 125 C (server MMMC, PNR_CORNER=SSG). Constraints = each engine's routed SDC rescaled by sdc_scale.py (md5 ce77aa59) to 50 ps steps + set_propagated_clock. OCV + CPPR, post-route extraction, timeDesign -postRoute. I/O source-latency rules (amendment A2): R2 = -(mean register clock-pin insertion in that corner), R1 = saved TT latency file, R0 = none. Primary = R2 if it reproduces the accepted TT WNS within 5 ps, else R1.",
+ "D32": {
+  "accepted_tt_ps": 1150,
+  "saved_view_tt": {
+   "setup_ns": {
+    "all": 0.002,
+    "reg2reg": 0.004,
+    "reg2cgate": 0.002,
+    "default": 0.017
+   },
+   "hold_ns": {
+    "all": 0.027,
+    "reg2reg": 0.027,
+    "reg2cgate": 0.177,
+    "default": 0.104
+   },
+   "saved_source_latency_ps": [
+    -194.457,
+    -193.738
+   ]
+  },
+  "mean_sink_insertion_ps": {
+   "tt": {
+    "rise": 202.038,
+    "fall": 198.033
+   },
+   "ss": {
+    "rise": 290.455,
+    "fall": 284.885
+   },
+   "sinks": 12891
+  },
+  "tt_calibration": {
+   "R1": {
+    "all": 0.002,
+    "reg2reg": 0.004,
+    "reg2cgate": 0.002,
+    "default": 0.017
+   },
+   "R2": {
+    "all": 0.002,
+    "reg2reg": 0.004,
+    "reg2cgate": 0.002,
+    "default": 0.01
+   },
+   "R0": {
+    "all": -0.001,
+    "reg2reg": -0.001,
+    "reg2cgate": 0.002,
+    "default": 0.098
+   },
+   "R2_delta_all_ps": 0.0,
+   "primary": "R2"
+  },
+  "ss_setup_ns": {
+   "R2": {
+    "1800": [
+     0.05,
+     0.05,
+     0.057,
+     0.062
+    ],
+    "1750": [
+     0.013,
+     0.017,
+     0.013,
+     0.057
+    ],
+    "1700": [
+     -0.034,
+     -0.031,
+     -0.034,
+     0.056
+    ]
+   },
+   "R1": {
+    "1800": [
+     0.05,
+     0.05,
+     0.057,
+     0.086
+    ],
+    "1750": [
+     0.013,
+     0.017,
+     0.013,
+     0.055
+    ],
+    "1700": [
+     -0.034,
+     -0.031,
+     -0.034,
+     0.119
+    ]
+   },
+   "R0": {
+    "1800": [
+     0.05,
+     0.05,
+     0.057,
+     0.071
+    ],
+    "1750": [
+     0.013,
+     0.017,
+     0.013,
+     0.125
+    ],
+    "1700": [
+     -0.034,
+     -0.031,
+     -0.034,
+     0.115
+    ]
+   },
+   "columns": [
+    "all",
+    "reg2reg",
+    "reg2cgate",
+    "default(I/O)"
+   ]
+  },
+  "ss_clock_ps": {
+   "all_groups": 1750,
+   "internal_only": 1750,
+   "same_for_R0_R1_R2": true,
+   "monotone": true
+  },
+  "ss_hold_at_ss_clock_ns": {
+   "R2": {
+    "all": 0.043,
+    "reg2reg": 0.043,
+    "reg2cgate": 0.265,
+    "default": 0.189
+   },
+   "R1": {
+    "all": 0.043,
+    "default": 0.093
+   },
+   "R0": {
+    "all": -0.099,
+    "default": -0.099
+   }
+  },
+  "tt_hold_ns_other_rules": {
+   "R2": {
+    "all": 0.027,
+    "default": 0.112
+   },
+   "R0": {
+    "all": -0.087,
+    "default": -0.087
+   }
+  }
+ },
+ "D64": {
+  "accepted_tt_ps": 1000,
+  "saved_view_tt": {
+   "setup_ns": {
+    "all": 0.004,
+    "reg2reg": 0.007,
+    "reg2cgate": 0.004,
+    "default": 0.012
+   },
+   "saved_source_latency_ps": [
+    -253.359,
+    -250.659
+   ]
+  },
+  "mean_sink_insertion_ps": {
+   "tt": {
+    "rise": 293.41,
+    "fall": 286.391
+   },
+   "ss": {
+    "rise": 422.391,
+    "fall": 413.876
+   },
+   "sinks": 24224
+  },
+  "tt_calibration": {
+   "R1": {
+    "all": 0.004,
+    "reg2reg": 0.007,
+    "reg2cgate": 0.004,
+    "default": 0.012
+   },
+   "R2": {
+    "all": -0.031,
+    "reg2reg": 0.007,
+    "reg2cgate": 0.004,
+    "default": -0.031
+   },
+   "R0": {
+    "all": 0.004,
+    "reg2reg": 0.007,
+    "reg2cgate": 0.004,
+    "default": 0.023
+   },
+   "R2_delta_all_ps": 35.0,
+   "primary": "R1"
+  },
+  "ss_setup_ns": {
+   "R1": {
+    "1600": [
+     0.06,
+     0.06,
+     0.061,
+     0.089
+    ],
+    "1550": [
+     0.051,
+     0.053,
+     0.051,
+     0.081
+    ],
+    "1500": [
+     0.003,
+     0.006,
+     0.003,
+     0.072
+    ],
+    "1450": [
+     -0.044,
+     -0.042,
+     -0.044,
+     0.076
+    ]
+   },
+   "R2": {
+    "1600": [
+     0.058,
+     0.06,
+     0.061,
+     0.058
+    ],
+    "1550": [
+     0.043,
+     0.053,
+     0.051,
+     0.043
+    ],
+    "1500": [
+     0.003,
+     0.006,
+     0.003,
+     0.005
+    ],
+    "1450": [
+     -0.044,
+     -0.042,
+     -0.044,
+     -0.039
+    ]
+   },
+   "R0": {
+    "1600": [
+     0.06,
+     0.06,
+     0.061,
+     0.061
+    ],
+    "1550": [
+     0.051,
+     0.053,
+     0.051,
+     0.095
+    ],
+    "1500": [
+     0.003,
+     0.006,
+     0.003,
+     0.069
+    ],
+    "1450": [
+     -0.044,
+     -0.042,
+     -0.044,
+     0.033
+    ]
+   },
+   "columns": [
+    "all",
+    "reg2reg",
+    "reg2cgate",
+    "default(I/O)"
+   ]
+  },
+  "ss_clock_ps": {
+   "all_groups": 1500,
+   "internal_only": 1500,
+   "same_for_R0_R1_R2": true,
+   "monotone": true
+  },
+  "ss_hold_at_ss_clock_ns": {
+   "R1": {
+    "all": -0.033,
+    "reg2reg": 0.036,
+    "reg2cgate": 0.246,
+    "default": -0.033
+   },
+   "R2": {
+    "all": 0.036,
+    "default": 0.132
+   },
+   "R0": {
+    "all": -0.287,
+    "default": -0.287
+   }
+  }
+ },
+ "fast_corner_hold": "not checked: no FF macro views exist (macro views only TT and SSG); not generated (would need the caller's go-ahead)",
+ "D128": {
+  "routed_db": "ape_d128_p1200_r4",
+  "accepted_tt_ps": 1200,
+  "saved_view_tt": {
+   "setup_ns": {
+    "all": 0.0,
+    "reg2reg": 0.0,
+    "reg2cgate": 0.007,
+    "default": 0.009
+   },
+   "saved_source_latency_ps_rise": -406.885,
+   "note": "flow summary gave reg2cgate +0.004; restored session +0.007 (3 ps, within the 5 ps control band)"
+  },
+  "mean_sink_insertion_ps": {
+   "tt": {
+    "rise": 444.958,
+    "fall": 432.444
+   },
+   "ss": {
+    "rise": 640.432,
+    "fall": 627.762
+   },
+   "sinks": 47656
+  },
+  "tt_calibration": {
+   "R1": {
+    "all": 0.0,
+    "reg2reg": 0.0,
+    "reg2cgate": 0.007,
+    "default": 0.009
+   },
+   "R2": {
+    "all": -0.035,
+    "reg2reg": 0.0,
+    "reg2cgate": 0.007,
+    "default": -0.035
+   },
+   "R0": {
+    "all": -0.06,
+    "reg2reg": -0.002,
+    "reg2cgate": 0.009,
+    "default": -0.06
+   },
+   "R2_delta_all_ps": 35.0,
+   "primary": "R1"
+  },
+  "ss_setup_ns": {
+   "R1": {
+    "1800": [
+     0.017,
+     0.017,
+     0.02,
+     0.166
+    ],
+    "1750": [
+     -0.031,
+     -0.031,
+     -0.028,
+     0.114
+    ]
+   },
+   "R2": {
+    "1850": [
+     0.005,
+     0.064,
+     0.067,
+     0.005
+    ],
+    "1800": [
+     -0.03,
+     0.017,
+     0.02,
+     -0.03
+    ],
+    "1750": [
+     -0.069,
+     -0.031,
+     -0.029,
+     -0.069
+    ]
+   },
+   "R0": {
+    "1850": [
+     0.004,
+     0.064,
+     0.067,
+     0.004
+    ],
+    "1800": [
+     -0.031,
+     0.017,
+     0.019,
+     -0.031
+    ],
+    "1750": [
+     -0.066,
+     -0.031,
+     -0.029,
+     -0.066
+    ]
+   },
+   "columns": [
+    "all",
+    "reg2reg",
+    "reg2cgate",
+    "default(I/O)"
+   ]
+  },
+  "ss_clock_ps": {
+   "all_groups_primary_R1": 1800,
+   "all_groups_R2": 1850,
+   "all_groups_R0": 1850,
+   "internal_only": 1800,
+   "monotone": true
+  },
+  "ss_hold_at_1800ps_ns": {
+   "R1": {
+    "all": -0.028,
+    "reg2reg": 0.016,
+    "reg2cgate": 0.198,
+    "default": -0.028
+   },
+   "R2": {
+    "all": 0.016,
+    "default": 0.191
+   },
+   "R0": {
+    "all": -0.441,
+    "default": -0.441
+   }
+  },
+  "tt_hold_ns_other_rules": {
+   "R2": {
+    "all": 0.004,
+    "default": 0.117
+   },
+   "R0": {
+    "all": -0.319,
+    "default": -0.319
+   }
+  }
+ }
+}

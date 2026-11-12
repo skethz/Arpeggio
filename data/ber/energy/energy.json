@@ -1,0 +1,257 @@
+{
+ "idle": {
+  "before_W": [
+   197.1765005249909,
+   196.51244053748232
+  ],
+  "after_W": [
+   198.3351013807925
+  ],
+  "ref_W": 197.58978595601457,
+  "drift_W": 1.490630849555913,
+  "rule": "above idle = segment energy - P_ref * seconds; also given against the before and after idle"
+ },
+ "items": {
+  "P1_mdiane_kernel": {
+   "label": "Antiphase int16 kernel chain, P1 (x16 20 dB, Ns 32, batch 500)",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 0.29796817826061717,
+   "ms_range": [
+    0.2970997066032596,
+    0.3067959189414978
+   ],
+   "avg_W": 268.6020084118271,
+   "mJ_total": 80.80268292601515,
+   "mJ_total_range": [
+    79.55263414615538,
+    82.40600000023842
+   ],
+   "mJ_above_idle_ref": 21.786260044409072,
+   "mJ_above_idle_ref_range": [
+    20.848766710822595,
+    21.927214361796228
+   ],
+   "mJ_above_idle_before": 22.014919775055102,
+   "mJ_above_idle_before_range": [
+    21.070199704851014,
+    22.149294641146852
+   ],
+   "mJ_above_idle_after": 21.557600313763057,
+   "mJ_above_idle_after_range": [
+    20.62733371679419,
+    21.7051340824456
+   ]
+  },
+  "P3_mdiane_kernel": {
+   "label": "Antiphase int16 kernel chain, P3 (q32 14 dB, Ns 8, batch 2000)",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 0.005274303349124526,
+   "ms_range": [
+    0.005193429215969099,
+    0.005390349795617149
+   ],
+   "avg_W": 382.07296465102183,
+   "mJ_total": 2.0151687170688213,
+   "mJ_total_range": [
+    1.9897387543351592,
+    2.046550269293828
+   ],
+   "mJ_above_idle_ref": 0.9730202472482155,
+   "mJ_above_idle_ref_range": [
+    0.9635701871741125,
+    0.9814722069497885
+   ],
+   "mJ_above_idle_before": 0.976951266889276,
+   "mJ_above_idle_before_range": [
+    0.9674409300762667,
+    0.9854897177974107
+   ],
+   "mJ_above_idle_after": 0.969089227607155,
+   "mJ_above_idle_after_range": [
+    0.9596994442719582,
+    0.9774546961021663
+   ]
+  },
+  "P2_mdiane_torch": {
+   "label": "Antiphase PyTorch chain, P2 (x32 22 dB, Ns 8, batch 250); no int16 kernel at 32x32 16-QAM",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 55.16022491455078,
+   "ms_range": [
+    43.79038429260254,
+    63.86748790740967
+   ],
+   "avg_W": 264.9213273267484,
+   "mJ_total": 14613.120000004768,
+   "mJ_total_range": [
+    11666.136000037193,
+    16866.859999895096
+   ],
+   "mJ_above_idle_ref": 3714.022965853057,
+   "mJ_above_idle_ref_range": [
+    3013.603340730235,
+    4247.296734721671
+   ],
+   "mJ_above_idle_before": 3755.1347323160953,
+   "mJ_above_idle_before_range": [
+    3046.2409896004665,
+    4294.898158600883
+   ],
+   "mJ_above_idle_after": 3672.9111993900224,
+   "mJ_above_idle_after_range": [
+    2980.965691860005,
+    4199.6953108424605
+   ]
+  },
+  "P1_mdiahck64_kernel": {
+   "label": "MDI-AHC kernel chain, P1 (Ns 64, batch 500); our reimplementation, context only",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 9.456366539001465,
+   "ms_range": [
+    9.312769174575806,
+    10.224806070327759
+   ],
+   "avg_W": 314.7357080449512,
+   "mJ_total": 2981.7880000174046,
+   "mJ_total_range": [
+    2931.061000019312,
+    3185.2719999849796
+   ],
+   "mJ_above_idle_ref": 1113.3065596544868,
+   "mJ_above_idle_ref_range": [
+    1090.952932157108,
+    1164.9547571071594
+   ],
+   "mJ_above_idle_before": 1120.354535498359,
+   "mJ_above_idle_before_range": [
+    1097.893882670316,
+    1172.5754627867382
+   ],
+   "mJ_above_idle_after": 1106.2585838106152,
+   "mJ_above_idle_after_range": [
+    1084.0119816439,
+    1157.334051427581
+   ]
+  },
+  "P3_mdiahck64_kernel": {
+   "label": "MDI-AHC kernel chain, P3 (Ns 64, batch 2000); our reimplementation, context only",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 0.7511653006076813,
+   "ms_range": [
+    0.7510678768157959,
+    0.7519256472587585
+   ],
+   "avg_W": 534.4987948411009,
+   "mJ_total": 401.44487500190735,
+   "mJ_total_range": [
+    401.02549999952316,
+    403.8881250023842
+   ],
+   "mJ_above_idle_ref": 253.04153398343593,
+   "mJ_above_idle_ref_range": [
+    252.6029090348661,
+    255.31529730568838
+   ],
+   "mJ_above_idle_before": 253.60131645708196,
+   "mJ_above_idle_before_range": [
+    253.16276411996697,
+    255.87571908887648
+   ],
+   "mJ_above_idle_after": 252.4817515097899,
+   "mJ_above_idle_after_range": [
+    252.0430539497652,
+    254.75487552250027
+   ]
+  }
+ },
+ "context_add2": {
+  "P1_mdiane_kernel": {
+   "label": "addendum 2 (idle before only, 197.6 W)",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 0.3107132789416191,
+   "ms_range": [
+    0.30919205836760694,
+    0.3255549379297205
+   ],
+   "avg_W": 265.62727267976925,
+   "mJ_total": 83.45210256484839,
+   "mJ_total_range": [
+    82.27348717970726,
+    86.47627026970322
+   ],
+   "mJ_above_idle_before": 22.158803567819632,
+   "mJ_above_idle_before_range": [
+    20.888176610482276,
+    22.36732822535299
+   ]
+  },
+  "P1_abl_noalt_kernel": {
+   "label": "addendum 2 (idle before only, 197.6 W)",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 3.2553287744522095,
+   "ms_range": [
+    3.248225450515747,
+    3.3189581632614136
+   ],
+   "avg_W": 309.71387833538535,
+   "mJ_total": 1008.7615000009537,
+   "mJ_total_range": [
+    1008.2204999923706,
+    1023.5209999978542
+   ],
+   "mJ_above_idle_before": 367.0337670956776,
+   "mJ_above_idle_before_range": [
+    365.0894162312868,
+    367.8191313424536
+   ]
+  },
+  "P1_abl_q0_kernel": {
+   "label": "addendum 2 (idle before only, 197.6 W)",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 0.6739806334177653,
+   "ms_range": [
+    0.6663579187895122,
+    0.6785763634575738
+   ],
+   "avg_W": 268.6526254438689,
+   "mJ_total": 181.06666666600438,
+   "mJ_total_range": [
+    180.1896842122078,
+    181.0778888894452
+   ],
+   "mJ_above_idle_before": 47.91332786787047,
+   "mJ_above_idle_before_range": [
+    47.01660590319383,
+    48.542308424183304
+   ]
+  },
+  "P1_abl_ons_kernel": {
+   "label": "addendum 2 (idle before only, 197.6 W)",
+   "segments": 3,
+   "invalid_dropped": 0,
+   "ms_per_det": 0.32285889826322856,
+   "ms_range": [
+    0.3210318590465345,
+    0.33395985010507945
+   ],
+   "avg_W": 267.41008867145706,
+   "mJ_total": 85.85057894650258,
+   "mJ_total_range": [
+    85.8471578939965,
+    89.44443243258708
+   ],
+   "mJ_above_idle_before": 22.423282231798222,
+   "mJ_above_idle_before_range": [
+    22.06574874087139,
+    23.466469771377557
+   ]
+  }
+ }
+}

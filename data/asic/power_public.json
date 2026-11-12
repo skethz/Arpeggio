@@ -1,0 +1,427 @@
+{
+ "source": "Innovus 25.11 report_power/get_activity on restored routed DBs (gate_r4 power/), TT 0.80 V 25 C, view_tt, post-route extraction, OCV+CPPR; D32 at 1.15 ns (K=1.15 TCFs), D64 at 1.00 ns, D128 at 1.20 ns (K=1.20 TCF)",
+ "rows": [
+  {
+   "engine": "D128",
+   "point": "X64",
+   "p_mw": 259.51583214,
+   "internal_mw": 121.3399106,
+   "switching_mw": 137.29536471,
+   "leakage_mw": 0.88055683,
+   "clock_network_mw": 16.247,
+   "groups_mw": {
+    "Sequential": 45.72,
+    "Macro": 11.8,
+    "IO": 0.0,
+    "Physical-Only": 0.01095,
+    "Combinational": 185.7,
+    "Clock (Combinational)": 13.73,
+    "Clock (Sequential)": 2.517
+   },
+   "flipflops": {
+    "total": 46567,
+    "annotated": 46567,
+    "pct": 100.0
+   },
+   "primary_inputs": [
+    1808,
+    1808
+   ],
+   "nets": {
+    "total": 412237,
+    "activity_file": 330296,
+    "propagated": 81875,
+    "default": 66,
+    "set_switching_activity": 0
+   },
+   "nets_from_file_pct": 80.12,
+   "power_share_propagated": 0.2824,
+   "power_share_inserted": 0.2822,
+   "inserted_kinds_power_mw": {
+    "FE": 59.638834,
+    "synthesis": 186.257812,
+    "CTS": 13.608229,
+    "V2_TIE": 1.4e-05
+   },
+   "inserted_kinds_count": {
+    "FE": 77806,
+    "synthesis": 315770,
+    "CTS": 1342,
+    "V2_TIE": 2575
+   },
+   "fe_subkinds_power_mw": {
+    "PSBC": 1.03775,
+    "PSC": 0.058656,
+    "PDC": 0.078683,
+    "RC": 20.96666,
+    "OCPC": 1.210163,
+    "OFC": 34.549771,
+    "USKC": 0.121275,
+    "DBTC": 1.615876
+   },
+   "fe_subkinds_count": {
+    "PSBC": 721,
+    "PSC": 54,
+    "PDC": 97,
+    "RC": 32505,
+    "OCPC": 2620,
+    "OFC": 40141,
+    "USKC": 19,
+    "DBTC": 1649
+   },
+   "default_nets_note": "all UNCONNECTED sequential (QN) outputs, fanout 0 (A1)",
+   "die_um2": 727750.3584,
+   "core_um2": 639074.3008,
+   "clock_toggle_rate_mhz": 1666.6668
+  },
+  {
+   "engine": "D32",
+   "point": "P1",
+   "p_mw": 71.07243931,
+   "internal_mw": 35.42348714,
+   "switching_mw": 35.44340327,
+   "leakage_mw": 0.2055489,
+   "clock_network_mw": 4.336,
+   "groups_mw": {
+    "Sequential": 13.72,
+    "Macro": 3.876,
+    "IO": 0.0,
+    "Physical-Only": 0.002364,
+    "Combinational": 49.14,
+    "Clock (Combinational)": 2.704,
+    "Clock (Sequential)": 1.632
+   },
+   "flipflops": {
+    "total": 12677,
+    "annotated": 12677,
+    "pct": 100.0
+   },
+   "primary_inputs": [
+    464,
+    464
+   ],
+   "nets": {
+    "total": 99966,
+    "activity_file": 89414,
+    "propagated": 10518,
+    "default": 34,
+    "set_switching_activity": 0
+   },
+   "nets_from_file_pct": 89.44,
+   "power_share_propagated": 0.1832,
+   "power_share_inserted": 0.1832,
+   "inserted_kinds_power_mw": {
+    "FE": 10.368289,
+    "CTS": 2.648946,
+    "V2_TIE": 6e-06,
+    "synthesis": 58.052285
+   },
+   "inserted_kinds_count": {
+    "FE": 9204,
+    "CTS": 173,
+    "V2_TIE": 1105,
+    "synthesis": 85278
+   },
+   "fe_subkinds_power_mw": {
+    "PDC": 0.003778,
+    "RC": 1.076825,
+    "OCPC": 0.061109,
+    "OFC": 8.727151,
+    "USKC": 0.05518,
+    "DBTC": 0.444246
+   },
+   "fe_subkinds_count": {
+    "PDC": 1,
+    "RC": 780,
+    "OCPC": 270,
+    "OFC": 7487,
+    "USKC": 4,
+    "DBTC": 662
+   },
+   "default_nets_note": "all UNCONNECTED sequential (QN) outputs, fanout 0 (A1)",
+   "die_um2": 190417.74336,
+   "core_um2": 159853.29152,
+   "clock_toggle_rate_mhz": 1739.1305
+  },
+  {
+   "engine": "D32",
+   "point": "P4m",
+   "p_mw": 64.88292849,
+   "internal_mw": 32.63939701,
+   "switching_mw": 32.03780786,
+   "leakage_mw": 0.20572363,
+   "clock_network_mw": 4.064,
+   "groups_mw": {
+    "Sequential": 12.24,
+    "Macro": 4.105,
+    "IO": 0.0,
+    "Physical-Only": 0.002364,
+    "Combinational": 44.47,
+    "Clock (Combinational)": 2.586,
+    "Clock (Sequential)": 1.478
+   },
+   "flipflops": {
+    "total": 12677,
+    "annotated": 12677,
+    "pct": 100.0
+   },
+   "primary_inputs": [
+    464,
+    464
+   ],
+   "nets": {
+    "total": 99966,
+    "activity_file": 89414,
+    "propagated": 10518,
+    "default": 34,
+    "set_switching_activity": 0
+   },
+   "nets_from_file_pct": 89.44,
+   "power_share_propagated": 0.179,
+   "power_share_inserted": 0.179,
+   "inserted_kinds_power_mw": {
+    "FE": 9.082066,
+    "CTS": 2.532058,
+    "V2_TIE": 6e-06,
+    "synthesis": 53.266036
+   },
+   "inserted_kinds_count": {
+    "FE": 9204,
+    "CTS": 173,
+    "V2_TIE": 1105,
+    "synthesis": 85278
+   },
+   "fe_subkinds_power_mw": {
+    "PDC": 0.002885,
+    "RC": 1.013708,
+    "OCPC": 0.06008,
+    "OFC": 7.589379,
+    "USKC": 0.054343,
+    "DBTC": 0.361672
+   },
+   "fe_subkinds_count": {
+    "PDC": 1,
+    "RC": 780,
+    "OCPC": 270,
+    "OFC": 7487,
+    "USKC": 4,
+    "DBTC": 662
+   },
+   "default_nets_note": "all UNCONNECTED sequential (QN) outputs, fanout 0 (A1)",
+   "die_um2": 190417.74336,
+   "core_um2": 159853.29152,
+   "clock_toggle_rate_mhz": 1739.1305
+  },
+  {
+   "engine": "D32",
+   "point": "P4s",
+   "p_mw": 63.5713352,
+   "internal_mw": 32.01858764,
+   "switching_mw": 31.34694093,
+   "leakage_mw": 0.20580663,
+   "clock_network_mw": 3.99,
+   "groups_mw": {
+    "Sequential": 11.97,
+    "Macro": 3.976,
+    "IO": 0.0,
+    "Physical-Only": 0.002364,
+    "Combinational": 43.63,
+    "Clock (Combinational)": 2.511,
+    "Clock (Sequential)": 1.479
+   },
+   "flipflops": {
+    "total": 12677,
+    "annotated": 12677,
+    "pct": 100.0
+   },
+   "primary_inputs": [
+    464,
+    464
+   ],
+   "nets": {
+    "total": 99966,
+    "activity_file": 89414,
+    "propagated": 10518,
+    "default": 34,
+    "set_switching_activity": 0
+   },
+   "nets_from_file_pct": 89.44,
+   "power_share_propagated": 0.1793,
+   "power_share_inserted": 0.1793,
+   "inserted_kinds_power_mw": {
+    "FE": 8.94228,
+    "CTS": 2.456482,
+    "V2_TIE": 6e-06,
+    "synthesis": 52.170428
+   },
+   "inserted_kinds_count": {
+    "FE": 9204,
+    "CTS": 173,
+    "V2_TIE": 1105,
+    "synthesis": 85278
+   },
+   "fe_subkinds_power_mw": {
+    "PDC": 0.002735,
+    "RC": 1.009777,
+    "OCPC": 0.050417,
+    "OFC": 7.47534,
+    "USKC": 0.054753,
+    "DBTC": 0.349258
+   },
+   "fe_subkinds_count": {
+    "PDC": 1,
+    "RC": 780,
+    "OCPC": 270,
+    "OFC": 7487,
+    "USKC": 4,
+    "DBTC": 662
+   },
+   "default_nets_note": "all UNCONNECTED sequential (QN) outputs, fanout 0 (A1)",
+   "die_um2": 190417.74336,
+   "core_um2": 159853.29152,
+   "clock_toggle_rate_mhz": 1739.1305
+  },
+  {
+   "engine": "D64",
+   "point": "P2",
+   "p_mw": 185.17531308,
+   "internal_mw": 101.22400696,
+   "switching_mw": 83.5038881,
+   "leakage_mw": 0.44741802,
+   "clock_network_mw": 8.563,
+   "groups_mw": {
+    "Sequential": 26.91,
+    "Macro": 30.3,
+    "IO": 0.0,
+    "Physical-Only": 0.004626,
+    "Combinational": 119.4,
+    "Clock (Combinational)": 7.256,
+    "Clock (Sequential)": 1.307
+   },
+   "flipflops": {
+    "total": 23974,
+    "annotated": 23974,
+    "pct": 100.0
+   },
+   "primary_inputs": [
+    912,
+    912
+   ],
+   "nets": {
+    "total": 206658,
+    "activity_file": 157409,
+    "propagated": 49245,
+    "default": 4,
+    "set_switching_activity": 0
+   },
+   "nets_from_file_pct": 76.17,
+   "power_share_propagated": 0.2778,
+   "power_share_inserted": 0.2775,
+   "inserted_kinds_power_mw": {
+    "FE": 44.436093,
+    "synthesis": 133.790798,
+    "CTS": 6.943472,
+    "V2_TIE": 1e-05
+   },
+   "inserted_kinds_count": {
+    "FE": 46696,
+    "synthesis": 150540,
+    "CTS": 595,
+    "V2_TIE": 1897
+   },
+   "fe_subkinds_power_mw": {
+    "PSBC": 0.509192,
+    "PDC": 0.011659,
+    "OCPC": 0.4044,
+    "RC": 23.750069,
+    "OFC": 17.598424,
+    "USKC": 0.312573,
+    "DBTC": 1.849777
+   },
+   "fe_subkinds_count": {
+    "PSBC": 345,
+    "PDC": 14,
+    "OCPC": 977,
+    "RC": 25720,
+    "OFC": 18648,
+    "USKC": 36,
+    "DBTC": 956
+   },
+   "default_nets_note": "all UNCONNECTED sequential (QN) outputs, fanout 0 (A1)",
+   "die_um2": 365562.9536,
+   "core_um2": 315469.93088,
+   "clock_toggle_rate_mhz": 2000.0
+  },
+  {
+   "engine": "D64",
+   "point": "P3",
+   "p_mw": 179.06472385,
+   "internal_mw": 98.1330141,
+   "switching_mw": 80.48420422,
+   "leakage_mw": 0.44750553,
+   "clock_network_mw": 8.332,
+   "groups_mw": {
+    "Sequential": 25.83,
+    "Macro": 29.67,
+    "IO": 0.0,
+    "Physical-Only": 0.004626,
+    "Combinational": 115.2,
+    "Clock (Combinational)": 7.043,
+    "Clock (Sequential)": 1.289
+   },
+   "flipflops": {
+    "total": 23974,
+    "annotated": 23974,
+    "pct": 100.0
+   },
+   "primary_inputs": [
+    912,
+    912
+   ],
+   "nets": {
+    "total": 206658,
+    "activity_file": 157409,
+    "propagated": 49245,
+    "default": 4,
+    "set_switching_activity": 0
+   },
+   "nets_from_file_pct": 76.17,
+   "power_share_propagated": 0.279,
+   "power_share_inserted": 0.2787,
+   "inserted_kinds_power_mw": {
+    "FE": 43.164068,
+    "synthesis": 129.15843,
+    "CTS": 6.737005,
+    "V2_TIE": 1e-05
+   },
+   "inserted_kinds_count": {
+    "FE": 46696,
+    "synthesis": 150540,
+    "CTS": 595,
+    "V2_TIE": 1897
+   },
+   "fe_subkinds_power_mw": {
+    "PSBC": 0.479884,
+    "PDC": 0.011457,
+    "OCPC": 0.395304,
+    "RC": 23.288359,
+    "OFC": 16.951807,
+    "USKC": 0.30559,
+    "DBTC": 1.731667
+   },
+   "fe_subkinds_count": {
+    "PSBC": 345,
+    "PDC": 14,
+    "OCPC": 977,
+    "RC": 25720,
+    "OFC": 18648,
+    "USKC": 36,
+    "DBTC": 956
+   },
+   "default_nets_note": "all UNCONNECTED sequential (QN) outputs, fanout 0 (A1)",
+   "die_um2": 365562.9536,
+   "core_um2": 315469.93088,
+   "clock_toggle_rate_mhz": 2000.0
+  }
+ ]
+}

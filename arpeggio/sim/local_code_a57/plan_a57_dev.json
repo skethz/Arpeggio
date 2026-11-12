@@ -1,0 +1,67 @@
+{
+ "note": "Amendment 7 dev check: replays of A5.5 saved seed-102 batch 0 and one dev-seed 9600 batch per arm",
+ "jobs": [
+  {
+   "set": "DEVR",
+   "shape": "x16",
+   "method": "abl_far_64_0.1_0.1_0_rand_32",
+   "snr": 20.0,
+   "seed": 102,
+   "batch": 2000,
+   "point": "P1",
+   "n_batches": 1,
+   "saved": "<SCRATCH>/ap_ber_20261024/results/a55/abl/x16/abl_far_64_0.1_0.1_0_rand_32/snr_20.00"
+  },
+  {
+   "set": "DEVR",
+   "shape": "x32",
+   "method": "abl_far_32_0.1_0.1_0_rand_8",
+   "snr": 22.0,
+   "seed": 102,
+   "batch": 1000,
+   "point": "P2",
+   "n_batches": 1,
+   "saved": "<SCRATCH>/ap_ber_20261024/results/a55/abl/x32/abl_far_32_0.1_0.1_0_rand_8/snr_22.00"
+  },
+  {
+   "set": "HQ",
+   "shape": "x32",
+   "method": "abl_far_128_0.1_0.1_0_rand_80",
+   "snr": 22.0,
+   "seed": 9600,
+   "batch": 1000,
+   "point": "P2",
+   "n_batches": 1
+  },
+  {
+   "set": "HQ",
+   "shape": "x32",
+   "method": "abl_far_32_0.1_0.1_0_rand_128",
+   "snr": 22.0,
+   "seed": 9600,
+   "batch": 1000,
+   "point": "P2",
+   "n_batches": 1
+  },
+  {
+   "set": "HQ",
+   "shape": "x16",
+   "method": "abl_far_128_0.1_0.1_0_rand_248",
+   "snr": 20.0,
+   "seed": 9600,
+   "batch": 2000,
+   "point": "P1",
+   "n_batches": 1
+  },
+  {
+   "set": "HQ",
+   "shape": "x16",
+   "method": "abl_far_64_0.1_0.1_0_rand_384",
+   "snr": 20.0,
+   "seed": 9600,
+   "batch": 2000,
+   "point": "P1",
+   "n_batches": 1
+  }
+ ]
+}

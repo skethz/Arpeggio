@@ -1,0 +1,65 @@
+# A5.14-A5.16 freeze, hostB, 2026-11-10 06:11:55 CET. Protocols, code, gate records and inputs; held-out batches start after this file.
+126e4693d0795acb76df1e486efc91c413a9ae16bb314c24f088aef10bd55685  results/a514/PROTOCOL_A514.md
+2178cf2ee2ea00271442ecba8d24e6375c36fa68d9809700347d1b7fe745ad9d  results/a514/PROTOCOL_A515.md
+31629e183168219870c04859995a5fb9f47f320de83ec2ea5709cee93c968c1b  results/a514/PROTOCOL_A516.md
+cfe2fa991266ec11a48532a17280c40c5002cecc397ada73b954322adf3de9de  src/apx514.py
+e2f5d4c5978e5b90f67e64270d0a192949402882b96419d29c6192aa3a4a927a  src/trace_a514.py
+3e9dcdc9c6882b136ee245adba9c68851f1041654f467e0ce11de057c002f2b5  src/calib_a514.py
+36a713747d660f5475061dc2c0a8394c561f718cea59b172dda49408bd834d74  src/gate_a514.py
+0ffd765126a42e5409115dda3874fae9ecc50cdd3558842ccde71ba4ddd03b1a  src/plan_a514.py
+3e99aeec93fb43312853e8a4a3c6344fdc0670fa49432440b009ae6adbba03cc  src/supervise_a514.sh
+c5cc05bb05bf432b028aadac9302129d43b4c28641404c480d96852da6eb4743  src/analyze_a514.py
+7bbf4a31dc508c0cc2b266a97ec6445f5c387c1fc5c76cd7bbfd60e4cf2045f5  src/run_a516.py
+7a5dda837c01b6ee2c2bc47b6f56d11cd59be63418d8fe22cac70105c046863b  src/fafx.py
+ff7e731bf8dc2dc614a6458e3c044786bc1b5129ae59427fa9e26c219c89f2a2  src/gate_a516.sh
+daee2cc7daa59f3f680b6b3d73ad052d9d02e318ff17ea5c0846a22bcdbcdedd  env_hostb_a514.sh
+519e133c018f4a531d2c8d46ff4ef28a304fe4b0407bb848f59c064265f202a3  build/fa_fx.cu
+b634a365eb05e9cf03496fbca1b9cf52ec631ccee963468a3b775a8a4e01d8cd  build/fa_fx_sm120.cubin
+8639f53e27cb365c70b5ce3ad1aad0a995cb45a4cc236fb7048e991abcf8eb11  src/trace_a56.py
+0ac6e07aa25339927510a62f4fa1e9e0693a37749ecd90e665e55f46c50d0d45  src/a56lib.py
+8d0748edab05820a9e6e249dc49b071bda26726bffa22472bc90d9b61b6d0738  src/apx55.py
+8ec8b8c23051fe0a02fb0b41db4564c75fc05b5d62b757a7ddefcc82bd4616b2  src/apx.py
+f85ae1269e501389fc6ae46bcc876dc6f2ec0d4d88c870878f1b02782dd07625  src/a56an.py
+bf20c02b6e9270de4b16ac76151ea4a23c38cacd450ebfbd417a9ea31baf6d7a  src/runner_a55.py
+6d9d2d9076c78a226d5d3222be5204a4811835e996ff996c859ec040d804f66f  src/runner.py
+8285a6f20d0d4306fccd660c0bcc14e835305d0dd8ee06e60e808b276665011e  code_mimo/src/mimo.py
+1d13265ac57f9d804f037454257bc3521b1baab8f71719442474182d419c3a88  code_mimo/src/anefx.py
+e6196551aa32a0de5e24a647a985c88233de400e475b937fb3284e0abb0e3dd4  x3model/antiphase_ref.py
+e22417fcee5d95ca5a20a2426afb089b9023e1318b80838da38458aae1ed3d21  results/tuned_a52.json
+f07691a501d30f1cf3e1180206fa56482d0d095316131a9f32de6c435a7291fa  results/tuned_a5.json
+ba3a56ddc62d08547cf77a87e80c2999c57bc650568982f1163e581870893ad7  results/a58/select.json
+572b1fe87e4c573c3d85423bc147fd7d68c11ebe3047997d0f8db84992a74edb  results/a55/flips.json
+200b3b04c94c1253654dd1ded79873e382aa69dd6d918ed06aa251b8b2cdf09a  results/a514/gate_G1G3.json
+ba15e648a7c10a290c14050b6cfcb0303b47be4efad473840a355f758bb84515  results/a514/gate_G4.json
+02c77a09d29c837d1ab5d0e7bc48c86c901f14bce3ee351f1cebdbc40336eb7c  results/a514/plan_gateG2.json
+G2 {"set": "gateG2", "shape": "x16", "method": "abl_far_64_0.1_0.1_0_rand_32", "snr": 20.0, "seed": 102, "uses": 2000, "bits": 128000, "vec_err": 5, "bit_err": 31,
+G2 {"set": "gateG2", "shape": "x32", "method": "abl_ape_0.2_0.2_0.2_rand_8", "snr": 22.0, "seed": 102, "uses": 1000, "bits": 128000, "vec_err": 2, "bit_err": 52, "
+G2 {"set": "gateG2", "shape": "x32", "method": "abl_far_32_0.1_0.1_0_rand_8", "snr": 22.0, "seed": 102, "uses": 1000, "bits": 128000, "vec_err": 0, "bit_err": 0, "
+G2 {"set": "gateG2", "shape": "x32", "method": "mdiane8", "snr": 22.0, "seed": 102, "uses": 1000, "bits": 128000, "vec_err": 2, "bit_err": 40, "ber": 0.0003125, "b
+G2 {"set": "gateG2", "shape": "x64", "method": "abl_far_64_0.1_0.1_0_bal_8", "snr": 22.0, "seed": 344, "uses": 500, "bits": 128000, "vec_err": 1, "bit_err": 37, "b
+a513_fixed batches (hostA A5.13, copied 10 Nov): 0183a1c89dddae6c1704473925f2ee83cdc3f6683041338b351b8165a96013e8 over 1100 files
+# RE-FROZEN 2026-11-10 06:12:49 CET before any held-out batch: plan_a514.py glob fix (calib_lists.json was read as a calibration file) and
+# supervise_a514.sh guard (exit when the plan was missing). New hashes:
+3f3edca655843c27a1b7c1cecb35e7fd790420f80382f765a49199a0129c5b76  src/plan_a514.py
+599d41e0900b6b29a6227b48a5a8a64552cbf680df64241741955cb491cf6748  src/supervise_a514.sh
+# held-out batches present at re-freeze: 0
+# ADDENDUM 2026-11-10 06:19:52 CET: stage-2 launcher (variants interleaved in blocks of 25 batches), before any stage-2 batch: 032fd8c40dd1ece19e198dd069966488178dfdc321a0a2191732dfa563183bb0  <SCRATCH>/ap_ber_20261024/src/run_a516_stage2.sh
+# ADDENDUM 2026-11-10 06:39:14 CET: calibration complete (seed 1000 only); S values are outputs of the frozen rules. No held-out batch of A* or W > 1 exists yet: 0 A* dirs, 0 a514 dirs.
+b1770374a93c30de2d532cef69a8493a24cb047e0383b0cdf10bda5f820335fb  results/a514/select_a514.json
+f68af4e3392df5a3bf520e0c30abd66d6d0ecca0770baed18d8afece1f73fb4c  results/a514/plan.json
+813df69fd851649007a0a6f9dc0fd2a6c9d570d935a12154bd40fcca1d4b3fd2  results/a514/calib_lists.json
+ec86408f79b237818bdaa4b350e328900ca772ac3ff45f42b2eca326b2e4ec5f  results/a514/calib_0.json
+227d92d87ca38c12b84bd0877b42ab3ac262ffbdf306a8ccf2a6f5b1014ebec0  results/a514/calib_10.json
+a3fbfa4b940bf4f0ecf6108c980316c2ef950844a65324cba8379ee695e38e8d  results/a514/calib_11.json
+13f041590be77dba28090907b1e9afb1b4864c915d87535349520b3ce371bef6  results/a514/calib_1.json
+049f4a4159c654224f5a1c23e8cbbcaaecbe4b2b7d4881b5d5b0d69581af6f1b  results/a514/calib_2.json
+0a3943cf4e98d2a3cf48a473a7ea842c993454b804445ef93a78a51120730599  results/a514/calib_3.json
+b8277d222877c8ec61a3fa0bf67a70a4f40a6d1625fdfd39557b0bc31124f858  results/a514/calib_4.json
+7bbe3dd1587d7f0ddfdd92ad67284689138418bb30eb510c845a9cce1f72a5d3  results/a514/calib_5.json
+dde246b9328cc2a946c2cb47a6cc70936746a655f2ab9fea2c29a0c64332e889  results/a514/calib_6.json
+d929fc6a9b05de61e3c0ffd7c663db477d3c411b4c77faae68965d91b637e73e  results/a514/calib_7.json
+8c8b60443e410db6c503fb88bcec5408d5eca5f502dc3d0000f10846bcdf45cd  results/a514/calib_8.json
+0b756b2b2f70db84009fc70d3a1fa3752399e784b3895ffbdba74bf2b32d5592  results/a514/calib_9.json
+2062ae195627d6e4a0f80a94f8aeb12bd3322622cd88d97df2820d75666c5b17  src/finish_calib_a514.py
+a0001c98246d5955ecc0ea41641f571dd659d540fd25c80e5e3fd4b64dca3d2d  src/step5_a514.sh
+610ac91f53aaefe151eced4d3571f32ff6c4b0216c19961ce6dede031f4ddd4e  results/a514/SECTION11_APPENDIX.md

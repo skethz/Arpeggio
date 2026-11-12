@@ -1,0 +1,120 @@
+{
+ "snr_conversion": "Eb/N0 = SNR - 10 log10(log2 M): -6.02 dB (16-QAM), -3.01 dB (QPSK)",
+ "summary": [
+  {
+   "shape": "x16",
+   "curve": "MDI-MIMO",
+   "published_EbN0_at_1e3": 13.28329934351671,
+   "ours_new_EbN0_at_1e3": 13.578502878461727,
+   "ours_new_kind": "=",
+   "ours_old_EbN0_at_1e3": 13.532520959742172,
+   "ours_old_kind": "=",
+   "ours_new_minus_published_dB": 0.29520353494501705,
+   "ours_old_minus_published_dB": 0.24922161622546213
+  },
+  {
+   "shape": "x16",
+   "curve": "MMSE-SIC",
+   "published_EbN0_at_1e3": 18.712243914847566,
+   "ours_new_EbN0_at_1e3": 18.5167485639017,
+   "ours_new_kind": "=",
+   "ours_old_EbN0_at_1e3": 18.461161223832743,
+   "ours_old_kind": "=",
+   "ours_new_minus_published_dB": -0.19549535094586545,
+   "ours_old_minus_published_dB": -0.2510826910148225
+  },
+  {
+   "shape": "x16",
+   "curve": "MMSE",
+   "published_EbN0_at_1e3": null,
+   "ours_old_EbN0_at_1e3": 21.979400086720375,
+   "ours_old_kind": ">"
+  },
+  {
+   "shape": "x32",
+   "curve": "MDI-MIMO",
+   "published_EbN0_at_1e3": 13.913570810099221,
+   "ours_new_EbN0_at_1e3": 14.27704505769795,
+   "ours_new_kind": "=",
+   "ours_old_EbN0_at_1e3": 14.12781359997436,
+   "ours_old_kind": "=",
+   "ours_new_minus_published_dB": 0.36347424759872915,
+   "ours_old_minus_published_dB": 0.21424278987513823
+  },
+  {
+   "shape": "x32",
+   "curve": "MMSE-SIC",
+   "published_EbN0_at_1e3": 19.433619878319554,
+   "ours_new_EbN0_at_1e3": 19.11186703214976,
+   "ours_new_kind": "=",
+   "ours_old_EbN0_at_1e3": 18.88287872320581,
+   "ours_old_kind": "=",
+   "ours_new_minus_published_dB": -0.3217528461697938,
+   "ours_old_minus_published_dB": -0.5507411551137444
+  },
+  {
+   "shape": "x32",
+   "curve": "MMSE",
+   "published_EbN0_at_1e3": 33.340688021829166,
+   "ours_old_EbN0_at_1e3": 19.979400086720375,
+   "ours_old_kind": ">"
+  },
+  {
+   "shape": "q16",
+   "curve": "MDI-MIMO",
+   "published_EbN0_at_1e3": 8.571870325088376,
+   "ours_new_EbN0_at_1e3": 8.75555210528505,
+   "ours_new_kind": "=",
+   "ours_old_EbN0_at_1e3": 8.75900599755316,
+   "ours_old_kind": "=",
+   "ours_new_minus_published_dB": 0.18368178019667347,
+   "ours_old_minus_published_dB": 0.1871356724647839
+  },
+  {
+   "shape": "q16",
+   "curve": "MMSE-SIC",
+   "published_EbN0_at_1e3": 11.717270738817973,
+   "ours_new_EbN0_at_1e3": 11.689074798396513,
+   "ours_new_kind": "=",
+   "ours_new_minus_published_dB": -0.02819594042146001
+  },
+  {
+   "shape": "q16",
+   "curve": "MMSE",
+   "published_EbN0_at_1e3": 21.980619329664833,
+   "ours_old_EbN0_at_1e3": 12.989700043360187,
+   "ours_old_kind": ">"
+  },
+  {
+   "shape": "q16",
+   "curve": "SD",
+   "published_EbN0_at_1e3": 7.85886733160202
+  },
+  {
+   "shape": "q32",
+   "curve": "MDI-MIMO",
+   "published_EbN0_at_1e3": 9.281360959047648,
+   "ours_new_EbN0_at_1e3": 10.233932181706573,
+   "ours_new_kind": "=",
+   "ours_old_EbN0_at_1e3": 10.192308770008808,
+   "ours_old_kind": "=",
+   "ours_new_minus_published_dB": 0.9525712226589249,
+   "ours_old_minus_published_dB": 0.9109478109611597
+  },
+  {
+   "shape": "q32",
+   "curve": "MMSE-SIC",
+   "published_EbN0_at_1e3": 11.59468821163343,
+   "ours_new_EbN0_at_1e3": 11.867634691323703,
+   "ours_new_kind": "=",
+   "ours_new_minus_published_dB": 0.2729464796902725
+  },
+  {
+   "shape": "q32",
+   "curve": "MMSE",
+   "published_EbN0_at_1e3": 19.497887051353526,
+   "ours_old_EbN0_at_1e3": 12.989700043360187,
+   "ours_old_kind": ">"
+  }
+ ]
+}

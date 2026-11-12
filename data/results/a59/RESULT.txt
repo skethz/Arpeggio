@@ -1,0 +1,80 @@
+TB_DONE commands 4344 cycles 763867
+cycles from first D0 to OUTQ, minus (3 tests + 2 F): [0]
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+PASS cycles = 3 tests + 2 F (A = 1) (480 anneals, 0 failed)
+ALL PASS fa A=1 start=rand S=32: 480 anneals, 168170 tests, 108159 flips
+cycles runs/p2fa_fa_a1_d64 {'1': 569.4, '2': 1511.7, '3': 2690.6}
+exit 0 : p2fa fa_a1_d64
+TB_DONE commands 5496 cycles 1003308
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS par A=1 start=rand S=128: 480 anneals, 245760 tests, 148042 flips
+cycles runs/p2ap_v14_a1_d64 {'1': 945.4, '2': 2043.6, '3': 3272.1}
+exit 0 : p2ap v14_a1_d64
+TB_DONE commands 2808 cycles 3088531
+cycles from first D0 to OUTQ, minus (3 tests + 2 F): [0]
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+PASS cycles = 3 tests + 2 F (A = 1) (1920 anneals, 0 failed)
+ALL PASS fa A=1 start=rand S=64: 1920 anneals, 791710 tests, 308636 flips
+cycles runs/p1fa_fa_a1_d32 {'1': 599.7, '2': 1418.2, '3': 2806.8}
+exit 0 : p1fa fa_a1_d32
+TB_DONE commands 3576 cycles 3535415
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS par A=1 start=rand S=128: 1920 anneals, 983040 tests, 299506 flips
+cycles runs/p1ap_v14_a1_d32 {'1': 858.1, '2': 1788.1, '3': 2875.5}
+exit 0 : p1ap v14_a1_d32
+TB_DONE commands 4344 cycles 247424
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa A=4 start=rand S=32: 480 anneals, 168170 tests, 108159 flips
+cycles runs/p2fa_fa_a4_d64 {'1': 196.3, '2': 493.4, '3': 854.3}
+exit 0 : p2fa fa_a4_d64
+TB_DONE commands 5496 cycles 344184
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS par A=4 start=rand S=128: 480 anneals, 245760 tests, 148042 flips
+cycles runs/p2ap_v14_a4_d64 {'1': 325.9, '2': 705.5, '3': 1110.2}
+exit 0 : p2ap v14_a4_d64
+TB_DONE commands 2808 cycles 923642
+TB_DONE commands 3576 cycles 1092704
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa A=4 start=rand S=64: 1920 anneals, 791710 tests, 308636 flips
+cycles runs/p1fa_fa_a4_d32 {'1': 184.9, '2': 427.8, '3': 829.3}
+exit 0 : p1fa fa_a4_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS par A=4 start=rand S=128: 1920 anneals, 983040 tests, 299506 flips
+cycles runs/p1ap_v14_a4_d32 {'1': 272.2, '2': 556.3, '3': 876.5}
+exit 0 : p1ap v14_a4_d32

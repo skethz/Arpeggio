@@ -1,0 +1,17 @@
+2026-11-08 00:13:22 CET plan_jobs=1 startable=0 held_done=0
+tunea done 139 running 139
+probe done 123 running 123
+tuneb done 3 running 3
+held0 done 1 running 1
+held1 done 1 running 1
+held2 done 1 running 1
+held3 done 1 running 1
+held4 done 1 running 1
+held5 done 1 running 1
+held6 done 1 running 1
+held7 done 1 running 1
+held8 done 1 running 1
+held9 done 1 running 1
+held10 done 1 running 1
+held11 done 0 running 1
+workers: g0w0.pid 

@@ -1,0 +1,38 @@
+{
+ "note": "G5 fairness statement, read from the RTL and the released files (no simulation). Sources: Antiphase ape_engine.sv v1.4 (sha256 67367973...) and DESIGN.md; PIMI released HLS RTL para_16x16 (Zenodo 18318271 yosys_scripts.zip, md5 428ab58e...) as adapted for ASIC (pimi/NOTES.md); mimo.ising_delta_at for the DI spin count.",
+ "antiphase": {
+  "rtl": "ape_engine.sv v1.4, production build (xorshift32 RNG)",
+  "number_format": "integer: G, h, diag 14-bit signed (|.| <= 4096); lane field w 24-bit; decision z' 27-bit; energy 36-bit; schedule T 16-bit (2^-12 units), c 16-bit; uniform u = top 16 bits of a per-(context, lane) xorshift32",
+  "per_lane_datapath": "per cycle, dual-issued: (a) one 24-bit accumulate of a 14-bit coupling times mu in {+-1,+-2,+-3} (shift-add; no general multiplier) for the field update of the flipped row; (b) one 16x18-bit unsigned multiply (u x 4T) and a 27-bit compare for the spin decision; A = 4 contexts share the lane",
+  "macs_per_lane": "0 general MACs; 1 constant-coefficient add (row update) + 1 multiply-compare (decision) per lane per cycle",
+  "kronecker_repeated_block": "yes: dDI J = -offdiag((1 1^T) (x) G) with 2K copies; the engine stores G (D x D) once and one shared lane field per dimension for all copies; a flip applies one G row (D adds) instead of an N-wide product",
+  "problem_size": "D = 32 / 64 / 128 real dimensions (16x16, 32x32, 64x64 users), up to 2K = 6 copies (N <= 6D); q32 = D64 at K = 1 (128 spins) fits; x16 = D32",
+  "matched_ber_point": "x16 at 31.02 dB (P4): one stage R 4 BER 8.1e-4 pooled (ASIC draw seed 45: 8.66e-4, fresh 245: 7.03e-4); MDI Ns 8: 0 errors in >= 3.1e6 bits"
+ },
+ "pimi_released_rtl": {
+  "rtl": "Vitis HLS 2023.1 RTL of pbits_anneal (16x16 kernel), FPGA-only IP replaced: double compare IP by a combinational IEEE-754 comparator, noise ROMs by constant logic, the 64 single-port J banks by register-file macros",
+  "number_format": "J ap_fixed<16,4> (16-bit, 12 fractional); spins +-1 as 2-bit signed; products 18-bit; saturating 16-bit sequential MVM accumulation; tanh LUT levels +-1, +-1363/4096; noise from a compiled-in table; the activation/threshold comparisons in IEEE-754 double (48 double-compare units)",
+  "per_lane_datapath": "256 multipliers 16-bit x 2-bit (J x s) feeding an adder tree in the spin loop: one 64-wide J-row x spin dot product for each of 4 trials in parallel per cycle",
+  "macs_per_lane": "64 MACs per spin-field evaluation (one per spin); 256 MAC lanes in all (4 trials x 64)",
+  "kronecker_repeated_block": "no: the full N x N J (64 x 64, 16-bit) is stored row-major in 64 banks and every field is a full N-wide product; the repeated-block structure of the DI J is not used",
+  "problem_size": "fixed at compile time: N = 64 spins, 32 trials, 64 steps. x16 16-QAM DI (D = 32, 2 spins per dimension at K = 1) = 64 spins fits. q32 DI (D = 64) = 128 spins does NOT fit",
+  "matched_ber_point": "x16 at 31.02 dB (P4): HW (32 trials x 64 steps) 6.2e-4 [5.99e-4, 6.45e-4] with milestone D's PIMI algorithm; the released RTL's own dynamics (fixed, 75 % zero noise table, beta 1) give 4.74e-3 on our draws (cost does not depend on the table contents)"
+ },
+ "matched_ber_decision": "q32 at 14 dB cannot be run on PIMI's released RTL (needs 128 spins; RTL has 64). The PIMI ASIC engine is dropped; PIMI enters only through its reported FPGA numbers and our measured regime map, labelled 'reported, not same-node'.",
+ "lower_bound_rule": "Not used: the PIMI ASIC engine was dropped (author decision, 25 Oct), so no same-node ratio exists. If a same-node ratio is ever quoted, credit PIMI with the 2x factoring saving (at K = 1 a field needs D = N/2 MACs instead of N).",
+ "pimi_reported_not_same_node": {
+  "source": "Zhu et al., arXiv:2604.17109v2 (Fig. 6e p. 11; Table I p. 12; App. 20 p. 58; Table S3 p. 63), via ap_ber/data/reported_comparison.json (VERIFIED-primary)",
+  "platform": "AMD Alveo U55C FPGA (Vitis HLS), 258.1 MHz, up to 10 kernels",
+  "config": "16x16 16-QAM, i.i.d. CN(0,1), true H, uncoded; single-stage DI-MIMO (64 spins); 32 trials x 64 steps",
+  "latency": "600.2-600.4 us per instance per kernel (154,074 cycles designed)",
+  "throughput": "~16,200 instances/s with 10 kernels (DERIVED: 100k in 6,169 ms; incl. host-FPGA transfer)",
+  "energy": "none reported",
+  "our_measured_regime_map": {
+   "x16_20dB": "PIMI HW 1.63e-2 (never <= 1e-3); Antiphase Ns 32 7.33e-4",
+   "x32_22dB": "PIMI HW 6.97e-3 (never); Antiphase 4.51e-4",
+   "q32_14dB": "PIMI HW 9.79e-4; Antiphase 7.81e-6 (PIMI's released RTL cannot run q32)",
+   "x16_31.02dB": "PIMI HW 6.22e-4; Antiphase one stage R 4 8.11e-4, MDI Ns 8 0; MMSE-SIC 6.2e-6"
+  },
+  "label": "reported, not same-node"
+ }
+}

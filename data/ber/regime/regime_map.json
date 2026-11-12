@@ -1,0 +1,220 @@
+{
+ "conversion": "31.02 dB SNR = 25 dB Eb/N0 + 6.02 dB (16-QAM, b = 4); 14 dB SNR (QPSK) = 10.99 dB Eb/N0",
+ "points": {
+  "P1": {
+   "desc": "16x16 16-QAM, 20 dB SNR (= 13.98 dB Eb/N0)",
+   "pimi": {
+    "hw": "1.63e-2 [1.61e-2, 1.65e-2] (HW 64, 3 seeds pooled)",
+    "to": "9.51e-3 [9.36e-3, 9.66e-3] (4x 256)",
+    "src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md sec. 32"
+   },
+   "antiphase": "7.33e-4 [6.96e-4, 7.71e-4] (Ns 32, 4 seeds pooled)",
+   "mdi_ahc": "7.94e-4 (Ns 64)",
+   "kbest": "2.56e-4",
+   "mmse": "5.83e-2",
+   "verdict": "PIMI never reaches 1e-3 with a published setting; it is 124-181x cheaper in PyTorch and 42x on kernels but at 9-16x higher BER (not matched)",
+   "time_src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md sec. 25",
+   "new_this_protocol": {
+    "sic": {
+     "seed": 102,
+     "uses": 8000,
+     "bit_err": 11012,
+     "ber": 0.0215078125,
+     "cp95": [
+      0.021112179818562497,
+      0.021908872564632087
+     ],
+     "meets_1e3": false
+    },
+    "mmse": {
+     "seed": 102,
+     "uses": 8000,
+     "bit_err": 30420,
+     "ber": 0.0594140625,
+     "cp95": [
+      0.0587680545545768,
+      0.060065061606825954
+     ],
+     "meets_1e3": false
+    },
+    "kbest32": {
+     "seed": 102,
+     "uses": 26000,
+     "bit_err": 371,
+     "ber": 0.00022295673076923076,
+     "cp95": [
+      0.00020084610255465934,
+      0.00024683628007188263
+     ],
+     "meets_1e3": true
+    }
+   }
+  },
+  "P2": {
+   "desc": "32x32 16-QAM, 22 dB SNR",
+   "pimi": {
+    "hw": "6.97e-3 (HW 128)",
+    "to": "2.93e-3 (4x 512)",
+    "src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md sec. 32"
+   },
+   "antiphase": "4.51e-4 (Ns 8, pooled)",
+   "mdi_ahc": "8.11e-4 (Ns 32)",
+   "kbest": "2.25e-4",
+   "mmse": "4.45e-2 (seed 42)",
+   "verdict": "PIMI never reaches 1e-3; not a matched comparison",
+   "time_src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md sec. 25",
+   "new_this_protocol": {
+    "sic": {
+     "seed": 102,
+     "uses": 4000,
+     "bit_err": 5695,
+     "ber": 0.011123046875,
+     "cp95": [
+      0.01083756524690194,
+      0.011414080563931062
+     ],
+     "meets_1e3": false
+    },
+    "mmse": {
+     "seed": 102,
+     "uses": 4000,
+     "bit_err": 22220,
+     "ber": 0.0433984375,
+     "cp95": [
+      0.04284194110640828,
+      0.0439601081399818
+     ],
+     "meets_1e3": false
+    },
+    "kbest32": {
+     "seed": 102,
+     "uses": 44000,
+     "bit_err": 1188,
+     "ber": 0.0002109375,
+     "cp95": [
+      0.00019911289062268637,
+      0.00022328082185768539
+     ],
+     "meets_1e3": true
+    }
+   }
+  },
+  "P3": {
+   "desc": "32x32 QPSK, 14 dB SNR (= 10.99 dB Eb/N0)",
+   "pimi": {
+    "hw": "9.79e-4 [9.30e-4, 1.03e-3] (HW 64; 1.01e-3 on seed 48)",
+    "to": "2.21e-5 (4x 256)",
+    "src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md sec. 32"
+   },
+   "antiphase": "7.81e-6 [4.47e-6, 1.27e-5] (Ns 8, pooled)",
+   "mdi_ahc": "3.57e-4 (Ns 64)",
+   "kbest": "9.28e-6",
+   "mmse": "1.87e-2",
+   "verdict": "PIMI HW just meets 1e-3; kernels: Antiphase 0.74x PIMI time and 0.71x energy (4.12 vs 5.54 us; 1.77 vs 2.49 mJ) at 36x (seed 42: 2.73e-5 vs 9.88e-4) to ~125x (pooled: 7.8e-6 vs 9.8e-4) lower BER; repeat cohort 1/1.39 = 0.72x. PyTorch: PIMI 2.2-2.3x faster",
+   "time_src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md secs. 25, 33",
+   "new_this_protocol": {
+    "mmse": {
+     "seed": 102,
+     "uses": 8000,
+     "bit_err": 9503,
+     "ber": 0.018560546875,
+     "cp95": [
+      0.01819260412932499,
+      0.01893395175889251
+     ],
+     "meets_1e3": false
+    },
+    "kbest32": {
+     "seed": 102,
+     "uses": 156250,
+     "bit_err": 105,
+     "ber": 1.05e-05,
+     "cp95": [
+      8.587967515366957e-06,
+      1.2710876131472038e-05
+     ],
+     "meets_1e3": true
+    },
+    "sic": {
+     "seed": 101,
+     "uses": 4000,
+     "bit_err": 526,
+     "ber": 0.0020546875,
+     "cp95": [
+      0.001882983801615219,
+      0.0022378158923443414
+     ],
+     "meets_1e3": false
+    }
+   }
+  },
+  "P4": {
+   "desc": "16x16 16-QAM, 31.02 dB SNR = 25 dB Eb/N0 + 10 log10(4) (PIMI operating point)",
+   "pimi": {
+    "hw": "6.22e-4 [5.99e-4, 6.45e-4] (HW 64, 6 seeds)",
+    "to": "2.76e-4 (4x 256)",
+    "src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md sec. 32"
+   },
+   "antiphase": "0 in >= 3.1e6 bits (Ns 8; [0, 1.20e-6])",
+   "antiphase_one_stage": "8.11e-4 [7.79e-4, 8.43e-4] (R 4)",
+   "mdi_ahc": "0 [0, 1.03e-6] (Ns 64)",
+   "kbest": "0 [0, 8.0e-7]",
+   "mmse": "7.24e-3 (seed 42)",
+   "verdict": "PIMI is the cheaper detector here: multi-stage Antiphase 12.5-18.4x PIMI time on kernels (52.5-71.0 vs 4.20 us); one-stage Antiphase (R 4) 0.92-0.93x PIMI time and 0.84-0.85x energy (3.91 vs 4.20 us)",
+   "time_src": "<PROJECT>/data/verified_mimo_20261017/RESULTS.md secs. 25, 33",
+   "new_this_protocol": {
+    "sic": {
+     "seed": 101,
+     "uses": 156250,
+     "bit_err": 62,
+     "ber": 6.2e-06,
+     "cp95": [
+      4.753507642415715e-06,
+      7.94811324505984e-06
+     ],
+     "meets_1e3": true
+    },
+    "mmse": {
+     "seed": 101,
+     "uses": 2000,
+     "bit_err": 925,
+     "ber": 0.0072265625,
+     "cp95": [
+      0.006769830175465497,
+      0.007705827334942572
+     ],
+     "meets_1e3": false
+    },
+    "kbest32": {
+     "seed": 101,
+     "uses": 156250,
+     "bit_err": 0,
+     "ber": 0.0,
+     "cp95": [
+      0.0,
+      3.688878788543626e-07
+     ],
+     "meets_1e3": true
+    }
+   },
+   "b200_chain_time": {
+    "P4_mmse_torch": {
+     "ms_per_det": 0.0016424097635684986,
+     "energy": "not reported: the no-process idle segment (322 W) exceeds several run segments, so energy above idle is negative and invalid on this non-exclusive host",
+     "label": "B200, PyTorch, batch 500, non-exclusive host"
+    },
+    "P4_sic_torch": {
+     "ms_per_det": 0.03139447543390737,
+     "energy": "not reported: the no-process idle segment (322 W) exceeds several run segments, so energy above idle is negative and invalid on this non-exclusive host",
+     "label": "B200, PyTorch, batch 500, non-exclusive host"
+    }
+   }
+  }
+ },
+ "summary": [
+  "At 20/22 dB (16-QAM), PIMI misses 1e-3 with every published step budget (HW and 4x), so no matched cost exists",
+  "At 32x32 QPSK 14 dB, PIMI HW sits on the threshold (9.8e-4 pooled, 1.01e-3 on one seed); Antiphase kernel 0.72-0.74x its time at 36-125x lower BER",
+  "At 31.02 dB (PIMI operating point), PIMI and one-stage Antiphase are level in time (0.92-0.93x); multi-stage MDI is 12-18x slower because its wrapper is the cost",
+  "At 31.02 dB, MMSE-SIC alone already meets 1e-3 (see new_this_protocol); a linear-SIC detector suffices in PIMI's regime"
+ ]
+}

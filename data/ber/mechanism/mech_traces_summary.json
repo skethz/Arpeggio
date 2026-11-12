@@ -1,0 +1,82 @@
+{
+ "K1": {
+  "alternation": {
+   "frac_reached_truth_energy": 0.6699999570846558,
+   "frac_halfsteps_with_overshoot_first50": 0.0,
+   "frac_dims_period2_any": 0.22468750178813934,
+   "final_best_gap_mean": 0.25018787384033203,
+   "mean_period2_rate": 0.0012297793816519425,
+   "mean_overshoot_rate": 0.0,
+   "mean_flips": 0.3570507711265236
+  },
+  "no_alternation": {
+   "frac_reached_truth_energy": 0.0,
+   "frac_halfsteps_with_overshoot_first50": 0.9988999962806702,
+   "frac_dims_period2_any": 0.9940624833106995,
+   "final_best_gap_mean": 20.509904861450195,
+   "mean_period2_rate": 0.8657561084803413,
+   "mean_overshoot_rate": 0.860073835356161,
+   "mean_flips": 56.10667855292559
+  },
+  "no_alternation_q0": {
+   "frac_reached_truth_energy": 0.0,
+   "frac_halfsteps_with_overshoot_first50": 1.0,
+   "frac_dims_period2_any": 0.9993749856948853,
+   "final_best_gap_mean": 20.914289474487305,
+   "mean_period2_rate": 0.9639197099442576,
+   "mean_overshoot_rate": 0.9596624537371099,
+   "mean_flips": 62.16753767430782
+  },
+  "alternation_q0": {
+   "frac_reached_truth_energy": 0.14999999105930328,
+   "frac_halfsteps_with_overshoot_first50": 0.0,
+   "frac_dims_period2_any": 0.9904687404632568,
+   "final_best_gap_mean": 1.2327311038970947,
+   "mean_period2_rate": 0.15189766813726985,
+   "mean_overshoot_rate": 0.0,
+   "mean_flips": 10.813046662136912
+  },
+  "n_inst": 200,
+  "half_steps": 256
+ },
+ "K2": {
+  "alternation": {
+   "frac_reached_truth_energy": 0.5450000166893005,
+   "frac_halfsteps_with_overshoot_first50": 0.0,
+   "frac_dims_period2_any": 0.3292187452316284,
+   "final_best_gap_mean": 0.3639887273311615,
+   "mean_period2_rate": 0.0011350293243381354,
+   "mean_overshoot_rate": 0.0,
+   "mean_flips": 0.3624023352167569
+  },
+  "no_alternation": {
+   "frac_reached_truth_energy": 0.0,
+   "frac_halfsteps_with_overshoot_first50": 1.0,
+   "frac_dims_period2_any": 0.9978124499320984,
+   "final_best_gap_mean": 42.36418914794922,
+   "mean_period2_rate": 0.9885469452567297,
+   "mean_overshoot_rate": 0.991555763175711,
+   "mean_flips": 126.80655970424414
+  },
+  "no_alternation_q0": {
+   "frac_reached_truth_energy": 0.0,
+   "frac_halfsteps_with_overshoot_first50": 1.0,
+   "frac_dims_period2_any": 0.9998437166213989,
+   "final_best_gap_mean": 42.36418914794922,
+   "mean_period2_rate": 0.9965401547878923,
+   "mean_overshoot_rate": 0.9987215897999704,
+   "mean_flips": 127.7579360306263
+  },
+  "alternation_q0": {
+   "frac_reached_truth_energy": 0.06499999761581421,
+   "frac_halfsteps_with_overshoot_first50": 0.0,
+   "frac_dims_period2_any": 0.9970312118530273,
+   "final_best_gap_mean": 1.8624013662338257,
+   "mean_period2_rate": 0.14188600435065662,
+   "mean_overshoot_rate": 0.0,
+   "mean_flips": 11.083573946729302
+  },
+  "n_inst": 200,
+  "half_steps": 512
+ }
+}

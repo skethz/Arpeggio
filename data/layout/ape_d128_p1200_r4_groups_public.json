@@ -1,0 +1,36 @@
+{
+ "groups": [
+  "Coupling and schedule memory",
+  "Multipliers (decision or MAC)",
+  "Adders and nonlinear units",
+  "RNG and seeding",
+  "State and control registers",
+  "Unattributed logic and buffers"
+ ],
+ "count": [
+  17,
+  103852,
+  30682,
+  21602,
+  24311,
+  217029
+ ],
+ "area_um2": [
+  86619.07896000003,
+  60358.33856001133,
+  18422.876160000324,
+  29332.326399990914,
+  36599.41375998435,
+  103042.33471994154
+ ],
+ "physical_only_skipped": 528192,
+ "die_um": [
+  289.848,
+  2510.8
+ ],
+ "um_per_px": 1.56925,
+ "shape": [
+  1600,
+  185
+ ]
+}

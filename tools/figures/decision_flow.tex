@@ -1,0 +1,13 @@
+% Conceptual schedule/datapath from Section III: frozen parallel decisions, ordered field commits.
+\begin{tikzpicture}[font=\footnotesize,>={Stealth[length=1.2mm]},
+ box/.style={draw=black!65,rounded corners=1pt,align=center,inner sep=1.8pt,minimum height=8.4mm},
+ arr/.style={->,line width=.45pt}]
+\node[anchor=west] at (0,.91) {\textbf{One copy bank supplies parallel decisions; accepted flips update shared fields}};
+\node[box,fill=ourstint,minimum width=17mm] (bank) at (.90,.20) {Copy bank\\$k\bmod P$};
+\node[box,fill=ourstint,minimum width=22mm] (dec) at (3.04,.20) {$D$ comparators\\freeze flip set};
+\node[box,fill=black!5,minimum width=21mm] (q) at (5.42,.20) {Commit flips\\read $\mathbf G$ columns};
+\node[box,fill=black!5,minimum width=23mm] (v) at (8.02,.20) {$D$ shared fields\\$\mathbf v\gets\mathbf v+\Delta\mathbf v$};
+\draw[arr] (bank) -- (dec); \draw[arr] (dec) -- (q); \draw[arr] (q) -- (v);
+\draw[arr] (v.south) -- +(0,-.38) -| (dec.south);
+\node[fill=white,inner sep=1pt] at (5.55,-.59) {Updated fields feed the next half-step};
+\end{tikzpicture}

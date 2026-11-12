@@ -1,0 +1,324 @@
+TB_DONE commands 2808 cycles 2488151
+TB_DONE commands 2808 cycles 3088531
+cycles from first D0 to OUTQ, minus the fx3 model: [0]
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+PASS cycles = 3 S P + 3 F - F_last (A = 1) (1920 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=1 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset 0
+cycles runs/p1fa_fx3_a1_d32 {'1': 533.3, '2': 1180.2, '3': 2173.0}
+exit 0 : p1fa fx3_a1_d32
+TB_DONE commands 2808 cycles 2187961
+cycles from first D0 to OUTQ, minus the fa model: [0]
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+PASS cycles = 3 tests + 2 F (A = 1) (1920 anneals, 0 failed)
+ALL PASS fa eng=fa A=1 start=rand S=64: 1920 anneals, 791710 tests, 308636 flips, cycle offset 0
+cycles runs/p1fa_fa_a1_d32 {'1': 599.7, '2': 1418.2, '3': 2806.8}
+exit 0 : p1fa fa_a1_d32
+TB_DONE commands 3576 cycles 3535415
+cycles from first D0 to OUTQ, minus the fx2 model: [0]
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+PASS cycles = 3 S P + 2 F (A = 1) (1920 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=1 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset 0
+cycles runs/p1fa_fx2_a1_d32 {'1': 500.1, '2': 1061.3, '3': 1856.1}
+exit 0 : p1fa fx2_a1_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS par eng=v14 A=1 start=rand S=128: 1920 anneals, 983040 tests, 299506 flips, cycle offset None
+cycles runs/p1ap_v14_a1_d32 {'1': 858.1, '2': 1788.1, '3': 2875.5}
+exit 0 : p1ap v14_a1_d32
+TB_DONE commands 4344 cycles 550407
+cycles from first D0 to OUTQ, minus the fx3 model: [0]
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+PASS cycles = 3 S P + 3 F - F_last (A = 1) (480 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=1 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset 0
+cycles runs/p2fa_fx3_a1_d64 {'1': 453.9, '2': 1098.1, '3': 1885.7}
+exit 0 : p2fa fx3_a1_d64
+TB_DONE commands 4344 cycles 443677
+cycles from first D0 to OUTQ, minus the fx2 model: [0]
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+PASS cycles = 3 S P + 2 F (A = 1) (480 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=1 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset 0
+cycles runs/p2fa_fx2_a1_d64 {'1': 396.1, '2': 891.3, '3': 1483.2}
+exit 0 : p2fa fx2_a1_d64
+TB_DONE commands 5496 cycles 1003308
+TB_DONE commands 4344 cycles 763867
+cycles from first D0 to OUTQ, minus the fa model: [0]
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+PASS cycles = 3 tests + 2 F (A = 1) (480 anneals, 0 failed)
+ALL PASS fa eng=fa A=1 start=rand S=32: 480 anneals, 168170 tests, 108159 flips, cycle offset 0
+cycles runs/p2fa_fa_a1_d64 {'1': 569.4, '2': 1511.7, '3': 2690.6}
+exit 0 : p2fa fa_a1_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS par eng=v14 A=1 start=rand S=128: 480 anneals, 245760 tests, 148042 flips, cycle offset None
+cycles runs/p2ap_v14_a1_d64 {'1': 945.4, '2': 2043.6, '3': 3272.1}
+exit 0 : p2ap v14_a1_d64
+TB_DONE commands 2808 cycles 711034
+TB_DONE commands 2808 cycles 923642
+TB_DONE commands 2808 cycles 656582
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=4 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fx3_a4_d32 {'1': 156.8, '2': 338.5, '3': 614.4}
+exit 0 : p1fa fx3_a4_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=4 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fx2_a4_d32 {'1': 151.0, '2': 319.0, '3': 554.6}
+exit 0 : p1fa fx2_a4_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fa A=4 start=rand S=64: 1920 anneals, 791710 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fa_a4_d32 {'1': 184.9, '2': 427.8, '3': 829.3}
+exit 0 : p1fa fa_a4_d32
+TB_DONE commands 3576 cycles 1092704
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS par eng=v14 A=4 start=rand S=128: 1920 anneals, 983040 tests, 299506 flips, cycle offset None
+cycles runs/p1ap_v14_a4_d32 {'1': 272.2, '2': 556.3, '3': 876.5}
+exit 0 : p1ap v14_a4_d32
+TB_DONE commands 4344 cycles 247424
+TB_DONE commands 4344 cycles 169928
+TB_DONE commands 4344 cycles 188123
+TB_DONE commands 5496 cycles 344184
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fa A=4 start=rand S=32: 480 anneals, 168170 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fa_a4_d64 {'1': 196.3, '2': 493.4, '3': 854.3}
+exit 0 : p2fa fa_a4_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=4 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fx2_a4_d64 {'1': 144.8, '2': 340.4, '3': 574.5}
+exit 0 : p2fa fx2_a4_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=4 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fx3_a4_d64 {'1': 157.5, '2': 379.9, '3': 635.9}
+exit 0 : p2fa fx3_a4_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS par eng=v14 A=4 start=rand S=128: 480 anneals, 245760 tests, 148042 flips, cycle offset None
+cycles runs/p2ap_v14_a4_d64 {'1': 325.9, '2': 705.5, '3': 1110.2}
+exit 0 : p2ap v14_a4_d64
+TB_DONE commands 2808 cycles 834922
+TB_DONE commands 3576 cycles 1038773
+TB_DONE commands 2808 cycles 579322
+TB_DONE commands 2808 cycles 602412
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fa A=6 start=rand S=64: 1920 anneals, 791710 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fa_a6_d32 {'1': 171.9, '2': 392.3, '3': 739.2}
+exit 0 : p1fa fa_a6_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=6 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fx2_a6_d32 {'1': 138.0, '2': 286.8, '3': 479.1}
+exit 0 : p1fa fx2_a6_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=6 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fx3_a6_d32 {'1': 140.6, '2': 294.8, '3': 504.7}
+exit 0 : p1fa fx3_a6_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS par eng=v14 A=6 start=rand S=128: 1920 anneals, 983040 tests, 299506 flips, cycle offset None
+cycles runs/p1ap_v14_a6_d32 {'1': 268.9, '2': 537.3, '3': 814.5}
+exit 0 : p1ap v14_a6_d32
+TB_DONE commands 4344 cycles 162617
+TB_DONE commands 4344 cycles 170108
+TB_DONE commands 4344 cycles 232579
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=6 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fx2_a6_d64 {'1': 134.9, '2': 321.9, '3': 557.2}
+exit 0 : p2fa fx2_a6_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=6 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fx3_a6_d64 {'1': 141.0, '2': 343.6, '3': 576.2}
+exit 0 : p2fa fx3_a6_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fa A=6 start=rand S=32: 480 anneals, 168170 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fa_a6_d64 {'1': 184.4, '2': 447.3, '3': 819.6}
+exit 0 : p2fa fa_a6_d64
+TB_DONE commands 5496 cycles 331957
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS par eng=v14 A=6 start=rand S=128: 480 anneals, 245760 tests, 148042 flips, cycle offset None
+cycles runs/p2ap_v14_a6_d64 {'1': 326.4, '2': 692.7, '3': 1046.0}
+exit 0 : p2ap v14_a6_d64
+TB_DONE commands 2808 cycles 571618
+TB_DONE commands 2808 cycles 560700
+TB_DONE commands 2808 cycles 825710
+TB_DONE commands 3576 cycles 1007582
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=8 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fx3_a8_d32 {'1': 135.5, '2': 281.8, '3': 474.6}
+exit 0 : p1fa fx3_a8_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS one decision-port test per pass (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=8 start=rand S=64: 1920 anneals, 491520 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fx2_a8_d32 {'1': 134.5, '2': 278.6, '3': 461.8}
+exit 0 : p1fa fx2_a8_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS fa eng=fa A=8 start=rand S=64: 1920 anneals, 791710 tests, 308636 flips, cycle offset None
+cycles runs/p1fa_fa_a8_d32 {'1': 168.6, '2': 387.5, '3': 732.9}
+exit 0 : p1fa fa_a8_d32
+PASS accepted-lane sequence (1920 anneals, 0 failed)
+PASS decision-port tests per pass (1920 anneals, 0 failed)
+PASS R-port flips (1920 anneals, 0 failed)
+PASS best spins and energy (1920 anneals, 0 failed)
+PASS init ops (1920 anneals, 0 failed)
+ALL PASS par eng=v14 A=8 start=rand S=128: 1920 anneals, 983040 tests, 299506 flips, cycle offset None
+cycles runs/p1ap_v14_a8_d32 {'1': 261.9, '2': 522.2, '3': 787.8}
+exit 0 : p1ap v14_a8_d32
+TB_DONE commands 4344 cycles 162269
+TB_DONE commands 4344 cycles 171538
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fx3 A=8 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fx3_a8_d64 {'1': 140.8, '2': 338.8, '3': 590.1}
+exit 0 : p2fa fx3_a8_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS one decision-port test per pass (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fx2 A=8 start=rand S=32: 480 anneals, 61440 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fx2_a8_d64 {'1': 135.2, '2': 321.8, '3': 554.7}
+exit 0 : p2fa fx2_a8_d64
+TB_DONE commands 4344 cycles 205370
+TB_DONE commands 5496 cycles 308407
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS tests = S P + flips not on a last lane (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS fa eng=fa A=8 start=rand S=32: 480 anneals, 168170 tests, 108159 flips, cycle offset None
+cycles runs/p2fa_fa_a8_d64 {'1': 169.4, '2': 414.5, '3': 697.2}
+exit 0 : p2fa fa_a8_d64
+PASS accepted-lane sequence (480 anneals, 0 failed)
+PASS decision-port tests per pass (480 anneals, 0 failed)
+PASS R-port flips (480 anneals, 0 failed)
+PASS best spins and energy (480 anneals, 0 failed)
+PASS init ops (480 anneals, 0 failed)
+ALL PASS par eng=v14 A=8 start=rand S=128: 480 anneals, 245760 tests, 148042 flips, cycle offset None
+cycles runs/p2ap_v14_a8_d64 {'1': 305.9, '2': 639.7, '3': 972.4}
+exit 0 : p2ap v14_a8_d64

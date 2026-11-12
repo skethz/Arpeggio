@@ -1,0 +1,2 @@
+ape_d32_p1150_r4|<SCRATCH>/antiphase_asic_20261017/flow_v2_20261024/ape_d32_p1150_r4|ape_engine_D32_A4_SEEDL1
+ape_d64_r4|<SCRATCH>/antiphase_asic_20261017/flow_v2_20261024/ape_d64_r4|ape_engine_D64_A4_SEEDL2

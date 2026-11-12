@@ -1,0 +1,15 @@
+A5.12 analysis 2026-11-07 16:36:34 CET
+  pick pt12_c5: T0 0.075 T1 0.05 (abl_ptt_c5_0.075_0.05_32) bit_err 127 vec_err 14 corner True
+  pick pt12_c3: T0 0.15 T1 0.05 (abl_ptt_c3_0.15_0.05_32) bit_err 88 vec_err 11 corner False
+  pick pt12_c2: T0 0.3 T1 0.05 (abl_ptt_c2_0.3_0.05_32) bit_err 27 vec_err 7 corner False
+  P1 c=5: 1.380 [1.060, 1.837] pt_worse  McNemar p 0.13 (38/25)  uses 18000  aligned True (63)
+  P1 c=3: 0.810 [0.581, 1.117] no_detected_difference  McNemar p 0.11 (27/41)  uses 20000  aligned True (62)
+  P1 c=2: 0.585 [0.418, 0.786] pt_better  McNemar p 0.0002 (12/39)  uses 20000  aligned True (64)
+  P2 c=5: 4.615 [3.132, 7.779] pt_worse  McNemar p 6e-19 (88/7)  uses 7000  aligned True (14)
+  P2 c=3: 2.437 [1.818, 3.492] pt_worse  McNemar p 2.2e-09 (86/24)  uses 19000  aligned True (20)
+  P2 c=2: 0.912 [0.721, 1.172] no_detected_difference  McNemar p 0.42 (57/67)  uses 43000  aligned True (34)
+  P3 c=5: inf [inf, inf] pt_worse  McNemar p 9.8e-91 (300/0)  uses 8000  aligned True (0)
+  P3 c=3: 57.375 [31.615, 156.000] pt_worse  McNemar p 1e-28 (94/0)  uses 40000  aligned True (8)
+  P3 c=2: 5.477 [3.144, 12.273] pt_worse  McNemar p 5.9e-11 (43/2)  uses 156250  aligned True (28)
+  section 4: row 1: parallel trial worse at P1-P3 even at c = 5
+  predictions: {"P1 c=5 ratio in 0.95-1.2": false, "P1 c=3 ratio in 0.7-1": true, "P1 c=2 ratio in 0.6-0.95": false, "P2 c=5 ratio in 2-5": true, "P2 c=3 ratio in 1.2-2": false, "P2 c=2 ratio in 0.9-1.6": true, "P3 c=5 ratio in 300-1000": false, "P3 c=3 ratio in 30-300": true, "P3 c=2 ratio in 5-100": true}

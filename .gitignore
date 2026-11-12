@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+.env
+.env.*
+outputs/
+out/
+*.log
+*.tmp
+*.aux
+*.fls
+*.fdb_latexmk
+*.so
+*.o
+*.cubin

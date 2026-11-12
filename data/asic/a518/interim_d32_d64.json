@@ -1,0 +1,84 @@
+{
+ "P1": {
+  "arpeggio_row": {
+   "layout": "fa_d32_p1000",
+   "period_ns": 1.0,
+   "x_hat": 0.8427437568818336,
+   "x_hat_float": 0.85603340042359,
+   "ber": 0.0003646227904040404,
+   "cycles_per_det": 56604.58319169629,
+   "time_per_det_us": 56.60458319169629,
+   "power_mw": 96.87219725,
+   "energy_per_det_uj": 5.483410348200038,
+   "det_per_s_per_mm2_die": 94304.18431078615,
+   "die_mm2": 0.18733435968,
+   "decisions_per_det": 1020131.328,
+   "pj_per_decision": 5.375200425371152
+  },
+  "like_for_like": {
+   "rho_t": 0.8427437568818336,
+   "rho_E": 0.8882816240822765,
+   "rho_t_float": 0.85603340042359,
+   "rho_E_float": 0.9022893767975557,
+   "chord_layout": "ape_d32_r4b + one closure pass (C1)",
+   "chord_power_like_mw": 91.90603209,
+   "term": "Arpeggio leads"
+  },
+  "chord_row_same_period": {
+   "period_ns": 1.0,
+   "cycles_per_det": 67167.01575,
+   "time_per_det_us": 67.16701575,
+   "power_mw": 92.8170101,
+   "energy_per_det_uj": 6.2342415792546095,
+   "die_mm2": 0.19041774336,
+   "pj_per_decision": 3.0556073557102885
+  },
+  "in_table_ratios": {
+   "time": 0.8427437568818336,
+   "energy": 0.8795633403824008,
+   "vs_printed_row_time": 0.7328206581581161,
+   "vs_printed_row_energy": 0.9988393255552643
+  }
+ },
+ "P2": {
+  "arpeggio_row": {
+   "layout": "fa_d64_p1000 + one closure pass (C2)",
+   "period_ns": 1.0,
+   "x_hat": 0.6769014071793804,
+   "x_hat_float": 0.6777168832144369,
+   "ber": 0.00036026041666666666,
+   "cycles_per_det": 14725.120294879196,
+   "time_per_det_us": 14.725120294879195,
+   "power_mw": 172.19181397,
+   "energy_per_det_uj": 2.53554517450171,
+   "det_per_s_per_mm2_die": 179572.33020896695,
+   "die_mm2": 0.37818276288,
+   "decisions_per_det": 294920.192,
+   "pj_per_decision": 8.597394289305598
+  },
+  "like_for_like": {
+   "rho_t": 0.6769014071793804,
+   "rho_E": 0.6680237216494325,
+   "rho_t_float": 0.6777168832144369,
+   "rho_E_float": 0.6688285025674163,
+   "chord_layout": "ape_d64_r4",
+   "chord_power_like_mw": 174.48015303,
+   "term": "Arpeggio leads"
+  },
+  "chord_row_same_period": {
+   "period_ns": 1.0,
+   "cycles_per_det": 21753.715,
+   "time_per_det_us": 21.753715,
+   "power_mw": 185.17531308,
+   "energy_per_det_uj": 4.028250985778092,
+   "die_mm2": 0.3655629536,
+   "pj_per_decision": 3.414695818604794
+  },
+  "in_table_ratios": {
+   "time": 0.6769014071793804,
+   "energy": 0.629440713464369,
+   "vs_printed_row_time": 0.6769014071793803,
+   "vs_printed_row_energy": 0.6294407134643688
+  }
+ }
+}
