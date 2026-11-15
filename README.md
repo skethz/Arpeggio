@@ -9,7 +9,7 @@ ETH AI Center, ETH Zurich
 [![Figures](https://img.shields.io/badge/Figures-5_final-8C1515)](figures/)
 [![Results](https://img.shields.io/badge/Results-Tables-8C1515)](#results)
 
-> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable; heuristic Ising detectors often test spins at once (deciding if each flips its sign) and flip them together. Yet synchronous flips can oscillate, annealing tests one spin at a time, and each flip updates every local field: do parallel flips pay? Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies; one active copy per coordinate (*copy coloring*) and pinning stabilize parallel flips. Two policies on it differ in flips per parallel test: all (*Chord*) or, by the existing first-accept rule, one (*Arpeggio*). Within Chord's cycles, parallel tests pay: Chord has 2.5–5.2 times lower bit error rates than one-at-a-time annealing, at 16 and 32 users (16-ary quadrature amplitude modulation). Counterintuitively, flipping all does not: Arpeggio beats Chord at 16 and 64 users and, at no more cycles, re-tuned Chord at 32; routed at equal clocks, it takes 16 percent less time at 16 users.
+> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable; heuristic Ising detectors often test spins at once (deciding if each flips its sign) and flip them together. Yet synchronous flips can oscillate, annealing tests one spin at a time, and each flip updates every local field: do parallel flips pay? Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies; one active copy per coordinate (*copy coloring*) and pinning stabilize parallel flips. Two policies on it differ in flips per parallel test: all (*Chord*) or, by the existing first-accept rule, one (*Arpeggio*). Within Chord's cycles, parallel tests pay: Chord has 2.5–5.2 times lower bit error rates than one-at-a-time annealing, at 16 and 32 users (16-ary quadrature amplitude modulation). Counterintuitively, flipping all does not: Arpeggio beats Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks) and, at no more modeled cycles, re-tuned Chord at 32 and 64.
 
 <p align="center">
   <img src="figures/teaser.png" width="620" alt="Why parallel flips oscillate, how copy coloring and pinning stabilize them, and how Chord and Arpeggio compare">
@@ -64,8 +64,8 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | `data/ber/table2/` | Held-out BER curves (seed 101), SNR at BER 10⁻³/10⁻⁴ with bootstrap CIs, paired SNR differences, K-best with 128 candidates. |
 | `data/ber/a5/`, `a54/`, `a55/`, `a56/` | The price-of-parallelism experiments: flip policies, colorings and budgets, schedule lengths, equal-cycle SA and first-accept, early stop and the 64-user runs. |
 | `data/ber/ablation/`, `mechanism/`, `regime/`, `energy/`, `equivalence/`, `fidelity/` | Ablation of copy coloring and pinning, oscillation traces, the PIMI regime map, energy inputs, kernel equivalence and fixed-point fidelity. |
-| `data/results/` | Later experiments by protocol: A5.8 (64 users), A5.9 and A5.10 (RTL cycles), A5.12 (parallel-trial cost), A5.13 (fixed point), A5.14–A5.16 (commit width, 32-user re-test), A5.17 (k-row commits). |
-| `data/asic/` | GF22 records: equivalence, static timing, activity-based power, energy per decision and fairness; A5.18 same-clock Chord/Arpeggio pairs. |
+| `data/results/` | Later experiments by protocol: A5.8 (64 users), A5.9 and A5.10 (RTL cycles), A5.12 (parallel-trial cost), A5.13 (fixed point), A5.14–A5.16 (commit width, 32-user re-test), A5.17 (k-row commits), A5.19 (confirmatory re-tests at 64 and 16 users). |
+| `data/asic/` | GF22 records: equivalence, static timing, activity-based power, energy per decision and fairness; A5.18 same-clock Chord/Arpeggio pairs at D = 32, 64 and 128. |
 | `data/layout/` | Accepted GF22 layout exports with their [provenance](data/layout/PROVENANCE.md). |
 
 ## <a name="code"></a> 🔩 Code
@@ -94,6 +94,7 @@ Every experiment was frozen in a protocol before its held-out runs. The protocol
 | A5.12, A5.13 | [A512](protocols/ber/PROTOCOL_A512.md), [A513](protocols/ber/PROTOCOL_A513.md) | Parallel-trial cost; fixed-point first-accept |
 | A5.14–A5.16 | [A514](protocols/ber/PROTOCOL_A514.md), [A515](protocols/ber/PROTOCOL_A515.md), [A516](protocols/ber/PROTOCOL_A516.md) | Commit width; 32-user re-test against re-tuned Chord; fixed-point loss at P1 |
 | A5.17 | [A517](protocols/ber/PROTOCOL_A517.md) | Chord with k-row commits (cycle model) |
+| A5.19 | [A519](protocols/ber/PROTOCOL_A519.md) | Confirmatory re-tests on a fresh seed: Arpeggio against re-tuned Chord at 64 users; replications at 64 and 16 users |
 | GF22 gate | [PROTOCOL.md](protocols/asic/PROTOCOL.md) | Equivalence, activity power, slow-corner clock and fairness of the engines |
 | A5.11, A5.18 | [A511](protocols/asic/PROTOCOL_A511_FA_GF22.md), [A518](protocols/asic/PROTOCOL_A518.md), [part 2](protocols/asic/PROTOCOL_A518_part2.md) | Arpeggio through the GF22 flow at Chord's clocks |
 
@@ -117,16 +118,21 @@ Every experiment was frozen in a protocol before its held-out runs. The protocol
 
 –: not run. Confidence intervals and footnotes are in the paper and in `data/ber/table2/`.
 
-### Routed GF22 Chord engines, TT corner (Table IV)
+### Routed GF22 Chord and Arpeggio engines, TT corner (Table IV)
 
 | Engine | Workload | BER | Clock, TT (SS), MHz | Die, mm² | Power, mW | Time/det., µs | Energy/det., nJ | pJ/decision |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| D = 32 | 16×16 16-QAM, 31.02 dB, K = 1, N<sub>s</sub> = 4 | 8.7×10⁻⁴ | 870 (571) | 0.190 | 63.6 | 1.42 | 90.6 | 2.8 |
+| Chord, D = 32 | 16×16 16-QAM, 31.02 dB, K = 1, N<sub>s</sub> = 4 | 8.7×10⁻⁴ | 870 (571) | 0.190 | 63.6 | 1.42 | 90.6 | 2.8 |
 | | 16×16 16-QAM, 31.02 dB, MDI, N<sub>s</sub> = 8 | 0 obs. | | | 64.9 | 1.00 | 65.1 | 2.9 |
 | | 16×16 16-QAM, 20 dB, MDI, N<sub>s</sub> = 32 | 6.7×10⁻⁴ | | | 71.1 | 77.2 | 5,490 | 2.7 |
-| D = 64 | 32×32 QPSK, 14 dB, one-stage MDI, N<sub>s</sub> = 8 | 0 obs. | 1,000 (667) | 0.366 | 179 | 2.55 | 456 | 3.5 |
+| Chord, D = 64 | 32×32 QPSK, 14 dB, one-stage MDI, N<sub>s</sub> = 8 | 0 obs. | 1,000 (667) | 0.366 | 179 | 2.55 | 456 | 3.5 |
 | | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.7×10⁻⁴ | | | 185 | 21.8 | 4,030 | 3.4 |
-| D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.1×10⁻⁴ | 833 (556) | 0.728 | 260 | 41.8 | 10,840 | 3.6 |
+| Chord, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.1×10⁻⁴ | 833 (556) | 0.728 | 260 | 41.8 | 10,840 | 3.6 |
+| Arpeggio, D = 32 | 16×16 16-QAM, 20 dB, MDI, N<sub>s</sub> = 32 | 3.6×10⁻⁴ | 1,000 (645) | 0.187 | 96.9 | 56.6 | 5,480 | 5.4 |
+| Arpeggio, D = 64 | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.6×10⁻⁴ | 1,000 (645)\* | 0.378 | 172 | 14.7 | 2,540 | 8.6 |
+| Arpeggio, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 2.7×10⁻⁴ | 833 (556)\* | 0.732 | 243 | 30.0 | 7,290 | 4.8 |
+
+Arpeggio rows: the paper's B = 1 picks (a cycle budget of one times Chord's), in fixed point, routed at Chord's clocks on the workloads of Chord's rows 3, 5 and 6. \*One closure pass. A decision is one test of one spin (one per spin and sweep).
 
 <img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 engines by RTL function">
 

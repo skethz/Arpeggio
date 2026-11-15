@@ -10,6 +10,8 @@ Data, built from the files only (plain values below are as printed in the paper)
            (work/plan_20261024/antiphase_asic/results_a518/interim_d32_d64.json; PROTOCOL_A518_part2.md 0d0eeeee), since 11 Nov 2026
            (body_sameclock_20261111 preview); before: A5.11 rho_t 0.744/0.780, rho_E 1.021/0.610 (each engine at its own clock),
            since the sequential reframe (9 Nov 2026); it was Table IV's pJ per decision.
+           64 users added 13 Nov 2026 (v31, blind round f; work/d128_table4_20261113): D128 pair at 1.20 ns, rho_t 0.718156,
+           rho_E 0.845175 (results_a518/d128_pair_1200.json, amendment A5); key rows swapped so each sits by its line's end.
   4        Antiphase and first-accept grids are schematic (pale: tested, dark: flipped); 9 Nov 2026.
 The grids are schematic: N = 8 spins, D = 4 coordinates, P = 2 copies.
 Colours (user, 9 Nov 2026): Antiphase #8C1515, first-accept SA #1966FF, SA #002B49, baselines #53565A and #A0A2A4,
@@ -435,24 +437,28 @@ for xx, word in ((-1, 'behind'), (1, 'ahead')):
 
 # (e) Routed GF22 Arpeggio over Chord per detection, both at 1.00 ns since 11 Nov 2026 (A5.18 part 2); was A5.11 (7 Nov 2026; work/plan_20261024/antiphase_asic/RESULTS_A511.md
 #     sec. 4: rho_t 0.744 / 0.780, rho_E 1.021 / 0.610 at P1 (16 users) / P2 (32 users)); Section V-B. Replaces the pJ bars (sequential reframe, 9 Nov 2026).
-ax_e = axes(203, 223, pt2, pb2)
+# 13 Nov 2026 (work/d128_table4_20261113, blind round f: both readers asked for the abstract's 64-user pair): third point,
+# D = 128 at 1.20 ns (A5.18 part 2 amendment A5; results_a518/d128_pair_1200.json: rho_t 0.718156, rho_E 0.845175); axis 6 pt wider to the left;
+# key rows swapped (energy above time) so each sits beside its line's 64-user end.
+E_X0, E_X1, E_LO, E_HI = 197, 223, -0.3, 2.3
+ax_e = axes(E_X0, E_X1, pt2, pb2)
 ax_e.axhline(1, **REF_KW)   # Antiphase's line at 1x, first-accept in FA (9 Nov 2026, as (c))
-# Same-clock pair (A5.18 part 2, 11 Nov 2026): both curves end within 0.01 at 32 users, so the labels no longer sit at the
-# line ends; each carries its own line and marker sample on the right, as a two-row key (time above energy).
-for vals, ls, mfc, lab, ykey in (((0.842744, 0.676901), '-', FA, 'time', 0.88), ((0.888282, 0.668024), (0, (1, 1.2)), 'white', 'energy', 0.70)):
-    # thin lines (0.6 pt, the legend's Antiphase line is 1.2 pt); the panel title names first-accept
-    ax_e.plot([0, 1], vals, color=FA, lw=0.6, ls=ls, zorder=2)
-    ax_e.plot([0, 1], vals, 'D', ms=2.3, mfc=mfc, mec=FA, mew=0.6, ls='none', zorder=3, clip_on=False)
-    ax_e.plot([1.36, 1.66], [ykey, ykey], color=FA, lw=0.6, ls=ls, clip_on=False)
-    ax_e.plot([1.51], [ykey], 'D', ms=2.3, mfc=mfc, mec=FA, mew=0.6, ls='none', clip_on=False)
-    ax_e.text(1.75, ykey, lab, ha='left', va='center', fontsize=TXT, color=INK, clip_on=False)
-ax_e.set_xlim(-0.3, 1.3)
+_u = (E_HI - E_LO) / (E_X1 - E_X0)   # data units per printed pt; the key keeps its printed offsets from the axis end
+def _kx(dpt):
+    return E_HI + dpt * _u
+for vals, ls, mfc, lab, ykey in (((0.842744, 0.676901, 0.718156), '-', FA, 'time', 0.70), ((0.888282, 0.668024, 0.845175), (0, (1, 1.2)), 'white', 'energy', 0.88)):
+    ax_e.plot([0, 1, 2], vals, color=FA, lw=0.6, ls=ls, zorder=2)
+    ax_e.plot([0, 1, 2], vals, 'D', ms=2.3, mfc=mfc, mec=FA, mew=0.6, ls='none', zorder=3, clip_on=False)
+    ax_e.plot([_kx(0.75), _kx(4.5)], [ykey, ykey], color=FA, lw=0.6, ls=ls, clip_on=False)
+    ax_e.plot([_kx(2.625)], [ykey], 'D', ms=2.3, mfc=mfc, mec=FA, mew=0.6, ls='none', clip_on=False)
+    ax_e.text(_kx(5.625), ykey, lab, ha='left', va='center', fontsize=TXT, color=INK, clip_on=False)
+ax_e.set_xlim(E_LO, E_HI)
 ax_e.set_ylim(0.5, 1.12)
 ax_e.set_yticks([0.6, 1])
 ax_e.set_yticklabels(['0.6×', '1×'])
-ax_e.set_xticks([0, 1])
-ax_e.set_xticklabels(['16', '32'])
-ax_e.text(1.12, -0.07, 'users', transform=ax_e.transAxes, ha='left', va='top', fontsize=TXT, color=DARK)   # right of 32: the axis is too narrow to centre it
+ax_e.set_xticks([0, 1, 2])
+ax_e.set_xticklabels(['16', '32', '64'])
+ax_e.text(E_X1 + 2.4, pb2 + 0.07 * PH, 'users', transform=ax.transData, ha='left', va='top', fontsize=TXT, color=DARK)
 
 
 end = pb2 + 9

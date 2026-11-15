@@ -1,0 +1,109 @@
+{
+ "hz1": {
+  "job": {
+   "shape": "x64",
+   "method": "abl_far_64_0.1_0.1_0_bal_8",
+   "snr": 22.0,
+   "seed": 344,
+   "batch": 500
+  },
+  "uses": 500,
+  "uses_differ": 1,
+  "frac": 0.002,
+  "bits_new": 0,
+  "bits_ref": 37,
+  "err_uses_new": 0,
+  "err_uses_ref": 1,
+  "host_new": "hostA",
+  "host_ref": "hostB",
+  "counters_compared": 9,
+  "max_abs_counter_rel": 0.14317551016570096,
+  "passed": true
+ },
+ "hz2": {
+  "job": {
+   "shape": "x64",
+   "method": "a56_128_0.3_0.3_0.4_0_alt_8",
+   "stream": "mdiane8",
+   "snr": 22.0,
+   "seed": 344,
+   "batch": 500
+  },
+  "uses": 500,
+  "uses_differ": 1,
+  "frac": 0.002,
+  "bits_new": 39,
+  "bits_ref": 0,
+  "err_uses_new": 1,
+  "err_uses_ref": 0,
+  "host_new": "hostA",
+  "host_ref": "hostB",
+  "counters_compared": 9,
+  "max_abs_counter_rel": 0.051475686079155425,
+  "passed": true
+ },
+ "hz3": {
+  "job": {
+   "shape": "x64",
+   "method": "abl_ape_0.3_0.3_0.4_rand_8",
+   "snr": 22.0,
+   "seed": 1000,
+   "batch": 500
+  },
+  "uses": 500,
+  "uses_differ": 1,
+  "frac": 0.002,
+  "bits_new": 35,
+  "bits_ref": 0,
+  "err_uses_new": 1,
+  "err_uses_ref": 0,
+  "host_new": "hostA",
+  "host_ref": "hostB",
+  "counters_compared": 9,
+  "max_abs_counter_rel": 0.04336606249141761,
+  "passed": true
+ },
+ "hz4": {
+  "job": {
+   "shape": "x16",
+   "method": "abl_far_64_0.1_0.1_0_rand_32",
+   "snr": 20.0,
+   "seed": 102,
+   "batch": 2000
+  },
+  "uses": 2000,
+  "uses_differ": 0,
+  "frac": 0.0,
+  "bits_new": 31,
+  "bits_ref": 31,
+  "err_uses_new": 5,
+  "err_uses_ref": 5,
+  "host_new": "hostA",
+  "host_ref": "hostB",
+  "counters_compared": 0,
+  "max_abs_counter_rel": null,
+  "passed": true
+ },
+ "hz5": {
+  "job": {
+   "shape": "x16",
+   "method": "mdiane32",
+   "snr": 20.0,
+   "seed": 102,
+   "batch": 2000
+  },
+  "uses": 2000,
+  "uses_differ": 2,
+  "frac": 0.001,
+  "bits_new": 51,
+  "bits_ref": 76,
+  "err_uses_new": 6,
+  "err_uses_ref": 8,
+  "host_new": "hostA",
+  "host_ref": "hostB",
+  "counters_compared": 0,
+  "max_abs_counter_rel": null,
+  "passed": true
+ },
+ "pass": true
+}

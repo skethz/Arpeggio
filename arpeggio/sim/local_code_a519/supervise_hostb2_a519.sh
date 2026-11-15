@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# A5.19 share on hostB GPU0-3 (ADDENDUM_A519_HOSTB.md; GPU0-1 added by amendment 1, 14 Nov). Untimed BER only. The five yield safeguards of supervise_hosta_a519.sh:
+#  (1) 1 worker per GPU (throughput check 14 Nov: 2 or 4 workers on one 5090 give less than 1), memory cap 0.20 of the GPU (6,521 MiB);
+#  (2) a foreign-process check on our two GPUs every 15 s;
+#  (3) stop = TERM, after 20 s KILL, then an nvidia-smi check that none of our pids is left on that GPU (logged);
+#  (4) after every stop, unreadable done.json files are renamed *.bad.<t> (the job rewrites them from its saved batches);
+#  (5) workers run under setpriv --pdeathsig TERM, so they stop if this supervisor dies.
+# A GPU with any compute process that is not ours gets no new worker until it is free. Other processes are never touched.
+# No planner here: sync_hostB2_a519.sh writes plan.json with the chunks hostA handed to hostB. Every 120 s: start workers if a chunk
+# is startable, write busy.txt (read by the sync) and status.txt. At 16 Nov 2026 11:50 CET: stop our workers and exit, so the sync
+# can push the last batches before hostA's 12:00 cut.
+A=<SCRATCH>/ap_ber_20261024
+M=$A/a519m
+R=$M/results/a519
+L=$M/logs
+PY=$A/venv/bin/python
+NW=${A519M_NW:-1}
+MEM=0.20
+CUT=$(date -d '2026-11-16 11:50 CET' +%s)
+GPUS=(<GPU_UUID> <GPU_UUID> <GPU_UUID> <GPU_UUID>)
+GN=(0 1 2 3)
+mkdir -p "$R/pids" "$L"
+log() { echo "$(date '+%m-%d %H:%M:%S') $*" >> "$L/supervisor.log"; }
+alive() { [ -n "$1" ] && kill -0 "$1" 2>/dev/null; }
+ourpids() {                                   # live worker pids on slot $1 (and children), space-delimited; drops dead pid files
+  local f p c out=" "
+  for f in "$R"/pids/m${GN[$1]}w*.pid; do
+    [ -e "$f" ] || continue
+    p=$(cat "$f")
+    if alive "$p"; then out="$out$p "; for c in $(pgrep -P "$p"); do out="$out$c "; done; else rm -f "$f"; fi
+  done
+  echo "$out"
+}
+gpupids() { nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader 2>/dev/null | tr -d ' ' | awk -F, -v u="$1" '$1==u{print $2}'; }
+clean_done() {
+  local d
+  for d in $(find "$R" -name done.json); do
+    "$PY" -c 'import json, sys; json.load(open(sys.argv[1]))' "$d" 2>/dev/null || { mv "$d" "$d.bad.$(date +%s)"; log "CLEAN unreadable $d"; }
+  done
+}
+stop_slot() {                                 # $1 slot, $2 reason
+  local s=$1 before p t left on stuck=""
+  before=$(ourpids "$s")
+  [ "$before" = " " ] && return
+  for p in $before; do kill -TERM "$p" 2>/dev/null; done
+  for t in $(seq 1 20); do left=$(ourpids "$s"); [ "$left" = " " ] && break; sleep 1; done
+  left=$(ourpids "$s")
+  if [ "$left" != " " ]; then for p in $left; do kill -KILL "$p" 2>/dev/null; done; sleep 5; fi
+  on=" $(gpupids "${GPUS[$s]}" | tr '\n' ' ') "
+  for p in $before; do case "$on" in *" $p "*) stuck="$stuck $p";; esac; done
+  clean_done
+  log "STOP GPU${GN[$s]} ($2): pids$before; KILL needed:$([ "$left" != " " ] && echo "$left" || echo ' no'); on GPU after:${stuck:- none}"
+}
+startable() {                                 # plan jobs with no done.json and no live claim in hostB's tree
+  "$PY" - "$R" <<'P'
+import json, os, sys
+R = sys.argv[1]
+try:
+    jobs = json.load(open(os.path.join(R, 'plan.json')))['jobs']
+except Exception:
+    print(0); sys.exit()
+n = 0
+for j in jobs:
+    d = os.path.join(R, j['set'], j['shape'], j['method'], 'snr_%05.2f' % float(j['snr']))
+    if os.path.exists(os.path.join(d, 'done.json')):
+        continue
+    cl = os.path.join(d, 'claim.json')
+    if not os.path.exists(cl):
+        n += 1
+        continue
+    try:
+        n += not os.path.exists('/proc/%d' % int(json.load(open(cl))['pid']))
+    except Exception:
+        pass
+print(n)
+P
+}
+log "START supervisor pid $$, workers per GPU: $NW, mem cap $MEM, GPUs ${GN[*]}, stop $(date -d @$CUT)"
+declare -a busy=(0 0 0 0)
+it=0
+while true; do
+  for s in 0 1 2 3; do                          # (2) every 15 s
+    ours=$(ourpids "$s"); foreign=""
+    for p in $(gpupids "${GPUS[$s]}"); do case "$ours" in *" $p "*) ;; *) foreign="$foreign $p";; esac; done
+    if [ -n "$foreign" ]; then
+      [ "${busy[$s]}" = 0 ] && log "FOREIGN GPU${GN[$s]}: pid(s)$foreign"
+      busy[$s]=1
+      [ "$ours" != " " ] && stop_slot "$s" "yield to$foreign"
+    else
+      [ "${busy[$s]}" = 1 ] && log "FREE GPU${GN[$s]} again"
+      busy[$s]=0
+    fi
+  done
+  echo "${busy[*]}" > "$R/busy.txt.tmp" && mv "$R/busy.txt.tmp" "$R/busy.txt"
+  if [ "$(date +%s)" -ge "$CUT" ]; then
+    for s in 0 1 2 3; do stop_slot "$s" "stop before hostA's time cut"; done
+    log "STOP 11:50 CET (hostA's cut is 12:00): stopped our workers; exiting"
+    exit 0
+  fi
+  if [ $((it % 8)) -eq 0 ]; then                # every 120 s
+    NS=$(startable)
+    nalive=0
+    for s in 0 1 2 3; do
+      u=${GPUS[$s]}; g=${GN[$s]}
+      ourpids "$s" > /dev/null                  # drops pid files of exited workers
+      n=$(ls "$R"/pids/m${g}w*.pid 2>/dev/null | wc -l)
+      k=0
+      while [ "${busy[$s]}" = 0 ] && [ "$n" -lt "$NW" ] && [ "${NS:-0}" -gt 0 ]; do
+        while [ -e "$R/pids/m${g}w$k.pid" ]; do k=$((k+1)); done
+        ( export MIMO_GPU_UUID=$u; source "$M/env_hostB2_a519.sh" >/dev/null && \
+          exec setpriv --pdeathsig TERM nice -n 10 python "$A/src/trace_a514.py" --plan "$R/plan.json" --root "$R" --worker m${g}w$k \
+            --threads 2 --mem $MEM ) >> "$L/m${g}w$k.log" 2>&1 &
+        echo $! > "$R/pids/m${g}w$k.pid"
+        log "LAUNCH GPU$g worker m${g}w$k pid $!"
+        n=$((n+1)); NS=$((NS-1)); sleep 3
+      done
+      nalive=$((nalive+n))
+    done
+    echo "$(date '+%Y-%m-%d %H:%M:%S %Z') startable=$(startable) workers=$nalive busy=${busy[*]}" > "$R/status.txt.tmp" && \
+      mv "$R/status.txt.tmp" "$R/status.txt"
+  fi
+  it=$((it+1)); sleep 15
+done

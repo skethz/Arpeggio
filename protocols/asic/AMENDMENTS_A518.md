@@ -64,3 +64,49 @@ DRC, connectivity and FINAL passed for both. Part 1 §4 says "both engines walk 
 - If P128bal is accepted, the D = 128 primary pair is 1.20 ns (Chord `ape_d128_p1200_r4`). The 1.30 ns pair is then "also reported" if both are accepted.
 - If P128bal is not accepted, the primary pair is 1.30 ns when P130bal and C130 are both accepted.
 - Otherwise both engines walk on in 50 ps steps (balanced build, new Chord run each step) until the stop rule (15 Nov 12:00 CET).
+
+## A4 (13 Nov 2026, 08:15 CET): walk-on stopped by the user before the stop rule; no D = 128 pair
+**Finding.** The A3 walk-on ran 1.30–1.70 ns (nine clocks; RUNLOG.txt on hostB, RUNLOG_hostc.txt on hostC):
+- Arpeggio (balanced build) accepted at 1.30, 1.35 and 1.55 ns; not at 1.40, 1.45, 1.50, 1.60, 1.65, 1.70.
+- Chord (`v14_d128_p1000`, new run per step) accepted at none of the nine.
+- No clock has both accepted, so D = 128 has no primary pair.
+- Misses: single-path setup slacks of −0.7 to −21 ps and pin-area DRC (SPACING/SHORT on layer IA between `in_data` nets at the left pin strip), which hit every Arpeggio run at 1.60 ns and above.
+- The 1.75/1.80/1.85 ns runs (launched 07:18 CET) were stopped after about one hour, before any result. Their directories are kept and not judged.
+
+**User decision (13 Nov 2026, 08:1x CET):** "<instruction>" (stop now and apply part 2 §7), chosen over walking on to the 15 Nov 12:00 stop rule.
+
+**Use.**
+- Table IV gets the D = 32 and D = 64 Arpeggio results only (part 2 §7, third bullet). Arpeggio D = 128 has accepted layouts at its own clocks, but none pairs with Chord.
+- Part 1 §4 "also reported" stays as data: Arpeggio D = 128 at its shortest accepted period 1.30 ns (`fa_d128bal_a2_p1300`), Chord at 1.20 ns (`ape_d128_p1200_r4`); P128a/b as they are.
+- No D = 128 sign-off (part 1 §5) or power (part 2 W3 Q3/Q4/Q7) is run.
+- main.tex does not depend on a D = 128 pair: its routed equal-clock comparison is the D = 32/64 1.00 ns pairs (V-B), so nothing in the text changes.
+
+## A5 (13 Nov 2026, about 08:23 CET; frozen before the closure run started at 08:25)
+**Finding.** P128bal (`pnr/fa_d128bal_a2_p1200`, Arpeggio balanced build at 1.20 ns) missed acceptance by a single I/O path: TT setup default-group WNS −2 ps (1 path); reg2reg +6 ps, reg2cgate +7 ps; hold 0 ps; DRC 0; connectivity 0; FINAL. Chord's D = 128 layout of Table IV (`ape_d128_p1200_r4`) is accepted at 1.20 ns. Part 1 used one closure pass for exactly this case at D = 32 (C1, Chord) and D = 64 (C2, Arpeggio): "the same single closure pass to each engine's only near miss under 10 ps"; A3 excluded it for the walk-on only. A4 left D = 128 without a pair.
+
+**User decision (13 Nov 2026):** "<instruction>", after being shown this option, the 1.30 ns own-clock reading and the 1.30 ns Chord closure fallback.
+
+**Run.**
+- **P128bal_cl:** one closure pass, `flow_v2_20261024/run_closure.sh` (closure_pass 04c5a777…, as C1/C2), on `pnr/fa_d128bal_a2_p1200/db/final.enc.dat`, top `ape_engine_D128_A4_SEEDL4`, output `closure/fa_d128bal_a2_p1200_cl`, 8 hostB CPUs, guard 21600 s. Acceptance as part 1 §3. No second pass.
+- Started alongside, since they do not depend on the closure result: the x64fa_a2 TCF (part 2 W2: Genus on S128bal's `opt.db`, SAIF `act/x64fa_a2/p2/act_x64fa_a2.saif`, as `chain_x64rsb.sh`), and the RTL → fv_map → synthesis LEC of S128bal (A5.11 `lec_run.sh` step 2, RTL = `ape/rtl_a2` copy).
+
+**Use.**
+- If P128bal_cl is accepted, the D = 128 primary pair is **1.20 ns**: Arpeggio P128bal "with one closure pass" and Chord `ape_d128_p1200_r4`. Part 2 then applies as frozen: W3 Q3 (x64fa_a2 TCF rescaled to 1200 ps on P128bal_cl), Q4 = the existing Chord x64ap 206.38892 mW; W4 sign-off for P128bal_cl (LEC syn → routed after the RTL side, SS setup by `sta_ss_v3.tcl` with accept 1200, area); Q7 on the other accepted Arpeggio D = 128 layouts (P130bal, P135bal, P155bal) as "also reported"; §4 formulas with x̂_64 = x_F 0.558199 × c_64 (W1, RUNLOG 04:29Z); §5 decision terms.
+- If it is not accepted, D = 128 stays without a pair (A4). The next options (one closure pass on C130, −6 ps at 1.30 ns; or each engine at its own shortest clock) are the user's call.
+- Paper text changes stay the user's call (part 2 §7, previews only).
+
+**A5 fail branch (user, 13 Nov 2026, about 08:28 CET, before the closure result): "<instruction>"** (if not accepted, run both). If P128bal_cl is not accepted, both of the following run without a further ask:
+- **C130_cl:** one closure pass (`run_closure.sh`, as C1/C2) on `pnr/ape_d128_p1300` (Chord at 1.30 ns, reg2reg −6 ps on one path, DRC 0) on hostC, output `closure/ape_d128_p1300_cl`. If accepted, the D = 128 primary pair is **1.30 ns**: Arpeggio P130bal (no closure pass) and Chord C130 "with one closure pass". Part 2 then applies at 1.30 ns: Q3 on P130bal (x64fa_a2, 1300 ps), Q4 on C130_cl (x64ap, 1300 ps), W4 for both, Q7 on P135bal and P155bal.
+- **Own clocks (part 1 §4 "also reported"):** Arpeggio P130bal at 1.30 ns vs Chord `ape_d128_p1200_r4` at 1.20 ns: Q3 power on P130bal (x64fa_a2, 1300 ps), Chord's existing x64ap 206.38892 mW; W4 for P130bal; ratios ρ_t = x̂ · 1300/1200 and ρ_E = x̂ · (P_A · 1300)/(P_Ch · 1200), labelled "each at its own shortest accepted clock".
+- If C130_cl is accepted, the 1.30 ns pair is primary and the own-clock reading is also reported; if not, the own-clock reading is reported alone and D = 128 has no pair.
+
+## A6 (13 Nov 2026, about 12:33 CET; run procedure only, after the A5 power and ratio results were known)
+**Finding.** The RTL → fv_map → synthesis LEC of S128bal (`part2/lec/P128bal_cl/rtl_syn`) was killed by its own 14,400 s guard at 12:27 CET. Its fv_map → synthesis half had finished: 46,778 / 46,778 Equivalent, 0 NEQ, 0 abort, 0 unknown. The RTL → fv_map half was still in `compare` after 7,786 s of datapath analysis, with no NEQ or abort reported. Chord's D = 128 RTL → fv_map took 3 h 43 min in gate_r4. The 14,400 s limit was my own choice when I wrote `lec_rtl_syn_a518.sh`, not a protocol value.
+
+**Change.** Rerun as `rtl_syn_r2` by `lec_rtl_syn_a518_r2.sh`, identical except for two things: the guard is 43,200 s, and output goes to its own directory. Same Genus/LEC dofiles, same inputs (`INPUTS_rtl_syn_r2.sha256`), hostB CPUs 17, 18, 20, 22. This follows the standing rule: failed runs are analysed and rerun (user, 12 Nov).
+- A first launch at 12:32 wrote for about 20 s into the first run's `rtl_syn/`, because one path edit had not applied. I stopped it.
+  - Overwritten or added: `genus/stdout.log`, `genus.log1`/`genus.cmd1`, and a regenerated `libs_private.do` from the same source.
+  - A stray nested copy `fv/fv`, identical to the synthesis `fv`, was removed.
+  - The first run's `lec.log`, `lec.do`, `lec_genus.do` and `genus/genus.log` are untouched.
+
+**Use.** W4 for the D = 128 Arpeggio entry is complete when `rtl_syn_r2` reports all compare points Equivalent. Until then, the D = 128 row says "RTL → fv_map pending". A non-equivalent or aborted point is reported as it is.
