@@ -11,5 +11,4 @@ A5.12 analysis 2026-11-07 16:36:34 CET
   P3 c=5: inf [inf, inf] pt_worse  McNemar p 9.8e-91 (300/0)  uses 8000  aligned True (0)
   P3 c=3: 57.375 [31.615, 156.000] pt_worse  McNemar p 1e-28 (94/0)  uses 40000  aligned True (8)
   P3 c=2: 5.477 [3.144, 12.273] pt_worse  McNemar p 5.9e-11 (43/2)  uses 156250  aligned True (28)
-  section 4: row 1: parallel trial worse at P1-P3 even at c = 5
-  predictions: {"P1 c=5 ratio in 0.95-1.2": false, "P1 c=3 ratio in 0.7-1": true, "P1 c=2 ratio in 0.6-0.95": false, "P2 c=5 ratio in 2-5": true, "P2 c=3 ratio in 1.2-2": false, "P2 c=2 ratio in 0.9-1.6": true, "P3 c=5 ratio in 300-1000": false, "P3 c=3 ratio in 30-300": true, "P3 c=2 ratio in 5-100": true}
+  result: parallel trial worse at P1-P3 even at c = 5

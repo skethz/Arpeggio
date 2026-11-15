@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Starts the hostA workers: 2 GPU workers on GPU7 (untimed error counting; stopped before any timing window) and 1 CPU
+# Starts the hostA workers: 2 GPU workers on GPU7 (untimed error counting) and 1 CPU
 # worker for K-best / sphere decoder (numba, 32 threads). Idempotent. Usage: launch_hosta.sh
-A=<SCRATCH>/ap_ber_20261024
-source $A/env_ap.sh
+A=<SCRATCH>/arpeggio_ber_20261024
+source $A/env_chord.sh
 for name in z7a z7b; do
   if pgrep -f "runner.py .*--worker $name( |$)" > /dev/null; then echo "$name already running"; continue; fi
   NUMBA_NUM_THREADS=4 nohup python -u src/runner.py --plan $A/results/plan_hosta.json --root $A/results --worker $name \

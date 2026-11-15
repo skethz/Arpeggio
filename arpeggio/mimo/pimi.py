@@ -1,5 +1,5 @@
 """PIMI, Princeton/Cornell's probabilistic Ising machine with inertia (Zhu et al., arXiv:2604.17109v2), for MIMO detection,
-reproduced from the authors' published code (Zenodo 10.5281/zenodo.18215709, record 18318271; milestone D, LEDGER):
+reproduced from the authors' published code (Zenodo 10.5281/zenodo.18215709, record 18318271):
 - instances (src/def_MIMO.py create_instance): DI-MIMO around the hard (biased) MMSE estimate, D = {-2, 0, 2}, T = [I, I],
   J = -[[G, G], [G, G]] with zero main diagonal (G = H^T H, real lift), h = [h', h'] with h' = 2 H^T (y - H x_mmse),
   scale = max(|J|max, |h|max), J / scale and h / (2 scale); noise per instance from the empirical received power,
@@ -12,7 +12,7 @@ reproduced from the authors' published code (Zenodo 10.5281/zenodo.18215709, rec
 - schedule: eta_t = sqrt(1 / (5 gamma_t)), gamma_t = linspace(g0, g1, steps), constant beta, two parameter sets in their
   code: A (16-QAM run notebooks, 8x8 and 16x16) beta 2, gamma 0.1 -> 0.999; B (gen_noise.py, the FPGA noise table)
   beta 1, gamma 0.01 -> 0.999. On their own instances A reproduces their published BER for 16-QAM (both sizes) and
-  8x8 64-QAM, B for 4-QAM (both sizes) and 16x16 64-QAM (diag_pimi_sched.py; LEDGER); sched_for() applies that;
+  8x8 64-QAM, B for 4-QAM (both sizes) and 16x16 64-QAM (diag_pimi_sched.py); sched_for() applies that;
   32 trials from uniform random spins; fresh N(0, 1) per instance, step, spin and trial;
 - output (run notebook): per instance the final state of the trial whose final energy E = -1/2 s^T J s - h^T s (quantised
   J, h) is lowest (first minimum); x = x_mmse + T s, sliced to the nearest constellation point.
@@ -20,7 +20,7 @@ Everything below works in integer units of 2^-12 (exact: all values are multiple
 
 Three solvers share that arithmetic and differ only in where the random numbers come from:
 - pimi_torch: PyTorch generators (torch.randn, torch.randint) — the same-framework implementation, timed;
-- pimi_fx: Philox4x32-10 (counter (n // 4, spin, trial, instance), output n mod 4, as anefx) indexing a 2^16-entry
+- pimi_fx: Philox4x32-10 (counter (n // 4, spin, trial, instance), output n mod 4, as chordfx) indexing a 2^16-entry
   inverse-CDF table of q(N(0, 1)) — the definition that the CUDA kernel (pimi_kernel.cu) reproduces bit for bit;
 - pimi_inject: noise and start states given explicitly — used to check bit-identity against the authors' own code."""
 import math
@@ -28,7 +28,7 @@ import math
 import numpy as np
 import torch
 
-import anefx
+import chordfx
 import mimo
 
 FRAC = 12
@@ -241,11 +241,11 @@ def gauss_table(device='cpu'):
 
 
 def philox_words(n, B, R, N, seed, inst0, dev):
-    k0, k1 = seed & anefx.MASK, (seed >> 32) & anefx.MASK
+    k0, k1 = seed & chordfx.MASK, (seed >> 32) & chordfx.MASK
     i = torch.arange(N, device=dev, dtype=torch.int64)[None, None, :]
     r = torch.arange(R, device=dev, dtype=torch.int64)[None, :, None]
     m = (inst0 + torch.arange(B, device=dev, dtype=torch.int64))[:, None, None]
-    return anefx.philox(torch.full_like(i, n), i, r, m, k0, k1)
+    return chordfx.philox(torch.full_like(i, n), i, r, m, k0, k1)
 
 
 def pimi_fx(P, steps, trials, seed, inst0=0, beta=BETA, gamma=GAMMA):
@@ -254,7 +254,7 @@ def pimi_fx(P, steps, trials, seed, inst0=0, beta=BETA, gamma=GAMMA):
     B, N = P['hq'].shape
     dev = P['hq'].device
     tab = gauss_table(dev).to(torch.int64)
-    x0 = philox_words(anefx.MASK, B, trials, N, seed, inst0, dev)[0]
+    x0 = philox_words(chordfx.MASK, B, trials, N, seed, inst0, dev)[0]
     s0 = torch.where(x0 >= 2 ** 31, 1, -1).to(torch.int64)
     cache = {}
 
@@ -291,7 +291,7 @@ def detect_torch(b, steps, trials=TRIALS, gen=None, z=None, sched=None):
 
 
 # ---------------------------------------------------------------- CUDA kernel launcher
-class PimiKernel(anefx.Kernel):
+class PimiKernel(chordfx.Kernel):
     MPLS = (1, 2, 3, 4, 6, 8)                                             # N / 32
     MAXW = {1: 32, 2: 32, 3: 8, 4: 8, 6: 8, 8: 8}                       # warps per block (__launch_bounds__)
 
@@ -321,8 +321,8 @@ class PimiKernel(anefx.Kernel):
             out_s = torch.empty(B, trials, N, dtype=torch.int8, device='cuda')
             out_e = torch.empty(B, trials, dtype=torch.int32, device='cuda')
         self.launch('pimi_m%d' % mpl, B, 32 * W, smem,
-                    [J16, h32, eta_t, self.tab, beta_int, steps, trials, N, ('u32', seed & anefx.MASK),
-                     ('u32', (seed >> 32) & anefx.MASK), inst0, 1 if mode == 'best' else 0, out_s, out_e])
+                    [J16, h32, eta_t, self.tab, beta_int, steps, trials, N, ('u32', seed & chordfx.MASK),
+                     ('u32', (seed >> 32) & chordfx.MASK), inst0, 1 if mode == 'best' else 0, out_s, out_e])
         return out_s, out_e
 
 

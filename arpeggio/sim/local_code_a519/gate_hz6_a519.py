@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""A5.19 host gate HZ6 (ADDENDUM_A519_HOSTB.md section 4). hostB GPU2 reruns hostA's S* calibration batch for S = 280 (P4, seed 1000,
-batch index 50, 500 uses, `abl_far_280_0.1_0.1_0_bal_8`), the high-S Arpeggio path that A* uses and that HZ1-HZ5 did not cover.
+"""A5.19 host check HZ6. hostB GPU2 reruns hostA's S* calibration batch for S = 280 (P4, seed 1000,
+batch index 50, 500 uses, `abl_far_280_0.1_0.1_0_bal_8`), the high-S Arpeggio path that A* uses and that the five batches of gate_hz_a519.py did not cover.
 The job carries no 'saved' key (no bit-for-bit assertion); this script compares per-use bit errors and counters with hostA's file.
-Pass: at most 0.5% of uses differ (the G4 bound, as HZ1-HZ5).
+Pass: at most 0.5% of uses differ (as in gate_hz_a519.py).
 Usage: gate_hz6_a519.py plan ROOT | compare ROOT REF.npz OUT.json"""
 import json
 import os

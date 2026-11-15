@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validation of the PIMI reproduction against the authors' Fig. 6 (milestone D), two ways, one JSON line per point:
+"""Validation of the PIMI reproduction against the authors' Fig. 6, two ways, one JSON line per point:
 - source 'their_instances': our PIMI (pimi.pimi_torch, PyTorch generators) on the authors' own 10,000 DI-MIMO instances
   per Eb/N0 (Zenodo archives, cached by pimi_zen.py), with their MMSE estimates and true symbols; their report.json
   BER on the same instances is the reference (only the solver's random numbers differ);

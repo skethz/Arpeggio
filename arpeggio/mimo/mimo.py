@@ -1,4 +1,4 @@
-"""Uplink MU-MIMO detection with Ising solvers (DESIGN.md). Batched on one GPU with PyTorch.
+"""Uplink MU-MIMO detection with Ising solvers. Batched on one GPU with PyTorch.
 
 System: y = H x + n, H (Nr x Nt) complex, i.i.d. CN(0, 1) entries (or receive-correlated, exponential rho), x drawn
 from unit-energy Gray QAM (QPSK, 16-QAM), n ~ CN(0, N0 I). SNR = Nt * Es / N0 (received SNR per antenna, Es = 1).
@@ -202,7 +202,7 @@ def geom(t0, t1, S, device):
 
 
 @torch.no_grad()
-def anechoic(I, R, S, t0, t1, q, kappa=0.0, lam=0.0, ramp=True, gen=None, track='best', warm=False, phases=1):
+def chord(I, R, S, t0, t1, q, kappa=0.0, lam=0.0, ramp=True, gen=None, track='best', warm=False, phases=1):
     """Onsager-corrected SCA (fpga27 Algorithm 1 / Eq. 3-4), batched over instances and R anneals per instance.
     Field u = h + 2 J s (the energy change of flipping i is 2 s_i u_i). Decision z = s (u - c s') + q with
     c = kappa T_{t-1} rho_t (Onsager-kT) or lam rho_t n_lin(t-1) / (2 T_{t-1}) (Onsager-online); flip if z < r,
@@ -256,7 +256,7 @@ def cim(I, R, steps=128, dt=0.01, C=math.sqrt(10), As=10.0, gen=None, track='bes
     dq = (-1 - p - c^2 - q^2) q dt + (1/As) sqrt(c^2 + q^2 + 1/2) dW2, p_k = 2 tanh(2 k / N) at step k,
     Euler-Maruyama with dt = 0.01, 128 steps, C = sqrt(10); the field enters through an auxiliary spin (Jt_ia = h_i / 2),
     spins s = sign(c_i) sign(c_a), one measurement per step (Nm = 128). As and the start c = q = 0 are not published
-    (ledger rulings). pump='step': p_k = 2 tanh(2 k / N) with k the step index (p sweeps 0 -> 2 as the paper says);
+    pump='step': p_k = 2 tanh(2 k / N) with k the step index (p sweeps 0 -> 2 as the paper says);
     pump='time': p = 2 tanh(2 t / N) with t = k dt the normalised time."""
     h, J = I['h'], I['J']
     B, N = h.shape
@@ -293,7 +293,7 @@ def ahc(I, R, steps=512, dt=0.005, p=0.98, a=2.0, beta=1.0, eps_max=1000.0, x0_v
     """CIM with amplitude-heterogeneity correction (Singh et al., IEEE TWC 2024, arXiv:2304.12830 Eqs. 9-10, after
     Leleu et al.): dx_i/dt = (p - 1) x_i - x_i^3 + eps e_i sum_j Jt_ij x_j, de_i/dt = -beta (x_i^2 - a) e_i,
     eps = gamma t ramped from 0 to 1000 (gamma = 1000 / (512 dt)), p = 0.98, a = 2, beta = 1, RK4 with 512 steps of
-    dt = 0.005, x ~ N(0, 0.001) and e ~ |N(0, 0.001)| (variance 0.001; ledger), field via the auxiliary spin,
+    dt = 0.005, x ~ N(0, 0.001) and e ~ |N(0, 0.001)| (variance 0.001), field via the auxiliary spin,
     spins s = sign(x_i) sign(x_a), every integration step's state a candidate (best by energy kept per anneal)."""
     h, J = I['h'], I['J']
     B, N = h.shape
@@ -329,8 +329,8 @@ def ahc(I, R, steps=512, dt=0.005, p=0.98, a=2.0, beta=1.0, eps_max=1000.0, x0_v
 
 
 @torch.no_grad()
-def anechoic_soft(I, b, R, S, tpost_mult, q, t_hot=None, hot_frac=0.0, gen=None, t_abs=None, reg=False, warm=False):
-    """Anechoic's SCA rule used as a sampler of the detection posterior p(x | y) ~ exp(-||y - Hx||^2 / N0).
+def chord_soft(I, b, R, S, tpost_mult, q, t_hot=None, hot_frac=0.0, gen=None, t_abs=None, reg=False, warm=False):
+    """Chord's SCA rule used as a sampler of the detection posterior p(x | y) ~ exp(-||y - Hx||^2 / N0).
     SCA at temperature T approximates Glauber dynamics at 2T in units of the flip energy 2 s u, so the posterior
     temperature is T_post = N0 / (2 scale) per instance (scale: the Ising coefficient scale); the field is the
     unregularised h0 (the posterior has no MMSE penalty). The chain runs at
@@ -462,7 +462,7 @@ def list_llr(b, allc, d, best, clip=50.0):
     return ((m0 - m1) / N0).clamp(-clip, clip)
 
 
-# ---------------------------------------------------------------- milestone B: MMSE-SIC and MDI-MIMO
+# ---------------------------------------------------------------- MMSE-SIC and MDI-MIMO
 @torch.no_grad()
 def mmse_sic(b, per='real'):
     """Ordered MMSE-SIC (Liu, IEEE TWC 2009, "optimal ordering": at each stage detect the stream with the smallest

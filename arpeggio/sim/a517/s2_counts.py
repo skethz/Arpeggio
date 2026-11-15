@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""A5.17 S2 (PROTOCOL_A517.md section 5): per-round commit counters for Chord's three kernels, on the exact calibration runs
-that define the printed reference costs. Counter-only source patches; gates G1-G3 run first and abort on any failure.
-Usage: s2_counts.py OUT.json   (run from <SCRATCH>/ap_ber_20261024/a517 with ../src on sys.path)"""
+"""A5.17 S2: per-round commit counters for Chord's three kernels, on the exact calibration runs
+that define the printed reference costs. Counter-only source patches; checks G1-G3 run first and abort on any failure.
+Usage: s2_counts.py OUT.json   (run from <SCRATCH>/arpeggio_ber_20261024/a517 with ../src on sys.path)"""
 import glob, inspect, json, os, sys, textwrap, time
-SRC = '<SCRATCH>/ap_ber_20261024/src'
+SRC = '<SCRATCH>/arpeggio_ber_20261024/src'
 sys.path.insert(0, SRC)
 import numpy as np, torch  # noqa: E402
-import apx, apx55, a56lib, runner_a55  # noqa: E402,F401
+import arpx, arpx55, a56lib, runner_a55  # noqa: E402,F401
 import mdi_solvers  # noqa: E402
 _c = mdi_solvers.MDI[('64x64', 16)]                                       # x64 registration exactly as trace_x64.py (A5.8)
-apx.SHAPES.setdefault('x64', dict(nt=64, M=16, mdi=dict(Rmax=int(_c['Rmax']), S=int(_c['S']), guesses=tuple(_c['guesses'])), Ns_pub=None))
+arpx.SHAPES.setdefault('x64', dict(nt=64, M=16, mdi=dict(Rmax=int(_c['Rmax']), S=int(_c['S']), guesses=tuple(_c['guesses'])), Ns_pub=None))
 OUT = sys.argv[1]
 if os.path.exists(OUT):
     sys.exit('refusing: exists')
 torch.set_num_threads(1)
-RES = '<SCRATCH>/ap_ber_20261024/results'
+RES = '<SCRATCH>/arpeggio_ber_20261024/results'
 KEYS = ('c1', 'c2', 'c4', 'cinf', 'rounds', 'h0', 'h1', 'h2', 'h3', 'h4p')
 
 
@@ -40,15 +40,14 @@ def patched(mod, fname, anchor, new):
 
 
 A_CL = '        ds = torch.where(z < rr, -2 * ss, torch.zeros_like(ss))\n'
-P_CL = patched(apx, 'anechoic_classes', A_CL, A_CL + "        _a517_round((ds != 0).sum(-1), count, count.get('_K') if count is not None else None)\n")
+P_CL = patched(arpx, 'chord_classes', A_CL, A_CL + "        _a517_round((ds != 0).sum(-1), count, count.get('_K') if count is not None else None)\n")
 A_AK = '        flip = (z < rr) & (idx == (k % P))\n'
-P_AK = patched(apx55, 'ape_k', A_AK, A_AK + '        _a517_round(flip.sum(-1), count, P // 2)\n')
+P_AK = patched(arpx55, 'chord_k', A_AK, A_AK + '        _a517_round(flip.sum(-1), count, P // 2)\n')
 A_56 = '        sprev = s\n        s = torch.where(flip, -s, s)\n'
-P_56 = patched(a56lib, 'ape', A_56, '        _a517_round(flip.sum(-1), cnt, None)\n' + A_56)
-ORIG = dict(cl=apx.anechoic_classes, ak=apx55.ape_k, a56=a56lib.ape)
+P_56 = patched(a56lib, 'chord', A_56, '        _a517_round(flip.sum(-1), cnt, None)\n' + A_56)
+ORIG = dict(cl=arpx.chord_classes, ak=arpx55.chord_k, a56=a56lib.chord)
 import hashlib  # noqa: E402
-log = dict(protocol_sha256=hashlib.sha256(open('<SCRATCH>/ap_ber_20261024/a517/PROTOCOL_A517.md', 'rb').read()).hexdigest(),
-           script_sha256=hashlib.sha256(open(os.path.abspath(__file__), 'rb').read()).hexdigest(), gates={}, runs={})
+log = dict(script_sha256=hashlib.sha256(open(os.path.abspath(__file__), 'rb').read()).hexdigest(), gates={}, runs={})
 
 
 def save():
@@ -66,17 +65,17 @@ def inst(B, N, dev='cuda', seed=5):
     return dict(h=torch.randn(B, N, generator=g, device=dev), J=J, h0=torch.randn(B, N, generator=g, device=dev))
 
 
-def same(fa, fb, args_a, args_b):
+def same(arpeggio, fb, args_a, args_b):
     ga = torch.Generator(device='cuda'); ga.manual_seed(77)
     gb = torch.Generator(device='cuda'); gb.manual_seed(77)
-    a = fa(*args_a(ga)); b = fb(*args_b(gb))
+    a = arpeggio(*args_a(ga)); b = fb(*args_b(gb))
     return bool(torch.equal(a, b)) and bool(torch.equal(ga.get_state(), gb.get_state()))
 
 
 g1 = {}
 for P in (2, 4, 6):
     I = inst(3, 16 * P)
-    cl = apx.colour_classes(16 * P, P, 'copy', 1, 'cuda')
+    cl = arpx.colour_classes(16 * P, P, 'copy', 1, 'cuda')
     c0, c1 = {'_K': P // 2}, {'_K': P // 2}
     g1['cl_P%d' % P] = same(ORIG['cl'], P_CL, lambda g: (I, 4, 0.3, 0.4, cl, 8, g, c0), lambda g: (I, 4, 0.3, 0.4, cl, 8, g, c1)) and \
         c0[P // 2]['flips'] == c1['_a517'][str(P // 2)]['c1']
@@ -91,7 +90,7 @@ save()
 print('G1/G3', g1, flush=True)
 if not all(g1.values()):
     sys.exit('GATE G1/G3 FAILED')
-apx.anechoic_classes, apx55.ape_k, a56lib.ape = P_CL, P_AK, P_56
+arpx.chord_classes, arpx55.chord_k, a56lib.chord = P_CL, P_AK, P_56
 
 
 def per_k(cnt_flat):
@@ -108,14 +107,14 @@ def per_k(cnt_flat):
 ref = json.load(open(RES + '/a5_flip_phi.json'))['raw']
 for shape, snr, Ns, B, nb in (('x16', 20.0, 32, 2000, 1), ('x32', 22.0, 8, 1000, 1), ('q32', 14.0, 8, 4000, 1)):
     t0 = time.time()
-    s = apx.SHAPES[shape]
+    s = arpx.SHAPES[shape]
     cnt = {}
     for bi in range(nb):
-        b = apx.draw(1000, snr, 50 + bi, B, s['nt'], s['M'])
+        b = arpx.draw(1000, snr, 50 + bi, B, s['nt'], s['M'])
         gs = torch.Generator(device='cuda'); gs.manual_seed(1000 + bi)
-        solver = lambda I, na, K: apx.anechoic_colour(I, na, 0.3, 0.4, 2 * K, 1, gen=gs, count=cnt)  # noqa: E731
+        solver = lambda I, na, K: arpx.chord_colour(I, na, 0.3, 0.4, 2 * K, 1, gen=gs, count=cnt)  # noqa: E731
         c = s['mdi']
-        apx.mdi_diag(b, solver, Ns, c['Rmax'], c['S'], guesses=c['guesses'])
+        arpx.mdi_diag(b, solver, Ns, c['Rmax'], c['S'], guesses=c['guesses'])
     flat = {}
     for K, v in cnt.items():
         if K in ('_K', '_a517'):
@@ -132,14 +131,14 @@ for shape, snr, Ns, B, nb in (('x16', 20.0, 32, 2000, 1), ('x32', 22.0, 8, 1000,
         sys.exit('GATE G2 FAILED ' + shape)
 
 # ---- R2: re-tuned C1 calibration (calib_flips_a55.py, P2 entry) -> G2 vs a55/flips.json ----
-m = 'abl_ape_0.2_0.2_0.2_rand_8'
-fl = json.load(open('<SCRATCH>/ap_ber_20261024/results/a55/flips.json'))[m]
-ctx = apx.Ctx(json.load(open(RES + '/tuned_a52.json')))
-s = apx.SHAPES['x32']
-b = apx.draw(1000, 22.0, 50, 500, s['nt'], s['M'])
+m = 'abl_chord_0.2_0.2_0.2_rand_8'
+fl = json.load(open('<SCRATCH>/arpeggio_ber_20261024/results/a55/flips.json'))[m]
+ctx = arpx.Ctx(json.load(open(RES + '/tuned_a52.json')))
+s = arpx.SHAPES['x32']
+b = arpx.draw(1000, 22.0, 50, 500, s['nt'], s['M'])
 gs = torch.Generator(device='cuda'); gs.manual_seed(1000)
-z, _, _ = apx.mimo.mmse(b)
-_, _, info = apx.detect(m, b, 'x32', gs, ctx, z=z)
+z, _, _ = arpx.mimo.mmse(b)
+_, _, info = arpx.detect(m, b, 'x32', gs, ctx, z=z)
 cntc = info['count']
 a5 = cntc.get('_a517', {})
 flat = {str(K): dict(v, _a517=a5[str(K)]) for K, v in cntc.items() if K != '_a517'}
@@ -153,20 +152,20 @@ if not g2:
     sys.exit('GATE G2 FAILED C1')
 
 # ---- R3: A5.8 tunea REF (x64, seed 1000, batches 0-7 of 500) -> G2 vs the stored batch counters ----
-REFM, STREAM = 'a56_128_0.3_0.3_0.4_0_alt_8', 'mdiane8'
+REFM, STREAM = 'a56_128_0.3_0.3_0.4_0_alt_8', 'mdichord8'
 D = RES + '/a58/tunea/x64/' + REFM + '/snr_22.00'
 tot, g2 = {}, True
-s = apx.SHAPES['x64']
+s = arpx.SHAPES['x64']
 c = s['mdi']
 for f in sorted(glob.glob(D + '/b*.npz')):
     st = json.loads(str(np.load(f, allow_pickle=False)['info']))
     bi, mm = int(st['bi']), int(st['m'])
-    b = apx.draw(1000, 22.0, bi, 500, s['nt'], s['M'])
+    b = arpx.draw(1000, 22.0, bi, 500, s['nt'], s['M'])
     if mm < 500:
         for k in ('H', 'y', 'l'):
             b[k] = b[k][:mm].contiguous()
-    gs = torch.Generator(device='cuda'); gs.manual_seed(apx.draw_seed(1000, 22.0, bi) + 7919 + a56lib.mhash(STREAM))
-    z, _, _ = apx.mimo.mmse(b)
+    gs = torch.Generator(device='cuda'); gs.manual_seed(arpx.draw_seed(1000, 22.0, bi) + 7919 + a56lib.mhash(STREAM))
+    z, _, _ = arpx.mimo.mmse(b)
     cnt = {}
     solver, tl, Ns = a56lib.solver_for(REFM, 'x64', gs, ctx, cnt)
     a56lib.mdi_trace(b, solver, Ns, int(st['Rmax']), c['S'], guesses=c['guesses'], z_mmse=z, to_levels=tl)

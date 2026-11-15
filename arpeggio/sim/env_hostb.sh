@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# ap_ber_20261024 on hostB: UNTIMED error counting only (no timing/energy from a 5090 is ever reported).
+# arpeggio_ber_20261024 on hostB: UNTIMED error counting only.
 # Allowed GPUs: GPU0 <GPU_UUID>, GPU1 <GPU_UUID>,
-# GPU2 <GPU_UUID>. GPU3 belongs to another project: never used. Caller sets MIMO_GPU_UUID.
-A=<SCRATCH>/ap_ber_20261024
+# GPU2 <GPU_UUID>. Caller sets MIMO_GPU_UUID.
+A=<SCRATCH>/arpeggio_ber_20261024
 case "$MIMO_GPU_UUID" in
   <GPU_UUID>|<GPU_UUID>|<GPU_UUID>) ;;
   *) echo "refusing: MIMO_GPU_UUID=$MIMO_GPU_UUID is not an allowed hostB GPU" >&2; return 1 2>/dev/null || exit 1 ;;
@@ -14,7 +14,7 @@ export TORCH_HOME="$A/cache/torch" NUMBA_CACHE_DIR="$A/cache/numba" PYTHONPYCACH
 export TMPDIR="$A/tmp" TMP="$A/tmp" TEMP="$A/tmp" HISTFILE=/dev/null PYTHONDONTWRITEBYTECODE=1
 export OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 NUMBA_NUM_THREADS=2
 export PYTHONPATH="$A/src:$A/code_mimo/src"
-export ANE_CUBIN=$A/build/ane_v2_sm120.cubin AHC_CUBIN=$A/build/ahc_v1_sm120.cubin PIMI_CUBIN=$A/build/pimi_v1_sm120.cubin
+export CHORD_CUBIN=$A/build/chord_v2_sm120.cubin AHC_CUBIN=$A/build/ahc_v1_sm120.cubin PIMI_CUBIN=$A/build/pimi_v1_sm120.cubin
 mkdir -p "$A"/cache/{xdg,config,state,data,pip,mpl,nv,triton,torch,numba,python} "$A"/{tmp,logs,results,build}
 source "$A/venv/bin/activate"
 cd "$A"

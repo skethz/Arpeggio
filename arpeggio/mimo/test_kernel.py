@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Tests of the custom Anechoic kernel against the PyTorch reference (DESIGN.md B3). Usage: test_kernel.py CUBIN.
+"""Tests of the custom Chord kernel against the PyTorch reference. Usage: test_kernel.py CUBIN.
 1. Philox4x32-10 on the host (PyTorch) equals Random123's known-answer vectors.
 2. The device Philox equals them too.
-3. Kernel == anechoic_fx bit for bit (per-anneal best spins and energies; and mode 'best') on problems from the real
+3. Kernel == chord_fx bit for bit (per-anneal best spins and energies; and mode 'best') on problems from the real
    MIMO mappings: 16x16 QPSK RI (32 spins), 16x16 16-QAM dDI K=1 (64, 2 phases), 32x32 16-QAM dDI K=1 with
    kappa 0.3 (128), 16x16 16-QAM dDI K=3 (192, 6 phases), 64x64 16-QAM dDI K=1 (256), 40 anneals (more than the
    warps), a non-zero instance offset and a 64-bit seed.
@@ -11,7 +11,7 @@ import sys
 
 import torch
 
-import anefx
+import chordfx
 import mimo
 
 torch.backends.cuda.matmul.allow_tf32 = False
@@ -26,16 +26,16 @@ def check(name, cond, msg=''):
 
 # 1
 host = []
-for ctr, key, want in anefx.KAT:
+for ctr, key, want in chordfx.KAT:
     t = [torch.tensor([v], dtype=torch.int64) for v in ctr]
-    got = tuple(int(x) for x in anefx.philox(*t, key[0], key[1]))
+    got = tuple(int(x) for x in chordfx.philox(*t, key[0], key[1]))
     host.append(got == want)
 check('host Philox KAT', all(host), str(host))
 # 2
-kern = anefx.Kernel(sys.argv[1])
-words = torch.tensor([list(c) + list(k) for c, k, _ in anefx.KAT], dtype=torch.int64)
+kern = chordfx.Kernel(sys.argv[1])
+words = torch.tensor([list(c) + list(k) for c, k, _ in chordfx.KAT], dtype=torch.int64)
 dev = kern.philox_kat(words)
-want = torch.tensor([list(w) for _, _, w in anefx.KAT], dtype=torch.int64)
+want = torch.tensor([list(w) for _, _, w in chordfx.KAT], dtype=torch.int64)
 check('device Philox KAT', torch.equal(dev.cpu(), want), str(dev.cpu().tolist()))
 
 
@@ -60,17 +60,17 @@ cases = [  # name, problem args, R, S, t0, t1, q, kappa, P, seed, inst0
 ]
 for name, pa, R, S, t0, t1, q, kappa, P, seed, inst0 in cases:
     I = problem(*pa)
-    F = anefx.to_fixed(I, S, t0, t1, q, kappa)
-    rs, re = anefx.anechoic_fx(F, R, seed, P=P, inst0=inst0)
-    ks, ke = kern.anechoic(F, R, seed, P=P, inst0=inst0)
+    F = chordfx.to_fixed(I, S, t0, t1, q, kappa)
+    rs, re = chordfx.chord_fx(F, R, seed, P=P, inst0=inst0)
+    ks, ke = kern.chord(F, R, seed, P=P, inst0=inst0)
     torch.cuda.synchronize()
     same_e = torch.equal(re, ke)
     same_s = torch.equal(rs, ks)
     nd = int((rs != ks).any(-1).sum())
     check(name + ' (per anneal)', same_e and same_s, 'energies %s, states %s, %d of %d anneals differ' %
           ('equal' if same_e else 'DIFFER', 'equal' if same_s else 'DIFFER', nd, re.numel()))
-    rbs, rbe = anefx.anechoic_fx(F, R, seed, P=P, inst0=inst0, mode='best')
-    kbs, kbe = kern.anechoic(F, R, seed, P=P, inst0=inst0, mode='best')
+    rbs, rbe = chordfx.chord_fx(F, R, seed, P=P, inst0=inst0, mode='best')
+    kbs, kbe = kern.chord(F, R, seed, P=P, inst0=inst0, mode='best')
     torch.cuda.synchronize()
     check(name + ' (best)', torch.equal(rbs, kbs) and torch.equal(rbe, kbe))
 sys.exit(0 if ok else 1)

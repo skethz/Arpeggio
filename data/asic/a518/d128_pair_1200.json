@@ -1,7 +1,7 @@
 {
  "primary_pair": "1.20 ns",
  "arpeggio_row": {
-  "layout": "fa_d128bal_a2_p1200 + one closure pass (P128bal_cl)",
+  "layout": "arpeggio_d128bal_a2_p1200 + one closure pass (P128bal_cl)",
   "period_ns": 1.2,
   "x_hat": 0.7181561634963977,
   "x_F": 0.5581994345797335,
@@ -22,7 +22,7 @@
  "like_for_like": {
   "rho_t": 0.7181561634963977,
   "rho_E": 0.8451754506803657,
-  "chord_layout": "ape_d128_p1200_r4",
+  "chord_layout": "chord_d128_p1200_r4",
   "chord_power_like_mw": 206.38892348,
   "power_ratio": 1.1768686166607065,
   "term": "Arpeggio leads"
@@ -71,11 +71,5 @@
    "default": -0.067
   }
  },
- "chord_ss_clock_ns": 1.8,
- "prediction": {
-  "text": "D128: rho_E < 1 (Arpeggio leads), 0.75",
-  "held": true,
-  "c64_band": "0.85-1.15, 0.7",
-  "c64_in_band": false
- }
+ "chord_ss_clock_ns": 1.8
 }

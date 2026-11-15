@@ -1,10 +1,10 @@
 {
- "method": "Derive energy per detection, throughput and per-decision energy from the sanitized gate_r4 power summaries\n(data/raw/power_*.json) and the cycle-exact workload counts (data/raw/workload/final_workload_public.json).\nE = P x C x T (C = cycles per detection, all B detections, command replay; T = accepted clock period).",
+ "method": "Derive energy per detection, throughput and per-decision energy from the gate_r4 power summaries\n(data/raw/power_*.json) and the cycle-exact workload counts (data/raw/workload/final_workload_public.json).\nE = P x C x T (C = cycles per detection, all B detections, command replay; T = accepted clock period).",
  "rows": [
   {
    "point": "P1",
    "engine": "D32",
-   "desc": "x16 20 dB, MDI Ns 32 (G3/G4 gate point)",
+   "desc": "x16 20 dB, MDI Ns 32",
    "clock_ns": 1.15,
    "f_mhz": 869.5652173913044,
    "p_mw": 71.07243931,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.10 re-costing (PROTOCOL_A510.md section 6). Read-only on the A5.5 results. Copies of A5.5's ref_cost, jdir, done and counts
+"""A5.10 re-costing. Read-only on the A5.5 results. Copies of A5.5's ref_cost, jdir, done and counts
 (src/a55_plan.py, sha c099cf3f), not an import (importing a55_plan would rewrite plan.json).
 1. Reproduction check: under model F (tests + F) the F-R budget groups of select.json must be reproduced exactly.
 2. Model F' = S P + F per anneal; for B in (0.5, 1): top three stage-A cells -> stage B (existing tuneb runs) -> pick, by A5.5's order.
@@ -45,14 +45,14 @@ def x_model(cnt, sh, S, model):
     return float(np.mean(xs)) if xs else None
 
 
-def order(t):          # A5.5 section 5: BER, then rate of erroneous uses, then name
+def order(t):          # BER, then rate of erroneous uses, then name
     return (t['d']['ber'], t['d']['vec_err'] / t['d']['uses'], t['m'])
 
 
 sel = json.load(open(os.path.join(ROOT, 'select.json')))
 ana = json.load(open(os.path.join(ROOT, 'analysis.json')))
 flips = json.load(open(os.path.join(ROOT, 'flips.json')))
-res = dict(note='A5.10 section 6; read-only on ' + ROOT, repro={}, recost={})
+res = dict(note='A5.10 cycle re-costing of the A5.5 results', repro={}, recost={})
 repro_ok = True
 for pt, p in PT.items():
     pool = []
@@ -89,7 +89,7 @@ for pt, p in PT.items():
             e['pick'] = pick
             if pick in flips:
                 xs = [(t_S * 2 * int(K) + v['F']) / ref_cost(p['sh'], int(K)) for t_S in [int(pick.split('_')[2])] for K, v in flips[pick].items()]
-                e['x_Fp_held'] = float(np.mean(xs)); e['x_Fp_source'] = 'flips.json (A5.5 section 7)'
+                e['x_Fp_held'] = float(np.mean(xs)); e['x_Fp_source'] = 'flips.json (A5.5)'
             else:
                 e['x_Fp_held'] = [t for t in grp if t['m'] == pick][0]['xFp']; e['x_Fp_source'] = 'stage-A counters (seed 1000)'
             h = ana['points'].get(pt, {}).get('picks', {}).get(pick)

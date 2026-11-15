@@ -6,8 +6,7 @@ Method: per panel, the frame and the tick marks (x: 0..40 dB; y: 1e-1, 1e-2, 1e-
 plotted Eb/N0 a hollow '^' template of the plotted marker size (their analysis notebooks: ms 4 pt for the hardware
 curve, 3 pt for the 4x curve; 255 dpi; edge about 3.5 px) is matched to the curve colour in a window of +-2 px in x and
 +-40 px in y around the line (score: coloured pixels on the outline minus twice those in the interior); the best
-match is the reading. A version 1 that took the extent of the coloured run in the marker's column was biased by the
-attached line segments (+0.09 decades on the hardware curve) and is replaced. Uncertainty: +-2 px, about +-0.02 decades
+match is the reading. Uncertainty: +-2 px, about +-0.02 decades
 at 102 px per decade; markers clipped by the axis bottom (BER below about 2e-4) are not read. Usage: digitize_fig6.py PNG REPORTS.jsonl OUT.jsonl"""
 import json
 import math

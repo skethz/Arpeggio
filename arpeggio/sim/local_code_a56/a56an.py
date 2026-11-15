@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.6 analysis helpers (numpy only, no GPU; PROTOCOL_A56.md section 9). A run is one job directory of trace batches."""
+"""A5.6 analysis helpers (numpy only, no GPU). A run is one job directory of trace batches."""
 import glob
 import json
 import math

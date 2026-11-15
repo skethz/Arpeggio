@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""A5.19 share with hostB GPU2-3 (ADDENDUM_A519_HOSTB.md). Runs on hostA: hostA's results tree is the one place that decides which
+"""A5.19 share with hostB. Runs on hostA: hostA's results tree is the one place that decides which
 host runs a held-out chunk.
   take N KEEP     walk hostA's plan.json from the end and take up to N held-out chunks (sets h4_*/h1_*) that have no done.json, no
                   claim.json and fewer than 3 failures; each gets an exclusive claim.json owned by hostB (O_EXCL, as trace_a56.claim).
                   Stops while KEEP or fewer such chunks would be left for hostA. hostA's workers never take a chunk claimed by another
                   host; pid 1 makes hostA's planner count it as busy. Prints the taken jobs, one JSON line each.
-                  Amendment 2 (14 Nov): every free S* calibration job (set 'calib') is also taken for hostB, all at once and before
+                  Every free S* calibration job (set 'calib') is also taken for hostB, all at once and before
                   the held-out chunks, so the whole calibration runs on one host (hostB). Stage A and stage B are never handed out.
   release SET METHOD   rename hostB's claim on that chunk to claim.released.<t> (manual: e.g. after a long yield on hostB).
   list            hostB-owned chunks: open or done, and how many batch files hostA has. No results are read."""
@@ -15,7 +15,7 @@ import os
 import sys
 import time
 
-Z = os.environ.get('MZ_ROOT', '<SCRATCH>/ap_ber_20261024/a519z/results/a519')
+Z = os.environ.get('MZ_ROOT', '<SCRATCH>/arpeggio_ber_20261024/a519z/results/a519')
 OWNER = 'hostB-share'
 
 
@@ -50,7 +50,7 @@ def own(j):
 if mode == 'take':
     n, keep = int(sys.argv[2]), int(sys.argv[3])
     jobs = json.load(open(os.path.join(Z, 'plan.json')))['jobs']
-    for j in jobs:                                                     # amendment 2: all free calibration jobs, first
+    for j in jobs:                                                     # all free calibration jobs, first
         if j['set'] == 'calib' and free(j) and own(j):
             print(json.dumps(j))
     cand = [j for j in jobs if held(j) and free(j)]

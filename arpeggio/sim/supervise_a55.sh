@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# A5.5 supervisor (PROTOCOL_A55.md section 11). hostB GPU2 and GPU3, plus GPU0 and GPU1 since 6 Nov 2026 (author: "<instruction>"; reruns of
-# finished cells on GPU0 and GPU1 matched the saved batches bit for bit, tmp/gpu01_check_20261106); another user's job may share them, so no yielding to it.
+# A5.5 supervisor on hostB GPU0-GPU3 (no yielding to other jobs).
 # At most 4 workers per GPU plus one calibration process. No launch on a GPU with < 8 GB free; below 2 GB free, stop our newest worker on
 # that GPU (it resumes from saved batches). Only ever signals our own a55 processes. Rebuilds the plan and status every 2 minutes.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 ROOT=$A/results/a55; PL=$ROOT/plan.json; LOG=$A/logs/a55/supervisor.log
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID> [2]=<GPU_UUID> [3]=<GPU_UUID>)
 cd $A; source $A/venv/bin/activate

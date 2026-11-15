@@ -1,7 +1,7 @@
 {
- "note": "A3 exploratory, not pre-registered; picks made on tuning seed 1000; held-out seed 102 (same draws as the frozen ablation)",
+ "note": "A3; picks made on tuning seed 1000; held-out seed 102 (same draws as the ablation)",
  "selection": {
-  "P2_ane": {
+  "P2_chord": {
    "method": "abl_qt_a_0.2_0.2_8",
    "bit_err": 87,
    "vec_err": 4
@@ -11,7 +11,7 @@
    "bit_err": 1216,
    "vec_err": 65
   },
-  "P3_ane": {
+  "P3_chord": {
    "method": "abl_qt_a_0.2_0.2_8",
    "bit_err": 1,
    "vec_err": 1
@@ -24,8 +24,8 @@
  },
  "held_out": {
   "P2": {
-   "frozen (i) Antiphase q0.4 T0.3": {
-    "method": "mdiane8",
+   "frozen (i) Chord q0.4 T0.3": {
+    "method": "mdichord8",
     "uses": 43000,
     "ber": 0.00039643895348837207,
     "ber_ci": [
@@ -87,7 +87,7 @@
      "m": 6000
     }
    },
-   "Antiphase re-tuned at this point": {
+   "Chord re-tuned at this point": {
     "method": "abl_qt_a_0.2_0.2_8",
     "uses": 56000,
     "ber": 0.0003125,
@@ -110,8 +110,8 @@
    }
   },
   "P3": {
-   "frozen (i) Antiphase q0.4 T0.3": {
-    "method": "mdiane8",
+   "frozen (i) Chord q0.4 T0.3": {
+    "method": "mdichord8",
     "uses": 156250,
     "ber": 6.5e-06,
     "ber_ci": [
@@ -173,7 +173,7 @@
      "m": 8000
     }
    },
-   "Antiphase re-tuned at this point": {
+   "Chord re-tuned at this point": {
     "method": "abl_qt_a_0.2_0.2_8",
     "uses": 156250,
     "ber": 5.8e-06,
@@ -584,9 +584,9 @@
   {
    "shape": "x16",
    "snr": 22.0,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 73,
-   "antiphase_bit_err": 1043,
+   "chord_uses": 156250,
+   "chord_vec_err": 73,
+   "chord_bit_err": 1043,
    "mdiahc_uses": 128000,
    "mdiahc_vec_err": 102,
    "mdiahc_bit_err": 1517,
@@ -600,9 +600,9 @@
   {
    "shape": "x16",
    "snr": 22.5,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 41,
-   "antiphase_bit_err": 696,
+   "chord_uses": 156250,
+   "chord_vec_err": 41,
+   "chord_bit_err": 696,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 85,
    "mdiahc_bit_err": 1382,
@@ -616,9 +616,9 @@
   {
    "shape": "x16",
    "snr": 23.0,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 20,
-   "antiphase_bit_err": 355,
+   "chord_uses": 156250,
+   "chord_vec_err": 20,
+   "chord_bit_err": 355,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 49,
    "mdiahc_bit_err": 849,
@@ -632,9 +632,9 @@
   {
    "shape": "x16",
    "snr": 23.5,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 22,
-   "antiphase_bit_err": 385,
+   "chord_uses": 156250,
+   "chord_vec_err": 22,
+   "chord_bit_err": 385,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 34,
    "mdiahc_bit_err": 592,
@@ -648,9 +648,9 @@
   {
    "shape": "x16",
    "snr": 24.0,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 15,
-   "antiphase_bit_err": 227,
+   "chord_uses": 156250,
+   "chord_vec_err": 15,
+   "chord_bit_err": 227,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 24,
    "mdiahc_bit_err": 411,
@@ -664,9 +664,9 @@
   {
    "shape": "x16",
    "snr": 24.5,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 7,
-   "antiphase_bit_err": 117,
+   "chord_uses": 156250,
+   "chord_vec_err": 7,
+   "chord_bit_err": 117,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 17,
    "mdiahc_bit_err": 326,
@@ -680,9 +680,9 @@
   {
    "shape": "x16",
    "snr": 25.0,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 2,
-   "antiphase_bit_err": 36,
+   "chord_uses": 156250,
+   "chord_vec_err": 2,
+   "chord_bit_err": 36,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 11,
    "mdiahc_bit_err": 208,
@@ -696,9 +696,9 @@
   {
    "shape": "x16",
    "snr": 25.5,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 8,
-   "antiphase_bit_err": 171,
+   "chord_uses": 156250,
+   "chord_vec_err": 8,
+   "chord_bit_err": 171,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 7,
    "mdiahc_bit_err": 120,
@@ -712,9 +712,9 @@
   {
    "shape": "x16",
    "snr": 26.0,
-   "antiphase_uses": 156250,
-   "antiphase_vec_err": 1,
-   "antiphase_bit_err": 11,
+   "chord_uses": 156250,
+   "chord_vec_err": 1,
+   "chord_bit_err": 11,
    "mdiahc_uses": 156250,
    "mdiahc_vec_err": 2,
    "mdiahc_bit_err": 47,
@@ -728,9 +728,9 @@
   {
    "shape": "x32",
    "snr": 21.0,
-   "antiphase_uses": 78125,
-   "antiphase_vec_err": 47,
-   "antiphase_bit_err": 887,
+   "chord_uses": 78125,
+   "chord_vec_err": 47,
+   "chord_bit_err": 887,
    "mdiahc_uses": 39000,
    "mdiahc_vec_err": 101,
    "mdiahc_bit_err": 1829,
@@ -744,9 +744,9 @@
   {
    "shape": "x32",
    "snr": 21.5,
-   "antiphase_uses": 78125,
-   "antiphase_vec_err": 28,
-   "antiphase_bit_err": 604,
+   "chord_uses": 78125,
+   "chord_vec_err": 28,
+   "chord_bit_err": 604,
    "mdiahc_uses": 57000,
    "mdiahc_vec_err": 101,
    "mdiahc_bit_err": 2094,
@@ -760,9 +760,9 @@
   {
    "shape": "x32",
    "snr": 22.0,
-   "antiphase_uses": 78125,
-   "antiphase_vec_err": 17,
-   "antiphase_bit_err": 373,
+   "chord_uses": 78125,
+   "chord_vec_err": 17,
+   "chord_bit_err": 373,
    "mdiahc_uses": 78125,
    "mdiahc_vec_err": 93,
    "mdiahc_bit_err": 1972,
@@ -776,9 +776,9 @@
   {
    "shape": "x32",
    "snr": 22.5,
-   "antiphase_uses": 78125,
-   "antiphase_vec_err": 10,
-   "antiphase_bit_err": 316,
+   "chord_uses": 78125,
+   "chord_vec_err": 10,
+   "chord_bit_err": 316,
    "mdiahc_uses": 78125,
    "mdiahc_vec_err": 66,
    "mdiahc_bit_err": 1446,
@@ -792,9 +792,9 @@
   {
    "shape": "x32",
    "snr": 23.0,
-   "antiphase_uses": 78125,
-   "antiphase_vec_err": 3,
-   "antiphase_bit_err": 58,
+   "chord_uses": 78125,
+   "chord_vec_err": 3,
+   "chord_bit_err": 58,
    "mdiahc_uses": 78125,
    "mdiahc_vec_err": 35,
    "mdiahc_bit_err": 793,
@@ -808,9 +808,9 @@
   {
    "shape": "x32",
    "snr": 23.5,
-   "antiphase_uses": 78125,
-   "antiphase_vec_err": 5,
-   "antiphase_bit_err": 152,
+   "chord_uses": 78125,
+   "chord_vec_err": 5,
+   "chord_bit_err": 152,
    "mdiahc_uses": 78125,
    "mdiahc_vec_err": 22,
    "mdiahc_bit_err": 553,
@@ -824,9 +824,9 @@
   {
    "shape": "x32",
    "snr": 24.0,
-   "antiphase_uses": 78125,
-   "antiphase_vec_err": 1,
-   "antiphase_bit_err": 30,
+   "chord_uses": 78125,
+   "chord_vec_err": 1,
+   "chord_bit_err": 30,
    "mdiahc_uses": 78125,
    "mdiahc_vec_err": 13,
    "mdiahc_bit_err": 290,

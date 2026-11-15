@@ -1,10 +1,10 @@
 {
- "antiphase": {
+ "chord": {
   "rtl": {
-   "file": "ape_engine.sv v1.4",
+   "file": "chord_engine.sv",
    "sha256_16": "67367973dd0bccec",
    "macro_wrapper_sha256_16": "6f08dcb7e846151e",
-   "testbench_tb_ape_sv_16": "ea886b2264379ca5",
+   "testbench_tb_engine_sv_16": "ea886b2264379ca5",
    "run_saif_sh_16": "87e81552c49e1afb"
   },
   "netlists_layout_read": {
@@ -87,7 +87,7 @@
     "rtl_check": "SUMMARY PASS"
    }
   },
-  "held_out": "ASIC draws (seeds 41-45, fixed in PROTOCOL_ASIC on 17 Oct before any result) are disjoint from the tuning set (seed 1000)",
+  "held_out": "ASIC draws (seeds 41-45) are disjoint from the tuning set (seed 1000)",
   "verdict": "source-matched; used without regeneration",
   "clock_alignment": {
    "D32": "K = 1.15: duration token 1e09 -> 1.150000e+09 only (one line differs); Innovus clock toggle rate 1739.13 MHz = 2/1.15 ns",
@@ -96,12 +96,11 @@
   }
  },
  "pimi": {
-  "netlist_m1000_sha256_16": "0d024f16dd4cd2e7 (hostE original = hostD copy)",
-  "tcf_F_pw_p4_sha256_16": "5c379154b12a5b27 (hostE original = hostD copy)",
-  "saif": "Questa RTL run of their adapted HLS RTL on 4 real x16 P4 instances (vec_p4), 1,000 ps, window 611,236.5 ns = 4 x 152,809 cycles; final SAIF 662e4502... on hostE and hostE",
-  "rtl_check": "final spins of the SAIF run equal the reference model: 4/4 instances, 128/128 trials (cmp_out.py, re-run read-only 25 Oct)",
+  "netlist_m1000_sha256_16": "0d024f16dd4cd2e7",
+  "tcf_F_pw_p4_sha256_16": "5c379154b12a5b27",
+  "saif": "Questa RTL run of their adapted HLS RTL on 4 real x16 P4 instances (vec_p4), 1,000 ps, window 611,236.5 ns = 4 x 152,809 cycles; final SAIF 662e4502...",
+  "rtl_check": "final spins of the SAIF run equal the reference model: 4/4 instances, 128/128 trials (cmp_out.py)",
   "genus": "flops asserted 224,372/239,148 (95.45 %), memories 100 %, inputs 1109/1109",
-  "open": "CLOSED AS NOT APPLICABLE: the PIMI ASIC engine was dropped by the author on 25 Oct (pimi_hls_r4b failed physically); no PIMI power or LEC is run.",
-  "status": "superseded"
+  "note": "Not applicable: no PIMI ASIC engine is built; no PIMI power or LEC is run."
  }
 }

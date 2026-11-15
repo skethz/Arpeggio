@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # A5.19 on hostA: restart supervise_hosta_a519.sh with NW workers per GPU (argument 1: 0 = paused, the supervisor keeps planning but
-# starts no worker; 1 = ADDENDUM_A519_HOSTB.md section 7). NW <= 2 stays within
-# ADDENDUM_A519_HOSTA.md section 3. Stops the running supervisor (its workers get SIGTERM through pdeathsig), KILLs any
+# starts no worker; NW <= 2).
+# Stops the running supervisor (its workers get SIGTERM through pdeathsig), KILLs any
 # worker left after 25 s, checks that none of our pids is on a GPU, renames unreadable done.json, then starts the supervisor again.
 # Saved batches stay; each worker's batch in flight is recomputed (stale claims are renamed by the worker's own same-host rule).
 NW=${1:?usage: restart_hosta_a519.sh NW}
 case "$NW" in 0|1|2) ;; *) echo "NW must be 0, 1 or 2"; exit 1 ;; esac
-Z=<SCRATCH>/ap_ber_20261024/a519z
+Z=<SCRATCH>/arpeggio_ber_20261024/a519z
 R=$Z/results/a519
 L=$Z/logs/a519
 PY=<SCRATCH>/mimo_ising_20261016/venv/bin/python

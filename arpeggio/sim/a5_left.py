@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Prints 'tier1_left N p2col_left M tier2_left K' for plan_hostb_a5.json (jobs without done.json)."""
 import json, os
-R = '<SCRATCH>/ap_ber_20261024/results'
+R = '<SCRATCH>/arpeggio_ber_20261024/results'
 p = json.load(open(R + '/plan_hostb_a5.json'))
 t1 = p2 = t2 = 0
 for j in p['jobs']:

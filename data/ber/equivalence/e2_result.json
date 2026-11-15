@@ -21,7 +21,7 @@
   "frac_identical_decision_when_both_err": 0.1769436997319035
  },
  {
-  "job": "q32/mdiane64/snr_12.00",
+  "job": "q32/mdichord64/snr_12.00",
   "uses": 16000,
   "ber_b200": 0.0001279296875,
   "ber_5090": 0.0001220703125,
@@ -42,7 +42,7 @@
   "frac_identical_decision_when_both_err": 1.0
  },
  {
-  "job": "x16/mdiane64/snr_20.00",
+  "job": "x16/mdichord64/snr_20.00",
   "uses": 8000,
   "ber_b200": 0.000455078125,
   "ber_5090": 0.000556640625,
@@ -84,7 +84,7 @@
   "frac_identical_decision_when_both_err": 1.0
  },
  {
-  "job": "x32/mdiane8/snr_22.00",
+  "job": "x32/mdichord8/snr_22.00",
   "uses": 2000,
   "ber_b200": 0.00040625,
   "ber_5090": 0.00042578125,

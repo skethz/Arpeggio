@@ -1,9 +1,9 @@
 {
- "note": "A5.13 analysis (PROTOCOL_A513.md section 7), written before any held-out result. CPU only.",
+ "note": "A5.13 analysis. CPU only.",
  "refs": "refs/refs_a513.npz",
  "points": {
   "P1": {
-   "method": "fafx_64_0.1_0.1_0_rand_32",
+   "method": "arpeggiofx_64_0.1_0.1_0_rand_32",
    "planned_all": 200,
    "batches_all": 200,
    "planned_matched": 14,
@@ -25,7 +25,7 @@
     "b_ber": 0.0006703515625,
     "term": "sa_leads"
    },
-   "fx_float_ap": {
+   "fx_float_chord": {
     "ratio": 0.5299954117916953,
     "lo": 0.4887432795698925,
     "hi": 0.5738858961802155,
@@ -84,7 +84,7 @@
     "subproblems": 6410517
    },
    "matched": {
-    "fx_float_fa": {
+    "fx_float_arpeggio": {
      "ratio": 1.5754884547069272,
      "lo": 1.100765306122449,
      "hi": 2.316593886462882,
@@ -116,7 +116,7 @@
      "b_ber": 0.0007126116071428572,
      "term": "sa_leads"
     },
-    "fx_float_ap": {
+    "fx_float_chord": {
      "ratio": 0.7118780096308186,
      "lo": 0.5430149960536701,
      "hi": 0.929724596391263,
@@ -132,7 +132,7 @@
      "b_ber": 0.0006953125,
      "term": "sa_leads"
     },
-    "float_fa_prod": {
+    "float_arpeggio_prod": {
      "ratio": 0.4408770555990603,
      "lo": 0.3074648928307465,
      "hi": 0.596964586846543,
@@ -148,7 +148,7 @@
      "b_ber": 0.0007126116071428572,
      "term": "sa_leads"
     },
-    "float_fa_float_ap": {
+    "float_arpeggio_float_chord": {
      "ratio": 0.4518459069020867,
      "lo": 0.3107747105966162,
      "hi": 0.6220633299284984,
@@ -164,7 +164,7 @@
      "b_ber": 0.0006953125,
      "term": "sa_leads"
     },
-    "prod_float_ap": {
+    "prod_float_chord": {
      "ratio": 1.0248796147672552,
      "lo": 0.8324798829553768,
      "hi": 1.281219272369715,
@@ -223,7 +223,7 @@
    }
   },
   "P2": {
-   "method": "fafx_32_0.1_0.1_0_rand_8",
+   "method": "arpeggiofx_32_0.1_0.1_0_rand_8",
    "planned_all": 300,
    "batches_all": 300,
    "planned_matched": 43,
@@ -245,7 +245,7 @@
     "b_ber": 0.00036697916666666666,
     "term": "no_detected_difference"
    },
-   "fx_float_ap": {
+   "fx_float_chord": {
     "ratio": 0.9588300526753535,
     "lo": 0.873021022579808,
     "hi": 1.0507432086109687,
@@ -304,7 +304,7 @@
     "subproblems": 5581487
    },
    "matched": {
-    "fx_float_fa": {
+    "fx_float_arpeggio": {
      "ratio": 0.9044444444444445,
      "lo": 0.7192174913693901,
      "hi": 1.1283185840707965,
@@ -336,7 +336,7 @@
      "b_ber": 0.0004718386627906977,
      "term": "sa_leads"
     },
-    "fx_float_ap": {
+    "fx_float_chord": {
      "ratio": 0.9326306141154904,
      "lo": 0.7283653846153846,
      "hi": 1.1952692501258178,
@@ -352,7 +352,7 @@
      "b_ber": 0.00039643895348837207,
      "term": "no_detected_difference"
     },
-    "float_fa_prod": {
+    "float_arpeggio_prod": {
      "ratio": 0.8663842895648826,
      "lo": 0.6943198804185351,
      "hi": 1.0691038787338387,
@@ -368,7 +368,7 @@
      "b_ber": 0.0004718386627906977,
      "term": "no_detected_difference"
     },
-    "float_fa_float_ap": {
+    "float_arpeggio_float_chord": {
      "ratio": 1.0311640696608615,
      "lo": 0.8240211174659041,
      "hi": 1.3020063357972544,
@@ -384,7 +384,7 @@
      "b_ber": 0.00039643895348837207,
      "term": "no_detected_difference"
     },
-    "prod_float_ap": {
+    "prod_float_chord": {
      "ratio": 1.19019248395967,
      "lo": 0.9600177698800533,
      "hi": 1.4884520884520884,
@@ -443,7 +443,7 @@
    }
   },
   "P4": {
-   "method": "fafx_64_0.1_0.1_0_bal_8",
+   "method": "arpeggiofx_64_0.1_0.1_0_bal_8",
    "planned_all": 600,
    "batches_all": 600,
    "planned_matched": 600,
@@ -465,7 +465,7 @@
     "b_ber": 0.00031369791666666666,
     "term": "sa_leads"
    },
-   "fx_float_ap": {
+   "fx_float_chord": {
     "ratio": 0.7660109617839177,
     "lo": 0.6995152277689376,
     "hi": 0.8336671741046391,
@@ -524,7 +524,7 @@
     "subproblems": 7909524
    },
    "matched": {
-    "fx_float_fa": {
+    "fx_float_arpeggio": {
      "ratio": 0.9784693583964708,
      "lo": 0.8923638911128903,
      "hi": 1.0749769786264722,
@@ -556,7 +556,7 @@
      "b_ber": 0.00031369791666666666,
      "term": "sa_leads"
     },
-    "fx_float_ap": {
+    "fx_float_chord": {
      "ratio": 0.7660109617839177,
      "lo": 0.6995152277689376,
      "hi": 0.8336671741046391,
@@ -572,7 +572,7 @@
      "b_ber": 0.00034684895833333334,
      "term": "sa_leads"
     },
-    "float_fa_prod": {
+    "float_arpeggio_prod": {
      "ratio": 0.865598538934086,
      "lo": 0.7886593858816081,
      "hi": 0.9467597841367739,
@@ -588,7 +588,7 @@
      "b_ber": 0.00031369791666666666,
      "term": "sa_leads"
     },
-    "float_fa_float_ap": {
+    "float_arpeggio_float_chord": {
      "ratio": 0.7828665815751933,
      "lo": 0.7162181978150891,
      "hi": 0.8537999837780842,
@@ -604,7 +604,7 @@
      "b_ber": 0.00034684895833333334,
      "term": "sa_leads"
     },
-    "prod_float_ap": {
+    "prod_float_chord": {
      "ratio": 0.9044222539229672,
      "lo": 0.8295433739792742,
      "hi": 0.9872727980383762,

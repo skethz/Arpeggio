@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Time-rescale a Genus netlist TCF by K: only the header duration token changes (duration_new = K x duration_old);
-every toggle count and duty is byte-identical (PROTOCOL.md 2). Python 3.6. usage: tcf_rescale.py in.tcf out.tcf K"""
+every toggle count and duty is byte-identical. Python 3.6. usage: tcf_rescale.py in.tcf out.tcf K"""
 import re, sys, hashlib
 src, dst, k = sys.argv[1], sys.argv[2], float(sys.argv[3])
 data = open(src, 'rb').read()

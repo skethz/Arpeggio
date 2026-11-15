@@ -1,6 +1,6 @@
 {
  "host": "hostB",
- "amendment": "A5.19 share (ADDENDUM_A519_HOSTB.md)",
+ "experiment": "A5.19 share",
  "jobs": [
   {
    "set": "calib",
@@ -13,7 +13,7 @@
   {
    "set": "calib",
    "shape": "x64",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "batch": 500,
    "point": "P4"
@@ -21,7 +21,7 @@
   {
    "set": "h1_c002",
    "shape": "x16",
-   "method": "mdiane32",
+   "method": "mdichord32",
    "snr": 20.0,
    "batch": 500,
    "point": "P4"
@@ -29,7 +29,7 @@
   {
    "set": "h1_c001",
    "shape": "x16",
-   "method": "mdiane32",
+   "method": "mdichord32",
    "snr": 20.0,
    "batch": 500,
    "point": "P4"

@@ -1,5 +1,5 @@
 {
- "note": "A5.10 section 6; read-only on <SCRATCH>/ap_ber_20261024/results/a55",
+ "note": "A5.10 cycle re-costing of the A5.5 results",
  "repro": {
   "P1/0.5": {
    "ok": true,
@@ -243,7 +243,7 @@
    "need_stage_b": [],
    "pick": "abl_far_64_0.1_0.1_0_rand_32",
    "x_Fp_held": 0.6325961781375556,
-   "x_Fp_source": "flips.json (A5.5 section 7)",
+   "x_Fp_source": "flips.json (A5.5)",
    "held_out": {
     "method": "abl_far_64_0.1_0.1_0_rand_32",
     "uses": 28000,
@@ -317,7 +317,7 @@
      "x_E": 12.907134671680774,
      "x_F": 0.8522847459278946
     },
-    "vs_ap_pick": {
+    "vs_chord_pick": {
      "uses": 20000,
      "ratio": 0.4197651663405088,
      "lo": 0.276431718061674,
@@ -499,7 +499,7 @@
    "need_stage_b": [],
    "pick": "abl_far_128_0.1_0.1_0_bal_8",
    "x_Fp_held": 0.8137153201963928,
-   "x_Fp_source": "flips.json (A5.5 section 7)",
+   "x_Fp_source": "flips.json (A5.5)",
    "held_out": {
     "method": "abl_far_128_0.1_0.1_0_bal_8",
     "uses": 156250,
@@ -547,7 +547,7 @@
      "x_E": 49.904549614742606,
      "x_F": 0.844933260734428
     },
-    "vs_ap_pick": {
+    "vs_chord_pick": {
      "uses": 156250,
      "ratio": 0.5747126436781609,
      "lo": 0.29931972789115646,

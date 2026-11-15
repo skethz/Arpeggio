@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# A5.19 on hostA GPU0, GPU2, GPU3 (ADDENDUM_A519_HOSTA.md). Untimed BER only. Idle-with-yield with five safeguards (addendum section 3):
+# A5.19 on hostA GPU0, GPU2, GPU3. Untimed BER only. Idle-with-yield with five safeguards:
 #  (1) at most 2 workers per GPU, torch memory cap 0.035 of the GPU (6,417 MiB, hostB's absolute cap);
 #  (2) a foreign-process check on our GPUs every 15 s;
 #  (3) stop = TERM, after 20 s KILL, then an nvidia-smi check that none of our pids is left on that GPU (logged);
@@ -7,8 +7,8 @@
 #  (5) workers run under setpriv --pdeathsig TERM, so they stop if this supervisor dies.
 # A GPU with any compute process that is not ours gets no new worker until it is free. Other processes are never touched.
 # Every 120 s: rebuild the plan (a519_plan.py), start workers, write status.txt. When every held-out chunk is done, or at the time cut
-# (PROTOCOL_A519 section 5, 16 Nov 2026 12:00 CET), stop our workers, run analyze_a519.py once and exit.
-Z=<SCRATCH>/ap_ber_20261024/a519z
+# (12:00 CET), stop our workers, run analyze_a519.py once and exit.
+Z=<SCRATCH>/arpeggio_ber_20261024/a519z
 R=$Z/results/a519
 L=$Z/logs/a519
 PY=<SCRATCH>/mimo_ising_20261016/venv/bin/python

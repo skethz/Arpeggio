@@ -1,6 +1,6 @@
 # Flow v2 body (project-authored), appended on the server to the unchanged kit/init prefix of flow/pnr/pnr.tcl
 # (LEF list, init_design, setDesignMode, globalNetConnect). Identical for every engine of the comparison.
-# Amendment to PROTOCOL_ASIC section 2 (P&R), applied to all engines: full four-supply mesh with dense over-macro
+# Applied to all engines: full four-supply mesh with dense over-macro
 # supply stripes and explicit stripe-to-port vias (no blockPin extensions), well taps, standard stage order
 # (place, CTS, post-CTS hold, route without post-route wire spreading, post-route setup+hold), fillers last.
 # Environment: PNR_OUT PNR_UTIL PNR_CPUS FLOW_STOP (pg|place|cts|route|final) FLOW_MAPS (dir with tap/filler/layer maps)
@@ -105,22 +105,22 @@ v2_public floorplan [list core_w $coreW core_h $coreH macros [llength $macs] std
 
 # ---------------------------------------------------------------- supply network
 v2_step taps {addWellTap -cell $tap_cell -cellInterval 20.0 -prefix V2_TAP; v2_connect_pg}
-setAddStripeMode -stacked_via_bottom_layer $ap_pg_bottom -stacked_via_top_layer $ap_pg_top
+setAddStripeMode -stacked_via_bottom_layer $chord_pg_bottom -stacked_via_top_layer $chord_pg_top
 v2_probe taps
-v2_step rings {addRing -nets {VDD VSS VNW VPW} -type core_rings -follow core -layer $ap_ring_layers -width 2.0 -spacing 1.0 -offset 1.0}
+v2_step rings {addRing -nets {VDD VSS VNW VPW} -type core_rings -follow core -layer $chord_ring_layers -width 2.0 -spacing 1.0 -offset 1.0}
 v2_probe rings
-v2_step stripes {addStripe -nets {VDD VSS VNW VPW} -layer $ap_stripe_layer -direction vertical -width 1.0 -spacing 1.0 -set_to_set_distance 40.0 -start_offset 10.0}
+v2_step stripes {addStripe -nets {VDD VSS VNW VPW} -layer $chord_stripe_layer -direction vertical -width 1.0 -spacing 1.0 -set_to_set_distance 40.0 -start_offset 10.0}
 v2_probe stripes
 if {[llength $macs]} {
     # Dense VDD/VSS stripes over the macro column so that every macro supply strap segment is crossed by a
     # same-net stripe; vias are then dropped from these stripes to the ports (no blockPin extension).
     # Limited horizontally to the macro column; vertically the stripes end on their own core rings.
-    v2_step overmacro_stripes {addStripe -nets {VDD VSS} -layer $ap_stripe_layer -direction vertical -width 0.6 -spacing 0.6 -set_to_set_distance 3.0 -start [expr {$cx + 0.4}] -stop [expr {$cx + $colW}]}
+    v2_step overmacro_stripes {addStripe -nets {VDD VSS} -layer $chord_stripe_layer -direction vertical -width 0.6 -spacing 0.6 -set_to_set_distance 3.0 -start [expr {$cx + 0.4}] -stop [expr {$cx + $colW}]}
     # addStripe already drops stacked vias from these stripes to same-net macro straps (bottom layer M1);
     # explicit editPowerVia vias are added only when FLOW_EDITVIA is set (duplicate stacks otherwise).
     if {[info exists ::env(FLOW_EDITVIA)]} {
         foreach b $macro_boxes {
-            v2_step overmacro_vias_[lsearch $macro_boxes $b] {editPowerVia -add_vias true -nets {VDD VSS} -area $b -bottom_layer $macro_pin_layer -top_layer $ap_stripe_layer -orthogonal_only true}
+            v2_step overmacro_vias_[lsearch $macro_boxes $b] {editPowerVia -add_vias true -nets {VDD VSS} -area $b -bottom_layer $macro_pin_layer -top_layer $chord_stripe_layer -orthogonal_only true}
         }
     }
 }
@@ -131,7 +131,7 @@ if {[llength $macs]} {
     set f [open $OUT/probe_public.txt a]; puts $f "vias_to_macro_pin_layer $nv"; close $f
 }
 set ::v2_corepin_target [expr {[info exists ::env(FLOW_COREPIN_TARGET)] ? $::env(FLOW_COREPIN_TARGET) : {none}}]
-set pg_range [list $ap_pg_bottom $ap_pg_top]
+set pg_range [list $chord_pg_bottom $chord_pg_top]
 v2_step followpins {sroute -connect {corePin floatingStripe} -nets {VDD VSS VNW VPW} -layerChangeRange $pg_range -crossoverViaLayerRange $pg_range -targetViaLayerRange $pg_range -corePinTarget $::v2_corepin_target -allowJogging 1 -allowLayerChange 1}
 v2_probe followpins
 saveDesign $OUT/db/pg.enc
@@ -166,7 +166,7 @@ if {$STOP eq "cts"} {puts FLOW_V2_DONE_CTS; exit 0}
 
 # ---------------------------------------------------------------- routing
 set levels {}
-foreach name [list $ap_stripe_layer [lindex $ap_ring_layers 1]] {lappend levels [lindex [dbGet [dbGet -p head.layers.name $name].num] 0]}
+foreach name [list $chord_stripe_layer [lindex $chord_ring_layers 1]] {lappend levels [lindex [dbGet [dbGet -p head.layers.name $name].num] 0]}
 set levels [lsort -integer -unique $levels]
 setNanoRouteMode -routeStripeLayerRange "[lindex $levels 0]:[lindex $levels end]"
 foreach pin $tap_secondary_pins {setPGPinUseSignalRoute -well "${tap_cell}:${pin}"}

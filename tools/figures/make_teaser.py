@@ -1,23 +1,19 @@
-"""Fig. 1 of Antiphase, a teaser that shows rather than tells (user, 4 Nov 2026: "<instruction>").
+"""Fig. 1, the teaser.
 
 Panels follow the Introduction: Background, Challenge, Research Question, Approach, Results.
-Data, built from the files only (plain values below are as printed in the paper):
-  (a), (b) work/plan_20261024/ap_ber/data/mechanism/mech_traces_{examples,population}.csv, as the previous Fig. 1(b), (c);
+Data (plain values below are as printed in the paper):
+  (a), (b) ROOT/mechanism/mech_traces_{examples,population}.csv;
            87-99 % and 0.1 %: mech_traces_summary.json.
-  (c)      a55/analysis.json, budget B = 1 picks under E and F-R (the rings of Fig. 3(a), (b)); A5.5, 6 Nov 2026.
+  (c)      a55/analysis.json, budget B = 1 picks under E and F-R (the rings of Fig. 3(a), (b)); A5.5.
   (d)      Sections V-B and V-C, Table III (table2.csv; a5/a53.json tab2_*; a5/a5.json a5a.tab2_x32).
   (e)      A5.18 part 2 routed Arpeggio over Chord, both at 1.00 ns: rho_t 0.842744/0.676901, rho_E 0.888282/0.668024
-           (work/plan_20261024/antiphase_asic/results_a518/interim_d32_d64.json; PROTOCOL_A518_part2.md 0d0eeeee), since 11 Nov 2026
-           (body_sameclock_20261111 preview); before: A5.11 rho_t 0.744/0.780, rho_E 1.021/0.610 (each engine at its own clock),
-           since the sequential reframe (9 Nov 2026); it was Table IV's pJ per decision.
-           64 users added 13 Nov 2026 (v31, blind round f; work/d128_table4_20261113): D128 pair at 1.20 ns, rho_t 0.718156,
-           rho_E 0.845175 (results_a518/d128_pair_1200.json, amendment A5); key rows swapped so each sits by its line's end.
-  4        Antiphase and first-accept grids are schematic (pale: tested, dark: flipped); 9 Nov 2026.
+           (data/asic/a518/d32_d64.json); 64 users: D128 pair at 1.20 ns, rho_t 0.718156,
+           rho_E 0.845175 (data/asic/a518/d128_pair_1200.json); key rows ordered so each sits by its line's end.
+  4        Chord and first-accept grids are schematic (pale: tested, dark: flipped).
 The grids are schematic: N = 8 spins, D = 4 coordinates, P = 2 copies.
-Colours (user, 9 Nov 2026): Antiphase #8C1515, first-accept SA #1966FF, SA #002B49, baselines #53565A and #A0A2A4,
-research-question fill #F2F4F7, ours panel #F1E3E3 (were ours #0077C8, panel #E0EFF8).
-Writes to out/; copying into figures/ is a separate step.
-Names since 9 Nov 2026 (user "Apply it"): Chord (was Antiphase), Arpeggio (first-accept SA on our engine); work/rename_chord_arpeggio_20261109/.
+Colours: Chord #8C1515, first-accept SA #1966FF, SA #002B49, baselines #53565A and #A0A2A4,
+research-question fill #F2F4F7, ours panel #F1E3E3.
+Writes to out/.
 """
 import csv
 import json
@@ -32,11 +28,11 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Polygon, Rectangle
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[2] / 'work' / 'plan_20261024' / 'ap_ber' / 'data'
+ROOT = HERE.parents[2] / 'work' / 'plan_20261024' / 'arpeggio_ber' / 'data'
 OURS, NAVY, DARK, MID, PALE, LIGHT, TINT, INK = '#8C1515', '#002B49', '#53565A', '#A0A2A4', '#CBCCCD', '#F2F4F7', '#F1E3E3', '#000000'
-# User palette of 9 Nov 2026: Antiphase #8C1515 (OURS, was #0077C8; TINT its 12% tint, was #E0EFF8), first-accept SA #1966FF (FA).
-FA = '#1966FF'
-W, H = 252.0, 248.1   # printed size in pt (panel 3 box 3 pt lower since 10 Nov 2026, user)
+# Palette: Chord #8C1515 (OURS; TINT its 12% tint), first-accept SA #1966FF (ARPEGGIO).
+ARPEGGIO = '#1966FF'
+W, H = 252.0, 248.1   # printed size in pt
 TXT, HEAD = 7.0, 8.0
 
 plt.rcParams.update({
@@ -123,7 +119,7 @@ anti = lambda m, c, k: k % P == c
 
 # --- 1 Background ---------------------------------------------------------------------------------------------------
 y = 4.6
-head(y, 1, 'Background', 'detectors use parallel hardware')   # T16, 9 Nov 2026: hardware, not problem-level (was 'detectors run in parallel', sequential reframe)
+head(y, 1, 'Background', 'detectors use parallel hardware')
 yl = y + 8.7
 yd = yl + 7.9
 yg = yd + 10.8
@@ -147,7 +143,7 @@ ax.add_patch(Polygon([[41.5, yg - 7.2], [47.5, yg - 7.2], [44.5, yg - 3.4]], clo
 t(51, yg - 3.7, '32 users,')
 t(51, yg + 3.7, '16-QAM')
 # Step 2: MDI-MIMO searches a correction d around a guess x_g, each d_m a sum of P spin copies (Section II-A).
-# MMSE-SIC left out of the teaser, more room here (user, 5 Nov 2026). Schematic: P = 4, the 16-QAM levels -3, -1, +1, +3.
+# Schematic: P = 4, the 16-QAM levels -3, -1, +1, +3.
 bx0 = 88
 runs(bx0, yl, [('MDI-MIMO: ', dict(fontweight='bold')), ('correct a guess, minimizing $\\|y-Hx\\|^2$', {})])
 LX = lambda lev: 173.5 + (lev + 3) * 9.2
@@ -185,8 +181,6 @@ ax.add_patch(Rectangle((W - 30.5, y - 1.2), 6.3, 2.2, fc=DARK, ec='none', zorder
 t(W, y, 'decides', ha='right', color=DARK)
 gx = [25, 103.5, 178.5]
 yn = y + 8.7
-# 'colors', not 'phases', as in the text (round-3 audit 3.3, 8 Nov 2026)
-# 'P colors/user', not 'N/2 colors': N is defined only in Section II-A (round-7 review R7.15, 8 Nov 2026)
 for x, nm, rest in zip(gx, ('Synchronous: ', 'Sequential SA: ', 'Coloring: '),
                        ('two-cycles', 'one spin', '$P$ colors/user')):
     runs(x, yn, [(nm, dict(fontweight='bold')), (rest, {})])
@@ -200,12 +194,12 @@ t(0, yn, 'step →', color=DARK)
 
 # --- 3 Research Question --------------------------------------------------------------------------------------------
 y = y1 + GRID_H + 8.0
-qh = 16.6   # was 19.6 (user, 10 Nov 2026: shrink panel 3 box to gain a line)
+qh = 16.6
 box(0, y, W, qh, fc=LIGHT, r=1.5)
 badge(y + qh / 2, 3)
 qy = y + qh / 2
 runs(11, qy, [('Research Question: ', dict(fontweight='bold')),
-              ('Must MIMO detectors flip in parallel?', dict(fontstyle='italic'))], fontsize=HEAD)   # sequential reframe (user, 9 Nov 2026)
+              ('Must MIMO detectors flip in parallel?', dict(fontstyle='italic'))], fontsize=HEAD)
 
 # --- 4 Approach -----------------------------------------------------------------------------------------------------
 y = y + qh + 1.8
@@ -213,19 +207,19 @@ ah = 41.3
 box(0, y, W, ah, fc=TINT, r=1.5)
 ytop4 = y
 y = y + 5.2
-# Sequential reframe, phase 2 (9 Nov 2026): panel 4 sets Antiphase (best-case parallel flips) beside first-accept SA on the same
+# Panel 4 sets Chord (best-case parallel flips) beside first-accept SA on the same
 # tests (Section V-B; Witte 1991, Sohn 1995). Schematic, N = 8 spins: pale cells are tested, dark cells flip; both test one copy's D = 4 spins
-# per step (gauge 4/8). Antiphase flips every passing spin; first-accept flips the first passing one, re-tests, and keeps the copy until none passes.
-# 11 Nov 2026 (number check, checker a): Arpeggio re-tests only the spins after the flipped one, with no re-test after a flip on the copy's
-# last spin, each copy once per sweep (Section III-C, C_FA). The re-test columns now show only those spins; the gauge's 4/8 is a pass's first test.
-head(y, 4, 'Approach', 'on our engine, Chord vs. Arpeggio')   # engine reframe v4, 9 Nov 2026 (reviewer 2 F7)
+# per step (gauge 4/8). Chord flips every passing spin; first-accept flips the first passing one, re-tests, and keeps the copy until none passes.
+# Arpeggio re-tests only the spins after the flipped one, with no re-test after a flip on the copy's
+# last spin, each copy once per sweep (Section III-C, C_FA). The re-test columns show only those spins; the gauge's 4/8 is a pass's first test.
+head(y, 4, 'Approach', 'on our engine, Chord vs. Arpeggio')
 y2 = y + 6.2
 yb = y2 + GRID_H + 4.2
-PALE_O, PALE_F = '#D8AFAF', '#B1CBFF'   # 34% tints of OURS and FA for tested-only cells (were #A9D0EC, navy #AEBBC6)
-AP_FLIP = ({0, 2, 3}, {1, 2}, {0, 3}, {1}, {2}, {0}, set(), {3})   # flips per half-step, falling as the anneal settles
-FA_C = (0, 0, 1, 1, 0, 0, 1, 0)                                    # copy tested at each step
-FA_LO = (0, 2, 0, 1, 0, 3, 0, 0)                                   # first coordinate tested (re-tests start after the flip)
-FA_M = (1, 3, 0, None, 2, None, None, None)                        # its first passing coordinate, if any
+PALE_O, PALE_F = '#D8AFAF', '#B1CBFF'   # 34% tints of OURS and ARPEGGIO for tested-only cells
+CHORD_FLIP = ({0, 2, 3}, {1, 2}, {0, 3}, {1}, {2}, {0}, set(), {3})   # flips per round, falling as the anneal settles
+ARPEGGIO_C = (0, 0, 1, 1, 0, 0, 1, 0)                                    # copy tested at each step
+ARPEGGIO_LO = (0, 2, 0, 1, 0, 3, 0, 0)                                   # first coordinate tested (re-tests start after the flip)
+ARPEGGIO_M = (1, 3, 0, None, 2, None, None, None)                        # its first passing coordinate, if any
 
 
 def grid2(x, tested, flipped, pale, dark):
@@ -237,13 +231,13 @@ def grid2(x, tested, flipped, pale, dark):
                 ax.add_patch(Rectangle((x + k * CW, yy), CW - 0.7, CH - 0.45, fc=fc, ec='none', zorder=2))
 
 
-grid2(gx[0], anti, lambda m, c, k: anti(m, c, k) and m in AP_FLIP[k], PALE_O, OURS)
-# One half-step: every coordinate still decides.
+grid2(gx[0], anti, lambda m, c, k: anti(m, c, k) and m in CHORD_FLIP[k], PALE_O, OURS)
+# One round: every coordinate still decides.
 ax.add_patch(Rectangle((gx[0] + 2 * CW - 0.5, y2 - 0.8), CW + 0.3, GRID_H + 1.2, fc='none', ec=INK, lw=0.5, zorder=4))
 gauge(gx[0], yb, 4, OURS, track='white')
 t(1, y2 + GRID_H / 2, 'spins', color=DARK)
 t(1, yb, 'parallel', color=DARK)
-# Pinning: a flip penalty raises the barrier a spin must cross (narrowed to make room for the first-accept grid).
+# Pinning: a flip penalty raises the barrier a spin must cross.
 pc, py = 104, y2 + GRID_H / 2
 t(84, py, '+', fontsize=9, ha='left', fontweight='bold')
 u = np.linspace(-1.25, 1.25, 80)
@@ -253,8 +247,8 @@ arrow(pc, py - 0.9, pc, py - 7.4, color=INK, lw=0.5, ms=3.0)
 t(pc + 2.2, py - 4.6, '$q$')
 t(pc, yb, 'pinning', ha='center')
 x2g = 127
-grid2(x2g, lambda m, c, k: c == FA_C[k] and m >= FA_LO[k], lambda m, c, k: c == FA_C[k] and m == FA_M[k], PALE_F, FA)
-gauge(x2g, yb, 4, FA, track='white')
+grid2(x2g, lambda m, c, k: c == ARPEGGIO_C[k] and m >= ARPEGGIO_LO[k], lambda m, c, k: c == ARPEGGIO_C[k] and m == ARPEGGIO_M[k], PALE_F, ARPEGGIO)
+gauge(x2g, yb, 4, ARPEGGIO, track='white')
 ex = 188.5
 t(ex, y2 + 1.4, 'Flips per test:', color=DARK)
 runs(ex, y2 + 9.6, [('Chord: ', dict(fontweight='bold')), ('all', {})])
@@ -263,16 +257,12 @@ t(ex, yb, '1 cycle per flip')
 
 # --- 5 Results ------------------------------------------------------------------------------------------------------
 y = ytop4 + ah + 6.2
-xe = head(y, 5, 'Results', 'no gain from flipping all')   # sequential reframe, 9 Nov 2026; 'per test' since engine reframe v3 (reviewer 1);
-# 'one per test beats all' since 11 Nov 2026 (user "Revert and fix"): PROTOCOL_A514 sec. 9 (mixed) allows no claim that one flip per test
-# is necessary, so the heading names the comparison made, Arpeggio (one) vs. Chord (all), as panel 4's 'Flips per test' does.
-# 'no gain from flipping all' since 11 Nov 2026 (blind round c, HW and MIMO: 'beats all' overstates P2's 1.03x); matches Table I 'No flip gain'.
+xe = head(y, 5, 'Results', 'no gain from flipping all')
 lx = 137
-# keys moved left 1.5 and 2 so the SA key fits a dot and a diamond (round-6 review 19, 8 Nov 2026)
-# Chord/Arpeggio preview (9 Nov 2026): Arpeggio (first-accept SA on our engine) gets its own key, a blue diamond; SA keeps the dot.
-# Keys are spaced by measured text ends, with the old gap (6.3 pt) between a label and the next key.
+# Arpeggio (first-accept SA on our engine) has its own key, a blue diamond; SA has a dot.
+# Keys are spaced by measured text ends, with a 6.3 pt gap between a label and the next key.
 _rr = fig.canvas.get_renderer()
-_keys = (('synchronous', MID, 'line'), ('Chord', OURS, 'line'), ('SA', NAVY, 'dot'), ('Arpeggio', FA, 'diamond'))
+_keys = (('synchronous', MID, 'line'), ('Chord', OURS, 'line'), ('SA', NAVY, 'dot'), ('Arpeggio', ARPEGGIO, 'diamond'))
 _tw = []
 for lab, col, kind in _keys:
     _o = t(0, y, lab); _e = _o.get_window_extent(_rr).transformed(ax.transData.inverted()); _tw.append(_e.x1 - _e.x0); _o.remove()
@@ -280,11 +270,11 @@ _kw = sum((3.8 if k != 'line' else 6.3) for _, _, k in _keys) + sum(_tw)
 _gap = min(6.3, (251.5 - (xe + 6.3) - _kw) / (len(_keys) - 1))   # right-aligned at 251.5; gap shrinks only if needed
 lx = 251.5 - _kw - _gap * (len(_keys) - 1)
 print('results head ends at %.1f, legend starts at %.1f, gap %.2f' % (xe, lx, _gap))
-for lab, col, kind in (('synchronous', MID, 'line'), ('Chord', OURS, 'line'), ('SA', NAVY, 'dot'), ('Arpeggio', FA, 'diamond')):
+for lab, col, kind in (('synchronous', MID, 'line'), ('Chord', OURS, 'line'), ('SA', NAVY, 'dot'), ('Arpeggio', ARPEGGIO, 'diamond')):
     if kind == 'dot':   # SA is drawn as dots in (c) and (d); navy triangles in (d) are MDI-MIMO
         ax.plot([lx + 1.0], [y], 'o', ms=2.4, color=NAVY)
     elif kind == 'diamond':   # Arpeggio diamond in blue, as in (c), (e) and Fig. 3
-        ax.plot([lx + 1.0], [y], 'D', ms=2.3, mfc=FA, mec=FA, mew=0.5)
+        ax.plot([lx + 1.0], [y], 'D', ms=2.3, mfc=ARPEGGIO, mec=ARPEGGIO, mew=0.5)
     else:
         ax.plot([lx, lx + 5], [y, y], color=col, lw=1.2, solid_capstyle='butt')
     _o = t(lx + (3.8 if kind != 'line' else 6.3), y, lab, color=INK)
@@ -300,10 +290,10 @@ PH = 26.8
 ya = y + 8.7
 runs(0, ya, [('(a) Returns: 87–99% → ', {}), ('0.1%', dict(fontweight='bold'))])
 t(90, ya, '(b) Energy gap to truth')
-t(170, ya, '(c) SA at no more cycles')   # A5.5: SA re-tuned per budget, best pick within Antiphase's modeled cycles (B = 1), 6 Nov 2026
+t(170, ya, '(c) SA at no more cycles')   # A5.5: SA re-tuned per budget, best pick within Chord's modeled cycles (B = 1)
 pt, pb = ya + 4.2, ya + 4.2 + PH
 
-# (a) one sub-problem, K = 2, dimensions and offsets of the previous Fig. 1(b)
+# (a) one sub-problem, K = 2
 ex = defaultdict(list)
 with open(ROOT / 'mechanism' / 'mech_traces_examples.csv') as f:
     for r in csv.DictReader(f):
@@ -331,7 +321,7 @@ with open(ROOT / 'mechanism' / 'mech_traces_population.csv') as f:
         if r['K'] == '1':
             pop[r['variant']][0].append(int(r['half_step']))
             pop[r['variant']][1].append(float(r['mean_energy_gap_to_truth']))
-ax_b = axes(103, 162, pt, pb)   # 4 pt narrower (was 166) so (c)'s BER label sits nearer (c) than (b) (user, 5 Nov 2026)
+ax_b = axes(103, 162, pt, pb)   # so (c)'s BER label sits nearer (c) than (b)
 for key, col, ls, lw in (('no_alternation', MID, '-', 0.8), ('no_alternation_q0', MID, ':', 0.8),
                          ('alternation_q0', OURS, (0, (2.5, 1)), 0.7), ('alternation', OURS, '-', 1.1)):
     tt, g = (np.array(a) for a in pop[key])
@@ -345,20 +335,20 @@ ax_b.set_xticks([1, 100])
 ax_b.minorticks_off()
 ax_b.text(250, 11, 'no pinning', ha='right', va='bottom', fontsize=TXT)
 
-# (c) SA within Antiphase's modeled cycles (A5.5, PROTOCOL_A55 sec. 9, budget B = 1), the rings of Fig. 3(a), (b):
-#     x = users (16, 32); one line per SA hardware: serial HW (one comparator, Eq. (4)) and Antiphase HW (first-accept with rule (2)
-#     on Antiphase's D comparators); Antiphase is the blue line at 1x (user, 6 Nov 2026: earlier dot pairs and 'serial HW' x labels were unclear).
+# (c) SA within Chord's modeled cycles (A5.5, budget B = 1), the rings of Fig. 3(a), (b):
+#     x = users (16, 32); one line per SA hardware: serial HW (one comparator, Eq. (4)) and Chord HW (first-accept with rule (2)
+#     on Chord's D comparators); Chord is the line at 1x.
 A55 = json.load(open(ROOT / 'a55' / 'analysis.json'))['points']
-# users on x; one line per SA hardware, labelled in place; Antiphase is the blue line at 1 (legend: blue line) (6 Nov 2026)
+# users on x; one line per SA hardware, labelled in place; Chord is the line at 1
 ax_c = axes(186, 250, pt, pb)
-# Highlight follows the headline (user "Apply all three", 9 Nov 2026): first-accept, the winner, has its own colour (FA);
-# Antiphase is the 1x line in its own colour (user, 9 Nov 2026: the gray line was confusing); one-comparator SA stays navy.
+# First-accept has its own colour (ARPEGGIO);
+# Chord is the 1x line in its own colour; one-comparator SA is navy.
 REF_KW = dict(color=OURS, lw=0.9, zorder=1)
 ax_c.axhline(1, **REF_KW)
 XU = {'P1': 0, 'P2': 1}
-# first-accept (rule (2)) is a filled diamond as in Fig. 3; an open ring there means a budget pick (round-3 audit 5.2, 8 Nov 2026)
-# first-accept dotted: dashed blue is (b)'s Antiphase without pinning
-for key, mk, ms, ls, col in (('E/1', 'o', 2.6, '-', NAVY), ('F-R/1', 'D', 2.3, (0, (1, 1.2)), FA)):
+# first-accept (rule (2)) is a filled diamond as in Fig. 3; an open ring there means a budget pick
+# first-accept dotted: dashed blue is (b)'s Chord without pinning
+for key, mk, ms, ls, col in (('E/1', 'o', 2.6, '-', NAVY), ('F-R/1', 'D', 2.3, (0, (1, 1.2)), ARPEGGIO)):
     xs = [XU[P] for P in ('P1', 'P2')]
     ys = [A55[P]['budget'][key]['ratio'] for P in ('P1', 'P2')]
     # no interval bars: at this height they hide behind the markers; Fig. 3 carries the CIs
@@ -370,7 +360,7 @@ ax_c.set_ylim(0.06, 50)
 ax_c.set_xticks([0, 1])
 ax_c.set_xticklabels(['16', '32'])
 ax_c.set_yticks([1, 10])
-ax_c.set_yticklabels(['1\u00d7', '10\u00d7'])   # a ratio to Antiphase, not a raw BER
+ax_c.set_yticklabels(['1\u00d7', '10\u00d7'])   # a ratio to Chord, not a raw BER
 ax_c.minorticks_off()
 e1, e2 = A55['P1']['budget']['E/1']['ratio'], A55['P2']['budget']['E/1']['ratio']
 f1, f2 = A55['P1']['budget']['F-R/1']['ratio'], A55['P2']['budget']['F-R/1']['ratio']
@@ -385,33 +375,34 @@ def _pair(x, y, a, b, sz=6.0):
     o1.set_x(inv.transform((xd, 0))[0]); o2.set_x(inv.transform((xd + w1, 0))[0])
 _pair(0.5, 22, 'one comparator ', '%.1f–%.1f×' % (e1, e2))
 _pair(0.5, 0.13, 'Arpeggio ', '%.2f–%.2f×' % (f1, f2))
-# the 1x line is Antiphase (caption: SA's BER over Antiphase's); no in-plot label (it crowded the one-comparator line)
+# the 1x line is Chord (caption: SA's BER over Chord's); no in-plot label (it crowded the one-comparator line)
 
-ax_c.text(-0.27, 0.5, 'BER ratio', transform=ax_c.transAxes, rotation=90, ha='center', va='center', fontsize=TXT, color=DARK)   # centred, next to (c)'s ticks (user, 5 Nov 2026)
-for a, lab, fx in ((ax_a, 'round', 0.5), (ax_b, 'round', 0.5), (ax_c, 'users', 0.5)):   # 'round', was 'half-step' (user, 10 Nov 2026; work/round_rename_20261110)
+ax_c.text(-0.27, 0.5, 'BER ratio', transform=ax_c.transAxes, rotation=90, ha='center', va='center', fontsize=TXT, color=DARK)   # centred, next to (c)'s ticks
+for a, lab, fx in ((ax_a, 'round', 0.5), (ax_b, 'round', 0.5), (ax_c, 'users', 0.5)):
     a.text(fx, -0.07, lab, transform=a.transAxes, ha='center', va='top', fontsize=TXT, color=DARK)
 
 # --- second row -------------------------------------------------------------------------------------------------
 yb2 = pb + 15.2
 t(0, yb2, '(d) Chord SNR lead, dB; one mark per setting')
-t(251.5, yb2, '(e) Routed Arpeggio', ha='right')   # was '(e) 2.7-3.6 pJ/spin decision' (sequential reframe, 9 Nov 2026); right-aligned to fit
+t(251.5, yb2, '(e) Routed Arpeggio', ha='right')   # right-aligned to fit
 pt2, pb2 = yb2 + 4.2, yb2 + 4.2 + PH
 
 ax_d = axes(53, 130, pt2, pb2)
-# Colour and marker follow each method in Figs. 3 and 4 (user, 5 Nov 2026): MDI navy triangle, K-best gray square,
-# SA navy circle. Right of zero, tinted: Antiphase needs less SNR. Numbers sit in one column, signed.
-# Row names put the user count first ('32-user K-best'), so 32 is not read as K-best's candidate count (round-8 audit A3.3, 8 Nov 2026).
+# Colour and marker follow each method in Figs. 3 and 4: MDI navy triangle, K-best gray square,
+# SA navy circle. Right of zero, tinted: Chord needs less SNR. Numbers sit in one column, signed.
+# Row names put the user count first ('32-user K-best'), so 32 is not read as K-best's candidate count.
 rows = [
-    ('MDI-MIMO, $10^{-3}$', [0, 1.35, 0.5], NAVY, '^', '0 to +1.35'),   # published curves, Section V-C; 0.25 unresolved, drawn at 0 (blind review 8 Nov 2026; exactly 0 since round 7)
-    ('32-user K-best', [2.23, 1.70, 0.98, 0.78], DARK, 's', '+0.78 to +2.23'),   # paired, table2_pairs.csv: 16-QAM 2.23/1.70, QPSK 0.98/0.78 (QPSK added 8 Nov 2026)
+    ('MDI-MIMO, $10^{-3}$', [0, 1.35, 0.5], NAVY, '^', '0 to +1.35'),   # published curves, Section V-C; 0.25 unresolved, drawn at 0
+    ('32-user K-best', [2.23, 1.70, 0.98, 0.78], DARK, 's', '+0.78 to +2.23'),   # paired, table2_pairs.csv: 16-QAM 2.23/1.70, QPSK 0.98/0.78
     ('16-user K-best', [0, -1.60, 0, -0.07], DARK, 's', '0 to \u22121.60'),   # paired (table2_pairs.csv): 16-QAM 10^-3 unresolved (0), 10^-4 -1.60; QPSK 10^-3 unresolved (0), 10^-4 -0.07 [-0.17, -0.01]
     ('SA, equal sweeps', [-0.44, -1.40, -1.27, -0.88], NAVY, 'o', '\u22120.44 to \u22121.40'),   # a5/a53.json tab2_*, a5/a5.json a5a.tab2_x32
 ]
-ax_d.axvspan(0, 2.6, fc=TINT, ec='none', zorder=0)   # Antiphase's tint (was '#E0EFF8')
+ax_d.axvspan(0, 2.6, fc=TINT, ec='none', zorder=0)   # Chord's tint
+ax_d.axvspan(-2.1, 0, fc='#E3EDFF', ec='none', zorder=0)   # Arpeggio's 12% tint left of zero
 for i, (lab, vals, col, mk, num) in enumerate(rows):
     # One marker per condition, joined by a thin line: a range, not a bar from zero.
     ax_d.plot([min(vals), max(vals)], [i, i], color=col, lw=0.6, solid_capstyle='butt', zorder=3)
-    # Marks closer than one marker width (0.2 dB) are stacked vertically so that every setting shows (round-7 audit A5.2, 8 Nov 2026).
+    # Marks closer than one marker width (0.2 dB) are stacked vertically so that every setting shows.
     order = sorted(range(len(vals)), key=lambda j: vals[j])
     groups, ys = [[order[0]]], [float(i)] * len(vals)
     for j in order[1:]:
@@ -432,25 +423,23 @@ ax_d.set_yticks([])
 ax_d.spines['left'].set_visible(False)
 ax_d.set_xticks([-2, 0, 2])
 ax_d.set_xticklabels(['\u22122', '0', '+2'])
-for xx, word in ((-1, 'behind'), (1, 'ahead')):
-    ax_d.text(xx, -0.07, word, transform=ax_d.get_xaxis_transform(), ha='center', va='top', fontsize=TXT, color=DARK)
+for xx, word, wcol in ((-1, 'behind', ARPEGGIO), (1, 'ahead', OURS)):
+    ax_d.text(xx, -0.07, word, transform=ax_d.get_xaxis_transform(), ha='center', va='top', fontsize=TXT, color=wcol)
 
-# (e) Routed GF22 Arpeggio over Chord per detection, both at 1.00 ns since 11 Nov 2026 (A5.18 part 2); was A5.11 (7 Nov 2026; work/plan_20261024/antiphase_asic/RESULTS_A511.md
-#     sec. 4: rho_t 0.744 / 0.780, rho_E 1.021 / 0.610 at P1 (16 users) / P2 (32 users)); Section V-B. Replaces the pJ bars (sequential reframe, 9 Nov 2026).
-# 13 Nov 2026 (work/d128_table4_20261113, blind round f: both readers asked for the abstract's 64-user pair): third point,
-# D = 128 at 1.20 ns (A5.18 part 2 amendment A5; results_a518/d128_pair_1200.json: rho_t 0.718156, rho_E 0.845175); axis 6 pt wider to the left;
-# key rows swapped (energy above time) so each sits beside its line's 64-user end.
+# (e) Routed GF22 Arpeggio over Chord per detection, both at 1.00 ns (A5.18 part 2); Section V-B.
+# Third point: D = 128 at 1.20 ns (data/asic/a518/d128_pair_1200.json: rho_t 0.718156, rho_E 0.845175);
+# key rows: energy above time, so each sits beside its line's 64-user end.
 E_X0, E_X1, E_LO, E_HI = 197, 223, -0.3, 2.3
 ax_e = axes(E_X0, E_X1, pt2, pb2)
-ax_e.axhline(1, **REF_KW)   # Antiphase's line at 1x, first-accept in FA (9 Nov 2026, as (c))
+ax_e.axhline(1, **REF_KW)   # Chord's line at 1x, first-accept in ARPEGGIO, as (c)
 _u = (E_HI - E_LO) / (E_X1 - E_X0)   # data units per printed pt; the key keeps its printed offsets from the axis end
 def _kx(dpt):
     return E_HI + dpt * _u
-for vals, ls, mfc, lab, ykey in (((0.842744, 0.676901, 0.718156), '-', FA, 'time', 0.70), ((0.888282, 0.668024, 0.845175), (0, (1, 1.2)), 'white', 'energy', 0.88)):
-    ax_e.plot([0, 1, 2], vals, color=FA, lw=0.6, ls=ls, zorder=2)
-    ax_e.plot([0, 1, 2], vals, 'D', ms=2.3, mfc=mfc, mec=FA, mew=0.6, ls='none', zorder=3, clip_on=False)
-    ax_e.plot([_kx(0.75), _kx(4.5)], [ykey, ykey], color=FA, lw=0.6, ls=ls, clip_on=False)
-    ax_e.plot([_kx(2.625)], [ykey], 'D', ms=2.3, mfc=mfc, mec=FA, mew=0.6, ls='none', clip_on=False)
+for vals, ls, mfc, lab, ykey in (((0.842744, 0.676901, 0.718156), '-', ARPEGGIO, 'time', 0.70), ((0.888282, 0.668024, 0.845175), (0, (1, 1.2)), 'white', 'energy', 0.88)):
+    ax_e.plot([0, 1, 2], vals, color=ARPEGGIO, lw=0.6, ls=ls, zorder=2)
+    ax_e.plot([0, 1, 2], vals, 'D', ms=2.3, mfc=mfc, mec=ARPEGGIO, mew=0.6, ls='none', zorder=3, clip_on=False)
+    ax_e.plot([_kx(0.75), _kx(4.5)], [ykey, ykey], color=ARPEGGIO, lw=0.6, ls=ls, clip_on=False)
+    ax_e.plot([_kx(2.625)], [ykey], 'D', ms=2.3, mfc=mfc, mec=ARPEGGIO, mew=0.6, ls='none', clip_on=False)
     ax_e.text(_kx(5.625), ykey, lab, ha='left', va='center', fontsize=TXT, color=INK, clip_on=False)
 ax_e.set_xlim(E_LO, E_HI)
 ax_e.set_ylim(0.5, 1.12)

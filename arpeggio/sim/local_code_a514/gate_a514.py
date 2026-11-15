@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""A5.14 gates G1 and G3 (PROTOCOL_A514.md section 4) on real sub-problems of dev seed 9600 (never a held-out or tuning seed).
-G1: fa_seq_w(force=True) at W = 1 equals apx55.fa_seq rule 'r' bit for bit (best spins and every counter), and fa_seq_w at W = 1
-    without force is apx55.fa_seq itself.
-G3: at W = 2 and 4, fa_seq_w equals ref_w, a per-anneal loop written from the definition with the same random-number calls, bit
+"""A5.14 checks G1 and G3 on real sub-problems of dev seed 9600 (never a held-out or tuning seed).
+G1: arpeggio_seq_w(force=True) at W = 1 equals arpx55.arpeggio_seq rule 'r' bit for bit (best spins and every counter), and arpeggio_seq_w at W = 1
+    without force is arpx55.arpeggio_seq itself.
+G3: at W = 2 and 4, arpeggio_seq_w equals ref_w, a per-anneal loop written from the definition with the same random-number calls, bit
     for bit; the tracked energy matches a recomputation (|dE| < 1e-3); tests = S P anneals + commits - last.
 Usage: gate_a514.py OUT.json"""
 import json
@@ -10,14 +10,14 @@ import sys
 
 import torch
 
-import apx
-import apx55
-import apx514
+import arpx
+import arpx55
+import arpx514
 import mdi_solvers
 
-mimo = apx.mimo
+mimo = arpx.mimo
 c = mdi_solvers.MDI[('64x64', 16)]
-apx.SHAPES.setdefault('x64', dict(nt=64, M=16, mdi=dict(Rmax=int(c['Rmax']), S=int(c['S']), guesses=tuple(c['guesses'])), Ns_pub=None))
+arpx.SHAPES.setdefault('x64', dict(nt=64, M=16, mdi=dict(Rmax=int(c['Rmax']), S=int(c['S']), guesses=tuple(c['guesses'])), Ns_pub=None))
 
 
 @torch.no_grad()
@@ -30,7 +30,7 @@ def ref_w(I, R, S, T0, T1, K, W, q, start, gen):
     P = 2 * K
     D = N // P
     A = B * R
-    s = apx55.start_spins(B, R, N, P, start, gen, dev)
+    s = arpx55.start_spins(B, R, N, P, start, gen, dev)
     u = h[:, None, :] + 2 * torch.einsum('bij,brj->bri', J, s)
     E = mimo.energy0(s, h0, J)
     s, u, E = s.reshape(A, N).clone(), u.reshape(A, N).clone(), E.reshape(A).clone()
@@ -70,8 +70,8 @@ def ref_w(I, R, S, T0, T1, K, W, q, start, gen):
 def cases():
     """Real sub-problems: MMSE-guess Ising deltas at K = 1, 2, 3 for P1, P2, P4 shapes, dev seed 9600."""
     for pt, (shape, snr) in dict(P1=('x16', 20.0), P2=('x32', 22.0), P4=('x64', 22.0)).items():
-        sp = apx.SHAPES[shape]
-        bt = apx.draw(9600, snr, 0, 4, sp['nt'], sp['M'])
+        sp = arpx.SHAPES[shape]
+        bt = arpx.draw(9600, snr, 0, 4, sp['nt'], sp['M'])
         z, _, _ = mimo.mmse(bt)
         guess = mimo.quantize_levels(z / mimo._mu(bt, z), sp['M'])
         for K in (1, 2, 3):
@@ -86,15 +86,15 @@ for pt, K, I in cases():
             g1, g2 = torch.Generator(device='cuda'), torch.Generator(device='cuda')
             g1.manual_seed(77); g2.manual_seed(77)
             c1, c2 = {}, {}
-            a = apx55.fa_seq(I, 3, S, T, T, K, rule='r', q=q, start=st, gen=g1, count=c1)
-            b = apx514.fa_seq_w(I, 3, S, T, T, K, 1, q=q, start=st, gen=g2, count=c2, force=True)
+            a = arpx55.arpeggio_seq(I, 3, S, T, T, K, rule='r', q=q, start=st, gen=g1, count=c1)
+            b = arpx514.arpeggio_seq_w(I, 3, S, T, T, K, 1, q=q, start=st, gen=g2, count=c2, force=True)
             same = bool(torch.equal(a, b)) and all(c1[K][k] == c2[K][k] for k in c1[K])
             out['G1'].append(dict(pt=pt, K=K, start=st, S=S, T=T, q=q, identical=same))
             ok &= same
             for W in (2, 4):
                 g1.manual_seed(91); g2.manual_seed(91)
                 au, cw = {}, {}
-                a = apx514.fa_seq_w(I, 2, S, T, T, K, W, q=q, start=st, gen=g1, count=cw, audit=au)
+                a = arpx514.arpeggio_seq_w(I, 2, S, T, T, K, W, q=q, start=st, gen=g1, count=cw, audit=au)
                 b = ref_w(I, 2, S, T, T, K, W, q, st, g2)
                 same = bool(torch.equal(a, b))
                 good = same and au['max_dE'] < 1e-3 and au['tests_identity']

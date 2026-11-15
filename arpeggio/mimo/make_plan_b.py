@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Builds PLAN_B.json for the milestone-B timed cohort (PROTOCOL_B.md) from the scaling analysis (analyze_scale.py
---json) and the tuned schedules, by the protocol's rules:
-- kernel items: 16x16 QPSK at 12 dB (RI, milestone A schedule; and DI, the MDI-Anechoic schedule), 16x16 16-QAM dDI at
-  22 dB (milestone A schedule), and the massive-MIMO shape = the Nr > Nt i.i.d. configuration with the largest gap at
+"""Builds PLAN_B.json for the timed cohort of the scaling items from the scaling analysis (analyze_scale.py
+--json) and the tuned schedules:
+- kernel items: 16x16 QPSK at 12 dB (RI, tuned schedule; and DI, the MDI-Chord schedule), 16x16 16-QAM dDI at
+  22 dB (tuned schedule), and the massive-MIMO shape = the Nr > Nt i.i.d. configuration with the largest gap at
   BER 1e-3 between MMSE and the best detector, at its operating point; each as MMSE alone, the whole chain ('e2e')
   and the kernel alone, at the anneal counts listed;
-- scaling items: for every configuration with an operating point, Anechoic at R* (whole chain, GPU) and K-best at
+- scaling items: for every configuration with an operating point, Chord at R* (whole chain, GPU) and K-best at
   K* (CPU), at that SNR;
 - flips: instrumented runs of the kernel items at 16 anneals and of the massive shape at R*.
 Usage: make_plan_b.py SCALE_SUMMARY.json OUT_PLAN.json"""

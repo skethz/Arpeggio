@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Held-out 16-QAM sweeps on Princeton's delta formulation (dDI, K = 1), seed 1, with the dDI-tuned Anechoic schedules
-# (results/tune_ddi/r2_*): Anechoic with alternating copy updates, AHC and the SDE CIM on dDI, plus MMSE and K-best 32
+# Held-out 16-QAM sweeps on Princeton's delta formulation (dDI, K = 1), seed 1, with the dDI-tuned Chord schedules
+# (results/tune_ddi/r2_*): Chord with alternating copy updates, AHC and the SDE CIM on dDI, plus MMSE and K-best 32
 # on the same draws. The correlated case reuses 16x16's schedule.
 R=<SCRATCH>/mimo_ising_20261016; source $R/env.sh > /dev/null 2>&1; cd $R/src; O=../results/ber_seed1_ddi; mkdir -p $O
 X16='{"S":256,"t0":0.3,"t1":0.3,"q":0.4,"kappa":0,"phases":2}'; X32='{"S":256,"t0":0.3,"t1":0.2,"q":0.4,"kappa":0.3,"phases":2}'

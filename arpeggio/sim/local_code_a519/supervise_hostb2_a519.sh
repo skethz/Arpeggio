@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# A5.19 share on hostB GPU0-3 (ADDENDUM_A519_HOSTB.md; GPU0-1 added by amendment 1, 14 Nov). Untimed BER only. The five yield safeguards of supervise_hosta_a519.sh:
-#  (1) 1 worker per GPU (throughput check 14 Nov: 2 or 4 workers on one 5090 give less than 1), memory cap 0.20 of the GPU (6,521 MiB);
-#  (2) a foreign-process check on our two GPUs every 15 s;
+# A5.19 share on hostB GPU0-3. Untimed BER only. The five yield safeguards of supervise_hosta_a519.sh:
+#  (1) 1 worker per GPU (2 or 4 workers on one 5090 give less throughput than 1), memory cap 0.20 of the GPU (6,521 MiB);
+#  (2) a foreign-process check on our GPUs every 15 s;
 #  (3) stop = TERM, after 20 s KILL, then an nvidia-smi check that none of our pids is left on that GPU (logged);
 #  (4) after every stop, unreadable done.json files are renamed *.bad.<t> (the job rewrites them from its saved batches);
 #  (5) workers run under setpriv --pdeathsig TERM, so they stop if this supervisor dies.
 # A GPU with any compute process that is not ours gets no new worker until it is free. Other processes are never touched.
 # No planner here: sync_hostB2_a519.sh writes plan.json with the chunks hostA handed to hostB. Every 120 s: start workers if a chunk
-# is startable, write busy.txt (read by the sync) and status.txt. At 16 Nov 2026 11:50 CET: stop our workers and exit, so the sync
+# is startable, write busy.txt (read by the sync) and status.txt. At 11:50 CET: stop our workers and exit, so the sync
 # can push the last batches before hostA's 12:00 cut.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 M=$A/a519m
 R=$M/results/a519
 L=$M/logs

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""A5.8 analysis (PROTOCOL_A58.md sections 7-8; written 7 Nov 2026 before any held-out result). No GPU.
+"""A5.8 analysis. No GPU.
 Usage: analyze_a58.py ROOT X64F_DIR   (ROOT = .../results/a58; X64F_DIR = .../results/a56/X64F/x64/<REF>/snr_22.00). Writes ROOT/analysis.json.
 Pairs the B = 1 pick's held-out batches (sets held0..held5, seed 344) with X64F's batches of the same index. Ratio SA/(i) of bit errors,
 paired cluster bootstrap (a56an.boot_ratio, 4,000) and exact McNemar on erroneous uses. x_F = mean over K of SA (tests + flips) / anneals
-over (i)'s L_K + F_K, both counted on the paired batches. A time cut uses every completed batch (section 6)."""
+over (i)'s L_K + F_K, both counted on the paired batches. A time cut uses every completed batch."""
 import glob, json, os, sys
 import numpy as np
 
@@ -60,9 +60,9 @@ for K in range(1, RMAX + 1):
         xk[str(K)] = dict(sa=(s['tests'] + s['flips']) / s['anneals'], ref=256 * K + q['flips'] / q['anneals'])
         xk[str(K)]['x'] = xk[str(K)]['sa'] / xk[str(K)]['ref']
 xF = float(np.mean([v['x'] for v in xk.values()]))
-term = 'antiphase_leads' if lo > 1 else ('sa_leads' if hi < 1 else 'no_detected_difference')
-res = dict(note='A5.8: first-accept SA (rule (2), model F) re-tuned for B = 1 vs Antiphase (i) at P4 = 64x64 16-QAM, 22 dB, Ns 8; seed 344; '
-                'ratio SA/(i); modeled cycles only; exploratory.',
+term = 'chord_leads' if lo > 1 else ('sa_leads' if hi < 1 else 'no_detected_difference')
+res = dict(note='A5.8: first-accept SA (rule (2), model F) re-tuned for B = 1 vs Chord (i) at P4 = 64x64 16-QAM, 22 dB, Ns 8; seed 344; '
+                'ratio SA/(i); modeled cycles only.',
            pick=pick, batches=len(common), batches_expected=600, uses=int(len(a)), sa_err_uses=int((a > 0).sum()), ref_err_uses=int((b > 0).sum()),
            sa_bit_err=int(a.sum()), ref_bit_err=int(b.sum()), sa_ber=float(a.sum()) / (len(a) * BPU), ref_ber=float(b.sum()) / (len(b) * BPU),
            ratio=r, lo=lo, hi=hi, mcnemar_p=p, sa_only=nx, ref_only=ny, x_F=xF, x_F_per_K=xk,

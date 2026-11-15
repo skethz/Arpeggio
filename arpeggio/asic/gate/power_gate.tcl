@@ -1,6 +1,6 @@
-# Innovus post-route TT power of a saved routed engine with netlist TCFs (gate_r4, PROTOCOL.md §4). Analysis only: the
+# Innovus post-route TT power of a saved routed engine with netlist TCFs (gate_r4). Analysis only: the
 # database (a sha256-verified copy of the accepted run) is restored into this session; nothing is optimised or saved.
-# Template: an earlier project power script. Environment: PP_DB, PP_TOP, PP_OUT, PP_CPUS, PP_TCFS ("tag=/path/a.tcf tag2=/path/b.tcf")
+# Environment: PP_DB, PP_TOP, PP_OUT, PP_CPUS, PP_TCFS ("tag=/path/a.tcf tag2=/path/b.tcf")
 setMultiCpuUsage -localCpu $::env(PP_CPUS)
 set OUT $::env(PP_OUT)
 proc step {name script} {

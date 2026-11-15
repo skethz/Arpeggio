@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Unit checks for milestone B's MDI-MIMO pieces (DESIGN.md B1). Prints one line per check and exits non-zero on failure.
+"""Unit checks for the MDI-MIMO pieces. Prints one line per check and exits non-zero on failure.
 1. dDI around any guess, K = 1..3: scale * E0(s) + c equals ||y - H (xg + T s)||^2 for random spins (unclipped).
 2. Radius rule with lambda_min: R = 0 implies the guess is ML (exhaustive search, 3x3 16-QAM).
 3. MMSE-SIC (both orderings) beats MMSE at 16x16 16-QAM, 20 dB (tuning seed).
-4. MDI with a strong solver (Anechoic-dDI, many anneals) finds ML on 3x3 16-QAM in nearly every instance."""
+4. MDI with a strong solver (Chord-dDI, many anneals) finds ML on 3x3 16-QAM in nearly every instance."""
 import itertools
 import math
 import sys
@@ -68,7 +68,7 @@ gs = torch.Generator(device='cuda'); gs.manual_seed(1000 + 7919)
 
 
 def solver(I, na, K):
-    return mimo.anechoic(I, na, 128 * 2 * K, 0.3, 0.3, 0.4, gen=gs, phases=2 * K)
+    return mimo.chord(I, na, 128 * 2 * K, 0.3, 0.3, 0.4, gen=gs, phases=2 * K)
 
 
 hit = tot = 0
@@ -79,5 +79,5 @@ for snr in (12.0, 18.0):
                       for i in range(0, 400, 100)])
     ml = allx[dall.argmin(1)]
     hit += int((lh == ml).all(1).sum()); tot += 400
-check('MDI(Anechoic) finds ML', hit >= 0.97 * tot, '%d of %d instances' % (hit, tot))
+check('MDI(Chord) finds ML', hit >= 0.97 * tot, '%d of %d instances' % (hit, tot))
 sys.exit(0 if ok else 1)

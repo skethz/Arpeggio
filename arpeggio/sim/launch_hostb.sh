@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Starts the hostB error-counting workers (untimed): 2 per allowed GPU, 2 threads each (12 cores of the 24 allowed).
 # Idempotent: a worker name already running is not started twice. Usage: launch_hostb.sh [FILTER]
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID> [2]=<GPU_UUID>)
 FILTER=${1:-}
 for i in 0 1 2; do for w in a b; do

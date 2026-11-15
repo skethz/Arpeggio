@@ -24,7 +24,7 @@
   "job": {
    "shape": "x64",
    "method": "a56_128_0.3_0.3_0.4_0_alt_8",
-   "stream": "mdiane8",
+   "stream": "mdichord8",
    "snr": 22.0,
    "seed": 344,
    "batch": 500
@@ -45,7 +45,7 @@
  "hz3": {
   "job": {
    "shape": "x64",
-   "method": "abl_ape_0.3_0.3_0.4_rand_8",
+   "method": "abl_chord_0.3_0.3_0.4_rand_8",
    "snr": 22.0,
    "seed": 1000,
    "batch": 500
@@ -87,7 +87,7 @@
  "hz5": {
   "job": {
    "shape": "x16",
-   "method": "mdiane32",
+   "method": "mdichord32",
    "snr": 20.0,
    "seed": 102,
    "batch": 2000

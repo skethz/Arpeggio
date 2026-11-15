@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# A5.3d supervisor (PROTOCOL_A53.md Addendum 1): LOWEST priority. Waits (polling every 5 min) until A5 tier 1 is complete
+# A5.3d supervisor: LOWEST priority. Waits (polling every 5 min) until A5 tier 1 is complete
 # (a5_left.py tier1_left 0) AND A5.3 (a)-(c) are complete (plan_hostb_a53.json has no running/failed/pending job and the
 # flip calibration has all 32 entries). Then runs plan_hostb_a53d.json (3 jobs) with at most 3 workers a53d<gpu><a|b|c>,
-# one per GPU, each launched only on a GPU with >= 6 GB free, no compute process outside ap_ber_20261024 and no other
+# one per GPU, each launched only on a GPU with >= 6 GB free, no compute process outside arpeggio_ber_20261024 and no other
 # A5.3/A5.3d process; GPU order 1, 2, 0; never GPU3; CPU guard 20 cores. Yield every 60 s on GPU1/GPU2 (terminate ours on
 # a GPU that gains a foreign process; logged; jobs resume from saved batches). Exits when the plan is done.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 PL=$A/results/plan_hostb_a53d.json
 P53=$A/results/plan_hostb_a53.json
 CAL=$A/results/a53_flips_sa.json
@@ -13,9 +13,9 @@ LOG=$A/logs/supervisor_a5.log
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID> [2]=<GPU_UUID>)
 cd $A
 source $A/venv/bin/activate
-foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q ap_ber_20261024 || echo $p; done | wc -l; }
+foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q arpeggio_ber_20261024 || echo $p; done | wc -l; }
 freemb() { nvidia-smi --query-gpu=uuid,memory.free --format=csv,noheader,nounits | grep $1 | awk -F', ' '{print $2}'; }
-ourcpu() { ps -eo pcpu,args | grep "ap_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
+ourcpu() { ps -eo pcpu,args | grep "arpeggio_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
 ours53() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -qE "plan_hostb_a53|calib_flips_sa" && echo $p; done | wc -l; }
 pickgpu() { for i in 1 2 0; do [ "$(foreign ${G[$i]})" -gt 0 ] && continue; [ "$(ours53 ${G[$i]})" -gt 0 ] && continue; [ "$(freemb ${G[$i]})" -lt 6000 ] && continue; echo $i; return; done; echo none; }
 left_of() { python src/status.py $1 $A/results 2>/dev/null | grep -E "^  (abl|tab2) " | awk -v c="$2" '{if (c=="pend") s+=$11; else s+=$7+$9+$11} END{print s+0}'; }
@@ -29,7 +29,7 @@ launch() {
   for w in a b c; do
     [ "$(pgrep -f "runner.py --plan $PL" | wc -l)" -ge 3 ] && return
     # unfinished jobs (pending + claimed, including stale claims of yielded workers) must exceed live workers; a new
-    # worker reclaims a stale claim (same host, dead pid) and resumes from its saved batches (v2 fix, Mon 26 Oct 01:5x)
+    # worker reclaims a stale claim (same host, dead pid) and resumes from its saved batches
     [ "$(left_of $PL all)" -le "$(pgrep -f "runner.py --plan $PL" | wc -l)" ] && return
     i=$(pickgpu); [ "$i" = none ] && return
     name=a53d$i$w

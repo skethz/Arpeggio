@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Milestone-B scaling tables. Per configuration: the SNR at BER 1e-3 of every detector setting (log-linear
+"""Scaling tables. Per configuration: the SNR at BER 1e-3 of every detector setting (log-linear
 interpolation between grid points, first crossing; '>x' not reached by the top of the grid, '<x' below it already),
-and the operating point = the lowest grid SNR at which both a K-best K <= 256 and an Anechoic anneal count <= 256
-reach BER <= 1e-3; there the smallest such K* and R*, with development wall times per detection (shared machine,
-from the sweep; the timed cohort measures them properly) and SD node counts.
+and the operating point = the lowest grid SNR at which both a K-best K <= 256 and a Chord anneal count <= 256
+reach BER <= 1e-3; there the smallest such K* and R*, with wall times per detection from the sweep (shared machine)
+and SD node counts.
 Usage: analyze_scale.py DIR [--json OUT.json] > tables.md"""
 import glob
 import json
@@ -50,7 +50,7 @@ for f in sorted(glob.glob(os.path.join(d, '*.jsonl'))):
                 m0 = main.get((r['method'], r['snr']))
                 assert m0 is None or m0['err'] == r['err'], 'draws differ: ' + fd
                 continue
-            r = dict(r, method='anedi' + r['method'][3:])
+            r = dict(r, method='anedi' + r['method'][5:])
             rows.append(r)
     if not rows:
         continue
@@ -65,9 +65,9 @@ for f in sorted(glob.glob(os.path.join(d, '*.jsonl'))):
     snrs = sorted(set(r['snr'] for r in rows))
     cr = {m: crossing([(s, t[(m, s)]['ber']) for s in snrs if (m, s) in t]) for m in meth}
     ks = [m for m in meth if m.startswith('kbest')]
-    an = [m for m in meth if m.startswith('ane') and not m.startswith('anedi')]
+    an = [m for m in meth if m.startswith('chord') and not m.startswith('anedi')]
     di = [m for m in meth if m.startswith('anedi')]
-    nR = lambda m: int(m[5:]) if m.startswith('anedi') else int(m[3:])
+    nR = lambda m: int(m[5:])
     op = None
     fam = di if di else an                        # QPSK: the delta-formulation ladder when present
     for s in snrs:
@@ -102,7 +102,7 @@ for f in sorted(glob.glob(os.path.join(d, '*.jsonl'))):
     if op:
         s, k, a = op
         per = lambda m: t[(m, s)]['seconds'] / t[(m, s)]['n']
-        print('\nOperating point %g dB: K-best K* = %s (BER %.2e, dev %.2f µs/det on CPU), Anechoic%s R* = %s (BER %.2e, '
+        print('\nOperating point %g dB: K-best K* = %s (BER %.2e, dev %.2f µs/det on CPU), Chord%s R* = %s (BER %.2e, '
               'dev %.3f µs/det on GPU incl. mapping); MMSE %.2e, SIC %.2e.' %
               (s, k[5:], t[(k, s)]['ber'], 1e6 * per(k), '-DI' if di else '', nR(a), t[(a, s)]['ber'], 1e6 * per(a),
                t[('mmse', s)]['ber'], t[('sic', s)]['ber']))

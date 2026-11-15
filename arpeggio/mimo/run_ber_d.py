@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Milestone D: uncoded BER of PIMI and our detectors on the same held-out channel draws (mimo.make_batch, our SNR;
+"""Uncoded BER of PIMI and our detectors on the same held-out channel draws (mimo.make_batch, our SNR;
 pimi.ebn0_to_snr converts their Eb/N0). One JSON line per (method, SNR). Methods:
-  mmse          our unbiased hard MMSE (milestones A-C);   mmseb   their biased hard MMSE (PIMI's x_mmse)
+  mmse          our unbiased hard MMSE;   mmseb   their biased hard MMSE (PIMI's x_mmse)
   kbest32       K-best, K = 32 (CPU, numba)
   pimiS         PIMI (pimi.pimi_torch): S steps, 32 trials, the authors' settings (schedule pimi.sched_for: A for
                 16-QAM, B for QPSK); pimiAS / pimiBS force schedule A or B (sensitivity)
-  anedR         Antiphase, one delta stage (dDI K = 1 around MMSE; S 256 half-steps, T 0.3, q 0.4, alternating copies),
-                R anneals: milestone A's frozen 16x16 schedule (= the MDI schedule at K = 1)
+  anedR         Chord, one delta stage (dDI K = 1 around MMSE; S 256 rounds, T 0.3, q 0.4, alternating copies),
+                R anneals: the tuned 16x16 schedule (= the MDI schedule at K = 1)
   mdiahcN       MDI-AHC (Singh et al. 2024, published), N anneals per stage
-  mdianeN       Antiphase in the MDI wrapper (formerly MDI-Anechoic; Sk 128, T 0.3, q 0.4, 2K phases, kappa 0)
-  mdiabl{v}N    ablation of Antiphase in MDI, v = i (as frozen), ii (copy alternation off: 1 phase), iii (kappa 0.3,
-                Onsager kT), iv (1 phase and kappa 0.3); schedule otherwise frozen
+  mdichordN     Chord in the MDI wrapper (Sk 128, T 0.3, q 0.4, 2K phases, kappa 0)
+  mdiabl{v}N    ablation of Chord in MDI, v = i (Chord itself), ii (copy alternation off: 1 phase), iii (kappa 0.3,
+                Onsager kT), iv (1 phase and kappa 0.3); schedule otherwise unchanged
 MDI configuration per shape: --mdi JSON (Table I). Seeds: draws (seed, SNR index, batch index); solver random
 numbers from a separate generator (+7919).
 Usage: run_ber_d.py --nt 16 --M 16 --snrs 20 --n 8000 --batch 2000 --seed 42 --methods ... --mdi '{...}' --out PREFIX"""
@@ -38,9 +38,9 @@ ap.add_argument('--mdi', default='{"Ns":64,"Rmax":3,"S":8,"guesses":["mmse","sic
 ap.add_argument('--out', required=True)
 a = ap.parse_args()
 torch.backends.cuda.matmul.allow_tf32 = False
-MA = dict(Sk=128, t0=0.3, t1=0.3, q=0.4, kappa=0.0)                       # frozen (milestone B)
+MA = dict(Sk=128, t0=0.3, t1=0.3, q=0.4, kappa=0.0)                       # MDI schedule
 ABL = {'i': (True, 0.0), 'ii': (False, 0.0), 'iii': (True, 0.3), 'iv': (False, 0.3)}   # (alternating copies, kappa)
-KAPPA_A = 0.3                                                              # milestone A 32x32 16-QAM dDI schedule
+KAPPA_A = 0.3                                                              # kappa of the 32x32 16-QAM dDI schedule
 methods = a.methods.split(',')
 mdic = json.loads(a.mdi)
 levels = np.array(mimo.PAM[a.M]['levels'], np.float64)
@@ -52,7 +52,7 @@ def snr_of(x):
 
 
 def mdi_solver(alt, kappa, gs):
-    return lambda I_, na, K: mimo.anechoic(I_, na, MA['Sk'] * 2 * K, MA['t0'], MA['t1'], MA['q'], kappa=kappa, gen=gs,
+    return lambda I_, na, K: mimo.chord(I_, na, MA['Sk'] * 2 * K, MA['t0'], MA['t1'], MA['q'], kappa=kappa, gen=gs,
                                            phases=2 * K if alt else 1)
 
 
@@ -82,13 +82,13 @@ for si, sx in enumerate(a.snrs.split(',')):
                 lh = pimi.detect_torch(b, int(m[5:] if sch else m[4:]), pimi.TRIALS, gs, z=z, sched=sch)
             elif m.startswith('aned'):
                 Id = mimo.ising_delta(b, z, K=1)
-                S_ = mimo.anechoic(Id, int(m[4:]), 2 * MA['Sk'], MA['t0'], MA['t1'], MA['q'], kappa=0.0, gen=gs, phases=2)
+                S_ = mimo.chord(Id, int(m[4:]), 2 * MA['Sk'], MA['t0'], MA['t1'], MA['q'], kappa=0.0, gen=gs, phases=2)
                 lh, _, _ = mimo.select(b, mimo.spins_to_levels_delta(S_, Id, a.M), lm)
             elif m.startswith('mdi'):
                 if m.startswith('mdiahc'):
                     Ns, solver = int(m[6:]), (lambda I_, na, K: mimo.ahc(I_, na, gen=gs))
-                elif m.startswith('mdiane'):
-                    Ns, solver = int(m[6:]), mdi_solver(True, 0.0, gs)
+                elif m.startswith('mdichord'):
+                    Ns, solver = int(m[8:]), mdi_solver(True, 0.0, gs)
                 elif m.startswith('mdiabl'):
                     v = m[6:].rstrip('0123456789')
                     Ns = int(m[6 + len(v):])
@@ -114,7 +114,7 @@ for si, sx in enumerate(a.snrs.split(',')):
                 v = m[6:].rstrip('0123456789'); r['ablation'] = dict(variant=v, alternating=ABL[v][0],
                                                                      kappa=KAPPA_A if ABL[v][1] else 0.0)
             if not m.startswith('mdiahc'):
-                r['mdiane'] = MA
+                r['mdichord'] = MA
         if m.startswith('pimi'):
             sch = m[4] if m[4] in 'AB' else pimi.sched_name(a.nt, a.M)
             st_ = int(m[5:]) if m[4] in 'AB' else int(m[4:])

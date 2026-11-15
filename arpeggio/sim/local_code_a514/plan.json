@@ -1,11 +1,11 @@
 {
  "host": "hostB",
- "amendment": "A5.14-A5.16",
+ "experiment": "A5.14-A5.16",
  "jobs": [
   {
    "set": "a515_c000",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -17,7 +17,7 @@
   {
    "set": "a515_c000",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -53,7 +53,7 @@
   {
    "set": "a515_c001",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -65,7 +65,7 @@
   {
    "set": "a515_c001",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -101,7 +101,7 @@
   {
    "set": "a515_c002",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -113,7 +113,7 @@
   {
    "set": "a515_c002",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -149,7 +149,7 @@
   {
    "set": "a515_c003",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -161,7 +161,7 @@
   {
    "set": "a515_c003",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -197,7 +197,7 @@
   {
    "set": "a515_c004",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -209,7 +209,7 @@
   {
    "set": "a515_c004",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -245,7 +245,7 @@
   {
    "set": "a515_c005",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -257,7 +257,7 @@
   {
    "set": "a515_c005",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -293,7 +293,7 @@
   {
    "set": "a515_c006",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -305,7 +305,7 @@
   {
    "set": "a515_c006",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -341,7 +341,7 @@
   {
    "set": "a515_c007",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -353,7 +353,7 @@
   {
    "set": "a515_c007",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -389,7 +389,7 @@
   {
    "set": "a515_c008",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -401,7 +401,7 @@
   {
    "set": "a515_c008",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -437,7 +437,7 @@
   {
    "set": "a515_c009",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -449,7 +449,7 @@
   {
    "set": "a515_c009",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -485,7 +485,7 @@
   {
    "set": "a515_c010",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -497,7 +497,7 @@
   {
    "set": "a515_c010",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -533,7 +533,7 @@
   {
    "set": "a515_c011",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -545,7 +545,7 @@
   {
    "set": "a515_c011",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -581,7 +581,7 @@
   {
    "set": "a515_c012",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -593,7 +593,7 @@
   {
    "set": "a515_c012",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -629,7 +629,7 @@
   {
    "set": "a515_c013",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -641,7 +641,7 @@
   {
    "set": "a515_c013",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -677,7 +677,7 @@
   {
    "set": "a515_c014",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -689,7 +689,7 @@
   {
    "set": "a515_c014",
    "shape": "x32",
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "snr": 22.0,
    "seed": 2027,
    "batch": 1000,
@@ -4743,5 +4743,5 @@
    "exp": "a514"
   }
  ],
- "note": "P4 W=4 jobs moved to hostA GPU5 (ADDENDUM_A514_HOSTA.md)"
+ "note": "P4 W=4 jobs moved to hostA GPU5"
 }

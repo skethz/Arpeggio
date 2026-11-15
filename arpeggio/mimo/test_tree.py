@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""kbest2 (milestone B) returns the same decisions as milestone A's kbest on random problems (QPSK and 16-QAM,
+"""kbest2 returns the same decisions as kbest on random problems (QPSK and 16-QAM,
 several shapes and K); and the sphere decoder equals exhaustive ML on 3x3 16-QAM."""
 import itertools
 import sys

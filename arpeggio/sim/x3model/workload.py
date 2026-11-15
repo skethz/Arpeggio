@@ -1,11 +1,11 @@
-"""MDI-Antiphase on the engine model: BER and per-detection engine work at a matched-BER point (CPU only).
+"""MDI-Chord on the engine model: BER and per-detection engine work at a matched-BER point (CPU only).
 
 Draws: mimo.make_batch(B, Nt, Nt, M, snr, torch.Generator('cpu').manual_seed(seed), device='cpu'), one call (the same
 draws as the MDI-AHC fork). Wrapper: `mdi_logged`, a copy of mimo.mdi (Singh et al. 2024 Sec. IV-C, Table I settings,
 as the study runs it) that also tells the solver which detections, stage and guess a call belongs to; checked equal
 to mimo.mdi with --check. Solvers:
-  float      the study's PyTorch Anechoic (mimo.anechoic, Sk 128, T 0.3, q 0.4, 2K phases), its own torch generator;
-  fx_philox  the engine (ape_model.cpp, cycle model) with Philox streams = the CUDA kernel's arithmetic and RNG;
+  float      the study's PyTorch Chord (mimo.chord, Sk 128, T 0.3, q 0.4, 2K phases), its own torch generator;
+  fx_philox  the engine (engine_model.cpp, cycle model) with Philox streams = the CUDA kernel's arithmetic and RNG;
   fx_xs      the engine with the production xorshift streams.
 Engine runs: per sub-problem (instance) LOAD G, LOAD h, RUN; seed per solver call, inst = detection index.
 Replay (--replay N): the first N detections' full command sequences (stage by stage, guess by guess, K = 1..R_g queued
@@ -16,9 +16,9 @@ import sys, os, json, math, time, argparse
 sys.path.insert(0, sys.argv[1]); sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 import torch
-import mimo, anefx, mdi_solvers
-import antiphase_ref as ar
-import ape_py
+import mimo, chordfx, mdi_solvers
+import chord_ref as ar
+import engine_py
 
 ap = argparse.ArgumentParser()
 ap.add_argument('study'); ap.add_argument('out')
@@ -28,10 +28,10 @@ ap.add_argument('--solver', default='fx_xs'); ap.add_argument('--replay', type=i
 ap.add_argument('--A', type=int, default=4); ap.add_argument('--threads', type=int, default=16)
 ap.add_argument('--check', action='store_true'); ap.add_argument('--keep', type=int, default=0)
 ap.add_argument('--stim', type=int, default=0, help='write stim/expected for the first N detections (with --replay >= N)')
-ap.add_argument('--single', type=int, default=0, help='one delta stage around MMSE with this many anneals (milestone D ane_ss)')
+ap.add_argument('--single', type=int, default=0, help='one delta stage around MMSE with this many anneals (chord_ss)')
 args = ap.parse_args()
 torch.set_num_threads(args.threads)
-MDIANE = mdi_solvers.MDIANE
+MDICHORD = mdi_solvers.MDICHORD
 
 
 @torch.no_grad()
@@ -86,7 +86,7 @@ D = 2 * args.nt
 dummy = dict(J=torch.zeros(1, 2, 2), h=torch.zeros(1, 2), h0=torch.zeros(1, 2))
 TAB = {}
 for K in (1, 2, 3):
-    F = anefx.to_fixed(dummy, MDIANE['Sk'] * 2 * K, MDIANE['t0'], MDIANE['t1'], MDIANE['q'], MDIANE['kappa'])
+    F = chordfx.to_fixed(dummy, MDICHORD['Sk'] * 2 * K, MDICHORD['t0'], MDICHORD['t1'], MDICHORD['q'], MDICHORD['kappa'])
     TAB[K] = (F['T'].numpy().astype(np.int16), F['c'].numpy().astype(np.int16), int(F['q']))
 log = []          # per sub-problem instance: det, stage, guess, K, na, cycles, dop, fop, iop, rport, call
 keepGH = {}       # (det, call) -> (G, h) for the replay sample
@@ -103,14 +103,14 @@ def call_seed(ci):
 def solver(I, na, K, meta):
     ci = calls[0]; calls[0] += 1
     if args.solver == 'float':
-        return mimo.anechoic(I, na, MDIANE['Sk'] * 2 * K, MDIANE['t0'], MDIANE['t1'], MDIANE['q'], kappa=MDIANE['kappa'],
+        return mimo.chord(I, na, MDICHORD['Sk'] * 2 * K, MDICHORD['t0'], MDICHORD['t1'], MDICHORD['q'], kappa=MDICHORD['kappa'],
                              gen=fgen, phases=2 * K)
-    F = anefx.to_fixed(I, MDIANE['Sk'] * 2 * K, MDIANE['t0'], MDIANE['t1'], MDIANE['q'], MDIANE['kappa'])
+    F = chordfx.to_fixed(I, MDICHORD['Sk'] * 2 * K, MDICHORD['t0'], MDICHORD['t1'], MDICHORD['q'], MDICHORD['kappa'])
     G, h = ar.compress(F, K)
     T, c, q = TAB[K]
     idx = meta['idx'].numpy()
     inst = np.zeros_like(idx) if check_mode[0] else idx
-    spins, de, cyc, st = ape_py.solve_batch(G.numpy(), h.numpy(), 2 * K, na, T, c, q, inst.astype(np.uint32),
+    spins, de, cyc, st = engine_py.solve_batch(G.numpy(), h.numpy(), 2 * K, na, T, c, q, inst.astype(np.uint32),
                                             call_seed(ci), A=args.A, philox=1 if args.solver == 'fx_philox' else 0,
                                             nthreads=args.threads)
     gi = {'mmse': 0, 'sic': 1}[meta['guess']]
@@ -132,7 +132,7 @@ if args.check:   # the logged wrapper equals mimo.mdi with the same deterministi
     print('CHECK mdi_logged == mimo.mdi:', bool((l1 == l2).all()), flush=True)
     log.clear(); keepGH.clear(); calls[0] = 0; check_mode[0] = False
     fgen.manual_seed(args.seed + 100000)
-if args.single:   # milestone D's "Antiphase, one stage" (bench_d.py ane_ss): dDI K = 1 around MMSE, R anneals, mimo.select
+if args.single:   # "Chord, one stage" (bench_d.py chord_ss): dDI K = 1 around MMSE, R anneals, mimo.select
     z, Ai, _ = mimo.mmse(b)
     lm = mimo.mmse_hard(b, z, Ai)
     Id = mimo.ising_delta(b, z, K=1)
@@ -168,10 +168,10 @@ if args.solver != 'float':
         rep_cyc, nG, nH = [], [], []
         stim_pr = None
         if args.stim:                                       # one program: table, then the first N detections back to back
-            stim_pr = ape_py.Program(D); T3s, c3s, _ = TAB[3]; stim_pr.load_tab(T3s, c3s, 0); stim_curG = stim_curH = None
+            stim_pr = engine_py.Program(D); T3s, c3s, _ = TAB[3]; stim_pr.load_tab(T3s, c3s, 0); stim_curG = stim_curH = None
         for det in sorted(bydet):
             rows = bydet[det]
-            pr = ape_py.Program(D)
+            pr = engine_py.Program(D)
             T3, c3, q = TAB[3]
             pr.load_tab(T3, c3, 0)
             ntab = len(pr.cmds)
@@ -183,13 +183,13 @@ if args.solver != 'float':
                     pr.load_G(G); curG = G; ng += 1
                 if curH is None or not np.array_equal(h, curH):
                     pr.load_h(h); curH = h; nh += 1
-                pr.run(2 * K, na, MDIANE['Sk'] * 2 * K, q, det, call_seed(ci), tag=ci & 0xFFFF)
+                pr.run(2 * K, na, MDICHORD['Sk'] * 2 * K, q, det, call_seed(ci), tag=ci & 0xFFFF)
                 if stim_pr is not None and det < args.stim:
                     if stim_curG is None or not np.array_equal(G, stim_curG):
                         stim_pr.load_G(G); stim_curG = G
                     if stim_curH is None or not np.array_equal(h, stim_curH):
                         stim_pr.load_h(h); stim_curH = h
-                    stim_pr.run(2 * K, na, MDIANE['Sk'] * 2 * K, q, det, call_seed(ci), tag=ci & 0xFFFF)
+                    stim_pr.run(2 * K, na, MDICHORD['Sk'] * 2 * K, q, det, call_seed(ci), tag=ci & 0xFFFF)
             out = pr.execute(A=args.A, philox=1 if args.solver == 'fx_philox' else 0)
             start = int(out['acc'][ntab])                  # first non-table command accepted
             rep_cyc.append(int(out['cycles']) - start); nG.append(ng); nH.append(nh)

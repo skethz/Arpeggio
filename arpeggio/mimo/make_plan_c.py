@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PLAN_C.json for the milestone-C timed cohort (PROTOCOL_C.md), by the protocol's rules:
+"""PLAN_C.json for the timed cohort of the MDI chain and solvers:
 - (a) published Ns at fixed SNRs: 16x16 16-QAM 18/20/22 dB (Ns 64), 32x32 16-QAM 18/20/22 dB (Ns 128), 32x32 QPSK DI
   10/12 dB (Ns 64); both methods; PyTorch (all) and kernels (16x16 16-QAM, 32x32 QPSK); chain and solver-only modes;
 - (b) matched BER at the fixed SNR of each shape (16x16 16-QAM 20 dB, 32x32 16-QAM 22 dB, 32x32 QPSK 14 dB): for each
@@ -22,12 +22,13 @@ def ladder(files, shape):
         for l in open(B + f):
             r = json.loads(l)
             if r['method'].startswith('mdi'):
-                ber[(r['method'][3:6], int(r['method'][6:]))] = r['ber']
+                fam = 'ahc' if r['method'].startswith('mdiahc') else 'chord'
+                ber[(fam, int(r['method'][3 + len(fam):]))] = r['ber']
     out = {}
-    missing = [(m, ns) for m in ('ahc', 'ane') for ns in LAD if (m, ns) not in ber]
+    missing = [(m, ns) for m in ('ahc', 'chord') for ns in LAD if (m, ns) not in ber]
     if missing and '--dev' not in sys.argv:
         raise SystemExit('incomplete ladder for %s: %s' % (shape, missing))
-    for m in ('ahc', 'ane'):
+    for m in ('ahc', 'chord'):
         ok = [ns for ns in LAD if ber.get((m, ns), 1.0) <= 1e-3]
         out[m] = dict(Ns=min(ok) if ok else max(LAD), meets=bool(ok), ber={ns: ber.get((m, ns)) for ns in LAD})
     return out
@@ -51,9 +52,9 @@ def add(point, sh, snr, Ns, method, impls, modes=('chain', 'solver')):
 impls = lambda sh: ('torch', 'kernel') if sh in KERNEL else ('torch',)
 for sh, snrs, ns in (('16x16', (18.0, 20.0, 22.0), 64), ('32x32', (18.0, 20.0, 22.0), 128), ('32x32q', (10.0, 12.0), 64)):
     for snr in snrs:
-        for m in ('ahc', 'ane'):
+        for m in ('ahc', 'chord'):
             add('a', sh, snr, ns, m, impls(sh))
-match = {'16x16': (20.0, ['x16_b_ahc.jsonl', 'x16_b_ane.jsonl']), '32x32': (22.0, ['x32_b_ahc.jsonl', 'x32_b_ane.jsonl']),
+match = {'16x16': (20.0, ['x16_b_ahc.jsonl', 'x16_b_chord.jsonl']), '32x32': (22.0, ['x32_b_ahc.jsonl', 'x32_b_chord.jsonl']),
          '32x32q': (14.0, ['q32_b.jsonl'])}
 cheap = {}
 for sh, (snr, files) in match.items():
@@ -63,14 +64,14 @@ for sh, (snr, files) in match.items():
         print('ladder of', sh, 'not available: (b) items skipped')
         continue
     cheap[sh] = dict(snr=snr, **{m: lad[m] for m in lad})
-    nss = sorted({lad['ahc']['Ns'], lad['ane']['Ns']})
-    for m in ('ahc', 'ane'):
+    nss = sorted({lad['ahc']['Ns'], lad['chord']['Ns']})
+    for m in ('ahc', 'chord'):
         for ns in nss:
             add('b', sh, snr, ns, m, impls(sh))
-for m in ('ahc', 'ane'):
+for m in ('ahc', 'chord'):
     add('c', '64x64', 22.0, 8, m, ('torch',))
 json.dump(dict(items=items, cheapest=cheap), open(sys.argv[1], 'w'), indent=1)
 for sh, c in cheap.items():
-    print(sh, c['snr'], 'dB: AHC cheapest Ns %d (%s), Anechoic cheapest Ns %d (%s)' % (
-        c['ahc']['Ns'], 'meets' if c['ahc']['meets'] else 'NEVER meets', c['ane']['Ns'], 'meets' if c['ane']['meets'] else 'NEVER meets'))
+    print(sh, c['snr'], 'dB: AHC cheapest Ns %d (%s), Chord cheapest Ns %d (%s)' % (
+        c['ahc']['Ns'], 'meets' if c['ahc']['meets'] else 'NEVER meets', c['chord']['Ns'], 'meets' if c['chord']['meets'] else 'NEVER meets'))
 print(len(items), 'items')

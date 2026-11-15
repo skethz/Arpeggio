@@ -1,7 +1,7 @@
 """Compare the RTL testbench log (rtl_out.txt) with expected.json (gen_vectors.py).
 Checks: (1) every command accepted at the model's cycle; (2) output beats identical to the model's, cycle for cycle
 (RTL beat cycle = model cycle + 1: outputs are registered); (3) per (tag, anneal) best spins and Δbest equal the
-independent reference (anefx for the Philox build, antiphase_ref for the production build).
+independent reference (chordfx for the Philox build, chord_ref for the production build).
 Usage: compare.py <dir>   -> prints PASS/FAIL lines and a summary; exit 1 on any failure."""
 import sys, json, os
 d = sys.argv[1]

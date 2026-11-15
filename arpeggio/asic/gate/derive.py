@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Derive energy per detection, throughput and per-decision energy from the sanitized gate_r4 power summaries
+"""Derive energy per detection, throughput and per-decision energy from the gate_r4 power summaries
 (data/raw/power_*.json) and the cycle-exact workload counts (data/raw/workload/final_workload_public.json).
 E = P x C x T (C = cycles per detection, all B detections, command replay; T = accepted clock period)."""
 import json, os, sys
 H = os.path.dirname(os.path.abspath(__file__)); D = os.path.join(H, '..', 'data')
 wl = json.load(open(os.path.join(D, 'raw', 'workload', 'final_workload_public.json')))['cases']
-ENG = {'d32': dict(D=32, T_ns=1.15, run='ape_d32_p1150_r4'), 'd64': dict(D=64, T_ns=1.00, run='ape_d64_r4'),
-       'd128': dict(D=128, T_ns=1.20, run='ape_d128_p1200_r4')}
+ENG = {'d32': dict(D=32, T_ns=1.15, run='chord_d32_p1150_r4'), 'd64': dict(D=64, T_ns=1.00, run='chord_d64_r4'),
+       'd128': dict(D=128, T_ns=1.20, run='chord_d128_p1200_r4')}
 sta = json.load(open(os.path.join(D, 'sta_public.json')))
 for k in ENG:
     s = sta.get(k.upper())
     ENG[k]['T_ss_ns'] = (s['ss_clock_ps'].get('all_groups') or s['ss_clock_ps'].get('all_groups_primary_R1')) / 1000.0 if s else None
-PTS = {'P1': ('d32', 'P1_s41', 'P1_s241', 'x16 20 dB, MDI Ns 32 (G3/G4 gate point)'),
+PTS = {'P1': ('d32', 'P1_s41', 'P1_s241', 'x16 20 dB, MDI Ns 32'),
        'P4s': ('d32', 'P4s_s45', 'P4s_s245', 'x16 31.02 dB, one stage R 4 (matched-BER to PIMI HW)'),
        'P4m': ('d32', 'P4m_s45', 'P4m_s245', 'x16 31.02 dB, MDI Ns 8'),
        'P3': ('d64', 'P3_s43', 'P3_s243', 'q32 14 dB, DI Ns 8'),

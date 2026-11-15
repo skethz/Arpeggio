@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # One-line-per-set status of this host's plan plus running jobs, GPU use and worker processes. Usage: status.sh
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 H=$(hostname -s)
 source $A/venv/bin/activate 2>/dev/null || source <SCRATCH>/mimo_ising_20261016/venv/bin/activate
 P=$A/results/plan_$H.json; [ -f $A/results/plan_${H}_v2.json ] && P=$A/results/plan_${H}_v2.json; python $A/src/status.py $P $A/results --json $A/results/status_$H.json

@@ -1,4 +1,4 @@
-# Slow-corner clock of a saved routed engine (gate_r4, PROTOCOL.md §5). Analysis only: restore, time, nothing optimised
+# Slow-corner clock of a saved routed engine. Analysis only: restore, time, nothing optimised
 # or saved. SS view = the server MMMC (flow/pnr/mmmc.tcl) evaluated with PNR_CORNER=SSG and renamed objects (no kit path
 # here). Constraints = the engine's routed SDC rescaled by sdc_scale.py, plus set_propagated_clock as in the saved mode.
 # I/O source latency re-derived per view by update_io_latency -source (the TT closure contract).

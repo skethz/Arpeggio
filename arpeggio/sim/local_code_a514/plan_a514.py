@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.14-A5.16 plan (PROTOCOL_A514.md 3, 5; PROTOCOL_A515.md 3, 5; PROTOCOL_A516.md 2). Reads the calibration files, applies the frozen
+"""A5.14-A5.16 plan. Reads the calibration files, applies the
 S rules, writes ROOT/select_a514.json (every calibrated x and the chosen S) and ROOT/plan.json (all held-out chunks, in queue order:
 A5.15, A5.16 stage 1, A5.14 P1/P2, A5.14 P4 W = 2, A5.14 P4 W = 4). Refuses if a rule needs a grid extension not yet calibrated.
 Usage: plan_a514.py ROOT [--partial]"""
@@ -34,7 +34,7 @@ def pick_S(pt, name_of, grid, bound):
 sel = dict(x=x, partial=PARTIAL)
 if not PARTIAL:
     # A5.15: S* against re-tuned Chord (C1)
-    xc1 = x['P2/abl_ape_0.2_0.2_0.2_rand_8']
+    xc1 = x['P2/abl_chord_0.2_0.2_0.2_rand_8']
     S15, xs15 = pick_S('P2', lambda S: 'abl_far_%d_0.1_0.1_0_rand_8' % S, range(56, 92, 4), xc1)
     sel['A515'] = dict(x_C1=xc1, S_star=S15, x_grid=xs15, method='abl_far_%d_0.1_0.1_0_rand_8' % S15)
     # A5.14: S_W against each pick
@@ -68,7 +68,7 @@ def interleave(lists):
 
 jobs = []
 astar = [] if PARTIAL else [sel['A515']['method']]
-arms15 = ['mdiane8', 'abl_ape_0.2_0.2_0.2_rand_8'] + astar + ['abl_far_32_0.1_0.1_0_rand_8']
+arms15 = ['mdichord8', 'abl_chord_0.2_0.2_0.2_rand_8'] + astar + ['abl_far_32_0.1_0.1_0_rand_8']
 jobs += interleave([chunks('a515', 'P2', m, 0, 300, 20) for m in arms15])
 jobs += interleave([chunks('a516f', 'P1', PICK['P1'], 14, 200, 6), chunks('a516f', 'P2', PICK['P2'], 43, 300, 10)])
 if not PARTIAL:
@@ -76,7 +76,7 @@ if not PARTIAL:
                        [chunks('a514', 'P2', sel['A514']['P2/W%d' % W]['method'], 0, 300, 10) for W in (2, 4)])
     jobs += chunks('a514', 'P4', sel['A514']['P4/W2']['method'], 0, 600, 4)
     jobs += chunks('a514', 'P4', sel['A514']['P4/W4']['method'], 0, 600, 4)
-for fn, obj in (('select_a514.json', sel), ('plan.json', dict(host='hostB', amendment='A5.14-A5.16', jobs=jobs))):
+for fn, obj in (('select_a514.json', sel), ('plan.json', dict(host='hostB', experiment='A5.14-A5.16', jobs=jobs))):
     tmp = os.path.join(ROOT, fn + '.tmp')
     with open(tmp, 'w') as f:
         json.dump(obj, f, indent=1)

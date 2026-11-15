@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# A3 stage-2 trigger (nohup, one-shot): when all 54 xtune jobs are done, run select_xexp.py (writes plan_hostb_xexp_v2.json:
-# held-out seed-102 picks + A4 grid extension), stop the stage-1 workers and start 6 workers (GPU0/1/2) on the v2 plan.
-A=<SCRATCH>/ap_ber_20261024
+# Stage-2 trigger (nohup, one-shot): when all 54 xtune jobs are done, run select_xexp.py (writes plan_hostb_xexp_v2.json:
+# held-out seed-102 picks + Table III grid extension), stop the stage-1 workers and start 6 workers (GPU0/1/2) on the v2 plan.
+A=<SCRATCH>/arpeggio_ber_20261024
 LOG=$A/logs/xexp_stage2.log
 source $A/venv/bin/activate
 until [ "$(find $A/results/xtune -name done.json | wc -l)" -ge 54 ]; do sleep 60; done
@@ -10,7 +10,7 @@ python $A/src/select_xexp.py $A/results $A/results/plan_hostb_xexp.json $A/resul
 pkill -f "runner.py --plan $A/results/plan_hostb_xexp.json"; sleep 5
 GPUS="0 1 2" bash $A/src/launch_xexp.sh plan_hostb_xexp_v2.json >> $LOG 2>&1
 echo "$(date '+%F %T') stage-2 workers started" >> $LOG
-# keep relaunching finished/dead stage-2 workers until no xheld/A4 job is pending (idempotent launcher)
+# keep relaunching finished/dead stage-2 workers until no xheld or grid-extension job is pending (idempotent launcher)
 while true; do
   sleep 300
   n=$(python - << PY

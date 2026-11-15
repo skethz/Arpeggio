@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""A5.4 flip calibration (tuning seed 1000 only; PROTOCOL_A54.md section 3): as calib_flips.py, per Sk. Resumes from OUT.
+"""A5.4 flip calibration (tuning seed 1000 only): as calib_flips.py, per Sk. Resumes from OUT.
 Usage: calib_flips_a54.py OUT.json"""
-import json, os, sys, torch, apx
+import json, os, sys, torch, arpx
 OUT = sys.argv[1]
 torch.cuda.set_per_process_memory_fraction(0.30, 0)
 res = json.load(open(OUT)) if os.path.exists(OUT) else {}
@@ -10,11 +10,11 @@ for Sk in (128, 32, 64, 256, 512, 1024, 2048, 4096, 8192):
         key = '%s/%d' % (shape, Sk)
         if key in res or (shape == 'x16' and Sk > 4096):
             continue
-        s = apx.SHAPES[shape]; c = s['mdi']; cnt = {}
-        b = apx.draw(1000, snr, 50, B, s['nt'], s['M'])
+        s = arpx.SHAPES[shape]; c = s['mdi']; cnt = {}
+        b = arpx.draw(1000, snr, 50, B, s['nt'], s['M'])
         gs = torch.Generator(device='cuda'); gs.manual_seed(1000)
-        solver = lambda I, na, K: apx.anechoic_colour(I, na, 0.3, 0.4, 2 * K, 1, Sk=Sk, gen=gs, count=cnt)
-        apx.mdi_diag(b, solver, Ns, c['Rmax'], c['S'], guesses=c['guesses'])
+        solver = lambda I, na, K: arpx.chord_colour(I, na, 0.3, 0.4, 2 * K, 1, Sk=Sk, gen=gs, count=cnt)
+        arpx.mdi_diag(b, solver, Ns, c['Rmax'], c['S'], guesses=c['guesses'])
         res[key] = {str(K): dict(v, phi=v['flips'] / v['steps'], F=v['flips'] / v['anneals'], L=v['steps'] / v['anneals'])
                     for K, v in cnt.items() if K != '_K'}
         with open(OUT + '.tmp', 'w') as f:

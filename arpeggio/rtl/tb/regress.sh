@@ -1,6 +1,6 @@
 #!/bin/bash
-# Full RTL regression (current rtl/ape_engine.sv) against the stored vector sets; writes vec/regress_<tag>.txt
-R=<SCRATCH>/antiphase_asic_20261017; cd $R/ape; export TMPDIR=$R/tmp; T=$1
+# Full RTL regression (rtl/chord_engine.sv) against the stored vector sets; writes vec/regress_<tag>.txt
+R=<SCRATCH>/arpeggio_asic_20261017; cd $R/chord; export TMPDIR=$R/tmp; T=$1
 run() { bash tb/run_sim.sh $@ > $1_$6.log 2>&1; }
 run vec/x16_philox 32 4 1 philox bug &
 run vec/x16_philox 32 4 1 philox engine &

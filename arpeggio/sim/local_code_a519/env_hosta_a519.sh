@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# ap_ber_20261024/a519z on hostA, A5.19 (ADDENDUM_A519_HOSTA.md): UNTIMED error counting only (no timing or energy is reported).
-# Allowed: GPU0, GPU2, GPU3 (author, 14 Nov 2026: "<instruction>", after the free-GPU check). Caller sets MIMO_GPU_UUID.
+# arpeggio_ber_20261024/a519z on hostA, A5.19: UNTIMED error counting only (no timing or energy is reported).
+# Allowed: GPU0, GPU2, GPU3. Caller sets MIMO_GPU_UUID.
 # Reuses the mimo_ising_20261016 venv read-only (torch 2.11.0+cu128, numpy 2.5.4, as hostB).
-Z=<SCRATCH>/ap_ber_20261024/a519z
+Z=<SCRATCH>/arpeggio_ber_20261024/a519z
 case "$MIMO_GPU_UUID" in
   <GPU_UUID>|<GPU_UUID>|<GPU_UUID>) ;;
   *) echo "refusing: MIMO_GPU_UUID=$MIMO_GPU_UUID is not an allowed hostA GPU" >&2; return 1 2>/dev/null || exit 1 ;;

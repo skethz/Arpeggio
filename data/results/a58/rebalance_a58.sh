@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# A5.8 operations only (7 Nov 2026 23:3x CET, user: "<instruction>"). Placement within the frozen GPU0-1 only; no code, plan or draw change.
+# A5.8 worker placement within GPU0-1 only; no code, plan or draw change.
 # When one GPU runs >= 2 of our held-out workers and the other runs none, stop (TERM) one of the crowded workers within 20 s of its
 # last saved batch. The supervisor then sees its dead claim as startable and relaunches it on the free GPU, where trace_a56 resumes
 # from the saved batches (the same path as idle-with-yield). Only our own trace_x64.py workers are signalled. Exits when held-out is done.
-A=<SCRATCH>/ap_ber_20261024; R=$A/results/a58; LOG=$A/logs/a58/rebalance.log
+A=<SCRATCH>/arpeggio_ber_20261024; R=$A/results/a58; LOG=$A/logs/a58/rebalance.log
 log() { echo "$(date '+%m-%d %H:%M:%S') $*" >> "$LOG"; }
 log "START rebalance pid $$"
 while sleep 10; do

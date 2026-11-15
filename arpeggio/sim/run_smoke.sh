@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source <SCRATCH>/ap_ber_20261024/env_ap.sh
+source <SCRATCH>/arpeggio_ber_20261024/env_chord.sh
 export NUMBA_NUM_THREADS=32
 mkdir -p logs/smoke
 nohup python src/smoke_tput.py x16,x16ns8,q32,q16 > logs/smoke/tput_gpu_a.log 2>&1 &

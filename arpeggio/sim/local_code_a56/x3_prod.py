@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""A5.6 X3 (PROTOCOL_A56.md section 4): the production engine model, fx_xs mode of antiphase_asic's workload.py, on the runner's draws, CPU only, on
-the runner's host-independent draws. Same arithmetic as workload.py: anefx.to_fixed, antiphase_ref.compress, ape_py.solve_batch, the
+"""A5.6 X3: the production engine model, fx_xs mode of arpeggio_asic's workload.py, on the runner's draws, CPU only, on
+the runner's host-independent draws. Same arithmetic as workload.py: chordfx.to_fixed, chord_ref.compress, engine_py.solve_batch, the
 logged MDI wrapper. Writes ROOT/X3P/<shape>/prod_fx_xs_<Ns>/snr_<snr>/bNNNNN.npz with batches resumable; done.json at the stop rule.
 Usage: x3_prod.py ROOT --nt 32 --M 16 --snr 22 --ns 8 --seed 102 --B 1000 --min-vec 2000 --max-uses 300000 [--tag x32]
        x3_prod.py --check OUT.json        reproduces workload.py on make_batch draws: seed 42, P2, 2,000 uses, prints bit errors and cycles"""
@@ -11,14 +11,14 @@ import os
 import sys
 import time
 
-MD = '<SCRATCH>/ap_ber_20261024/x3model'
+MD = '<SCRATCH>/arpeggio_ber_20261024/x3model'
 sys.path.insert(0, MD)
 import numpy as np
 import torch
 
-import antiphase_ref as ar
-import anefx
-import ape_py
+import chord_ref as ar
+import chordfx
+import engine_py
 import mdi_solvers
 import mimo
 
@@ -28,8 +28,8 @@ ap.add_argument('--nt', type=int); ap.add_argument('--M', type=int); ap.add_argu
 ap.add_argument('--seed', type=int); ap.add_argument('--B', type=int); ap.add_argument('--min-vec', type=int, default=100); ap.add_argument('--max-uses', type=int, default=156250)
 ap.add_argument('--tag', default=None); ap.add_argument('--check', default=None); ap.add_argument('--threads', type=int, default=4)
 a = ap.parse_args()
-MDIANE = mdi_solvers.MDIANE
-TF = '<SCRATCH>/ap_ber_20261024/logs/a56/x3_threads'
+MDICHORD = mdi_solvers.MDICHORD
+TF = '<SCRATCH>/arpeggio_ber_20261024/logs/a56/x3_threads'
 
 
 def nth():
@@ -83,7 +83,7 @@ def mdi_logged(b, solver, Ns, Rmax, S, guesses, heuristic='mean', sic_per='real'
 dummy = dict(J=torch.zeros(1, 2, 2), h=torch.zeros(1, 2), h0=torch.zeros(1, 2))
 TAB = {}
 for K in (1, 2, 3):
-    F = anefx.to_fixed(dummy, MDIANE['Sk'] * 2 * K, MDIANE['t0'], MDIANE['t1'], MDIANE['q'], MDIANE['kappa'])
+    F = chordfx.to_fixed(dummy, MDICHORD['Sk'] * 2 * K, MDICHORD['t0'], MDICHORD['t1'], MDICHORD['q'], MDICHORD['kappa'])
     TAB[K] = (F['T'].numpy().astype(np.int16), F['c'].numpy().astype(np.int16), int(F['q']))
 
 
@@ -98,11 +98,11 @@ def detect(b, nt, M, ns, seed):
 
     def solver(I, na, K, meta):
         ci = calls[0]; calls[0] += 1
-        F = anefx.to_fixed(I, MDIANE['Sk'] * 2 * K, MDIANE['t0'], MDIANE['t1'], MDIANE['q'], MDIANE['kappa'])
+        F = chordfx.to_fixed(I, MDICHORD['Sk'] * 2 * K, MDICHORD['t0'], MDICHORD['t1'], MDICHORD['q'], MDICHORD['kappa'])
         G, h = ar.compress(F, K)
         T, c, q = TAB[K]
         idx = meta['idx'].numpy()
-        spins, de, cyc, st = ape_py.solve_batch(G.numpy(), h.numpy(), 2 * K, na, T, c, q, idx.astype(np.uint32),
+        spins, de, cyc, st = engine_py.solve_batch(G.numpy(), h.numpy(), 2 * K, na, T, c, q, idx.astype(np.uint32),
                                                 (seed_base + ci * 0xD1B54A32D192ED03) & 0xFFFFFFFFFFFFFFFF, A=4, philox=0, nthreads=nth())
         np.add.at(cyc_u, idx, cyc)
         v = cnt.setdefault(str(K), [0, 0, 0])
@@ -123,7 +123,7 @@ if a.check:
     print(json.dumps(r))
     sys.exit()
 
-import apx  # noqa: E402
+import arpx  # noqa: E402
 
 tag = a.tag or ('x%d' % a.nt)
 d = os.path.join(a.root, 'X3P', tag, 'prod_fx_xs_%d' % a.ns, 'snr_%05.2f' % a.snr)
@@ -138,14 +138,14 @@ while ve < a.min_vec and n < a.max_uses:
     bi = nb
     torch.set_num_threads(nth())
     m = min(a.B, a.max_uses - n)
-    bg = apx.draw(a.seed, a.snr, bi, a.B, a.nt, a.M, dev='cpu')            # the runner's draw (CPU generator, host-independent)
+    bg = arpx.draw(a.seed, a.snr, bi, a.B, a.nt, a.M, dev='cpu')            # the runner's draw (CPU generator, host-independent)
     b = dict(bg)
     for k in ('H', 'y', 'l'):
         b[k] = bg[k][:m].contiguous().cpu()
     del bg
     t0 = time.time()
-    lh, cyc, ann, cnt = detect(b, a.nt, a.M, a.ns, apx.draw_seed(a.seed, a.snr, bi))
-    bev = apx.biterr_per_use(b, lh)
+    lh, cyc, ann, cnt = detect(b, a.nt, a.M, a.ns, arpx.draw_seed(a.seed, a.snr, bi))
+    bev = arpx.biterr_per_use(b, lh)
     err = torch.nonzero(bev > 0).flatten()
     info = dict(cnt=cnt, wall_untimed=time.time() - t0, threads=nth(), bi=bi, m=m, N0=b['N0'])
     tmp = os.path.join(d, '.tmp_b%05d.npz' % bi)

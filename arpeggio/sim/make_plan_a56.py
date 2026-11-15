@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.6 plan and selection (PROTOCOL_A56.md sections 5-7). Pure function of the saved results: writes ROOT/plan.json with every job that can run
+"""A5.6 plan and selection. Pure function of the saved results: writes ROOT/plan.json with every job that can run
 now, in priority order, and ROOT/select.json with the picks so far. Re-run by the supervisor; safe to repeat. Usage: make_plan_a56.py ROOT"""
 import glob
 import json
@@ -121,21 +121,21 @@ def ratio(j, ref):
 
 
 sel = dict(F={}, D={}, C={}, B={}, N={}, G={}, J={}, c={}, sa_split={}, promoted=[])
-# ---------------- priority order: replays and the tuning baselines, then the review's items, then the search over schedules
-add(replay('P1', M('P1'), 'mdiane32', 'abl/x16/mdiane32/snr_20.00'))
-add(replay('P3', M('P3'), 'mdiane8', 'abl/q32/mdiane8/snr_14.00'))
+# ---------------- priority order: replays and the tuning baselines, then the X items, then the search over schedules
+add(replay('P1', M('P1'), 'mdichord32', 'abl/x16/mdichord32/snr_20.00'))
+add(replay('P3', M('P3'), 'mdichord8', 'abl/q32/mdichord8/snr_14.00'))
 for pt in ('P1', 'P3', 'P4', 'P2'):
     add(base_tune(pt))
-add(replay('P2', M('P2'), 'mdiane8', 'abl/x32/mdiane8/snr_22.00'))
-add(held('P3', M('P3'), 'R3', stream='mdiane8'))
-add(held('P4', M('P4'), 'R', stream='mdiane8', max_bits=PT['P4']['tcap'] * PT['P4']['bpu']))
+add(replay('P2', M('P2'), 'mdichord8', 'abl/x32/mdichord8/snr_22.00'))
+add(held('P3', M('P3'), 'R3', stream='mdichord8'))
+add(held('P4', M('P4'), 'R', stream='mdichord8', max_bits=PT['P4']['tcap'] * PT['P4']['bpu']))
 for pt in ('P3', 'P1', 'P2'):                                              # X4
     add(held(pt, M(pt, sched='lane'), 'L'))
 Fj = {pt: [tune(pt, M(pt, T0=T, T1=T, q=0.0), 'F') for T in TGRID] for pt in ('P3', 'P1', 'P2')}   # X5a
 for pt in Fj:
     for j in Fj[pt]:
         add(j)
-TX = {pt: list(TGRID) for pt in Fj}                                        # amendment 2: if the lowest T wins, add T/2, at most twice
+TX = {pt: list(TGRID) for pt in Fj}                                        # if the lowest T wins, add T/2, at most twice
 for pt in Fj:
     for _ in range(2):
         r = best(Fj[pt])
@@ -154,7 +154,7 @@ for pt in ('P1', 'P2'):
 add(replay('P1', 'abl_sa_32', 'abl_sa_32', 'abl/x16/abl_sa_32/snr_20.00', 'S'))
 add(replay('P1', 'mdiahc32', 'mdiahc32', 'abl/x16/mdiahc32/snr_20.00', 'S'))
 add(replay('P2', 'mdiahc8', 'mdiahc8', 'abl/x32/mdiahc8/snr_22.00', 'S'))
-add(replay('P1', M('P1', Ns=64), 'mdiane64', 'tab2/x16/mdiane64/snr_20.00', 'PC', seed=101))
+add(replay('P1', M('P1', Ns=64), 'mdichord64', 'tab2/x16/mdichord64/snr_20.00', 'PC', seed=101))
 Bj = {pt: {b: [tune(pt, M(pt, Sk=s, Ns=n), 'B') for s, n in v] for b, v in SPLIT[pt].items()} for pt in SPLIT}
 for pt in Bj:
     for b in (1, 2, 0.5):
@@ -225,7 +225,7 @@ for pt in PT:
         sel['N'][pt]['pick'] = w
         pick.append(held(pt, w['method'], 'HN', cap=PT[pt]['bigcap']))
 
-# SA split of the review's X2, with the cells A5.5 picked at Ns of the point
+# SA split X2, with the cells A5.5 picked at Ns of the point
 sp = os.path.join(RES, 'a55', 'select.json')
 if os.path.exists(sp):
     per = json.load(open(sp)).get('per_s', {})
@@ -236,7 +236,7 @@ if os.path.exists(sp):
             m = 'abl_fam_%d_%g_%g_%s_%d' % (S, T0, T1, v['start'], Ns)
             sel['sa_split'][str(S)] = m
             pick.append(held('P1', m, 'HS'))
-    # amendment 4: SA with the same stop and more anneals; same draws and length as Antiphase's HN arm, cell as A5.5 picked it (final once per_s has the key)
+    # SA with the same stop and more anneals; same draws and length as Chord's HN arm, cell as A5.5 picked it (final once per_s has the key)
     for pt, (S, Ns, nb) in {'P1': (4, 384, 17), 'P2': (2, 128, 20)}.items():
         v = per.get('%s/fam/%d' % (pt, S))
         if v:
@@ -244,7 +244,7 @@ if os.path.exists(sp):
             add(dict(set='HR', shape=p['sh'], method='abl_fam_%d_%g_%g_%s_%d' % (S, v['cell'][0], v['cell'][1], v['start'], Ns), snr=p['snr'], seed=HELD, batch=p['B'], point=pt, n_batches=nb))
 for j in pick:
     add(j)
-# amendment 3: the lowest-BER budget-1 split within 15% of the budget's measured cycles also goes to the held-out seed; then (Sk, Ns) and kappa together at P1
+# the lowest-BER budget-1 split within 15% of the budget's measured cycles also goes to the held-out seed; then (Sk, Ns) and kappa together at P1
 late = []
 for pt in Bj:
     js = Bj[pt][1]
@@ -283,13 +283,13 @@ for j in late:
 sel['promoted'] = [[j['set'], j['point'], j['method']] for j in pick + late if j['set'] != 'J']
 
 # X3's float arm continues the saved series on the same draws
-add(dict(set='X3F', shape='x16', method=M('P1'), stream='mdiane32', snr=20.0, seed=HELD, batch=2000, point='P1', first_batch=10, min_vec=1900, min_bit=0, min_uses=0, max_bits=380000 * 64))
-add(dict(set='X3F', shape='x32', method=M('P2'), stream='mdiane8', snr=22.0, seed=HELD, batch=1000, point='P2', first_batch=43, min_vec=1900, min_bit=0, min_uses=0, max_bits=257000 * 128))
+add(dict(set='X3F', shape='x16', method=M('P1'), stream='mdichord32', snr=20.0, seed=HELD, batch=2000, point='P1', first_batch=10, min_vec=1900, min_bit=0, min_uses=0, max_bits=380000 * 64))
+add(dict(set='X3F', shape='x32', method=M('P2'), stream='mdichord8', snr=22.0, seed=HELD, batch=1000, point='P2', first_batch=43, min_vec=1900, min_bit=0, min_uses=0, max_bits=257000 * 128))
 for pt in Nj:
     for j in Nj[pt]:
         add(j)
-add(replay('P2', M('P2', Ns=128), 'mdiane128', 'tab2/x32/mdiane128/snr_22.00', 'PC', seed=101, nb=20))
-# length grid (lowest priority); per length and point the best cell goes to the held-out seed, paired with A5.4's frozen schedule at that length
+add(replay('P2', M('P2', Ns=128), 'mdichord128', 'tab2/x32/mdichord128/snr_22.00', 'PC', seed=101, nb=20))
+# length grid (lowest priority); per length and point the best cell goes to the held-out seed, paired with A5.4's default schedule at that length
 Gj = {}
 for pt in ('P1', 'P2'):
     for Sk in LENGTHS:

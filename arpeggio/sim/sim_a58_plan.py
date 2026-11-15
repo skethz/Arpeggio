@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Synthetic run of a58_plan.py to the end (no GPU): fakes done.json and one batch file with counters for every queued job, with BER and flips
-from a toy model, and checks that the plan reaches the held-out chunks with seeds, sizes and order as PROTOCOL_A58 says."""
+from a toy model, and checks that the plan reaches the held-out chunks with the expected seeds, sizes and order."""
 import json, os, shutil, subprocess, sys, tempfile
 import numpy as np
 
@@ -45,7 +45,7 @@ while True:
 sel = json.load(open(os.path.join(R, 'select.json')))
 sets = [j['set'] for j in seenjobs]
 held = [j for j in seenjobs if j['set'].startswith('held')]
-assert seenjobs[0]['method'].startswith('a56_') and seenjobs[0]['stream'] == 'mdiane8' and seenjobs[0]['seed'] == 1000
+assert seenjobs[0]['method'].startswith('a56_') and seenjobs[0]['stream'] == 'mdichord8' and seenjobs[0]['seed'] == 1000
 assert all(j['seed'] == 1000 for j in seenjobs if j['set'] in ('tunea', 'probe'))
 assert all(j['seed'] == 1010 for j in seenjobs if j['set'] == 'tuneb')
 assert len(held) == 12 and all(j['seed'] == 344 and j['batch'] == 500 and j['n_batches'] == 50 for j in held)

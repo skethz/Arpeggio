@@ -1,5 +1,5 @@
 {
- "source": "hostE A/ape/wl/final (production engine cycle-exact model, command replay, all B detections; PROTOCOL_ASIC draws)",
+ "source": "hostE A/chord/wl/final (production engine cycle-exact model, command replay, all B detections; ASIC draws)",
  "cases": {
   "P1_s241": {
    "nt": 16,

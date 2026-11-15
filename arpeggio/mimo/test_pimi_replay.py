@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduction gate (milestone D): our PIMI (pimi.pimi_inject, the arithmetic shared by pimi_torch, pimi_fx and the
+"""Reproduction check: our PIMI (pimi.pimi_inject, the arithmetic shared by pimi_torch, pimi_fx and the
 kernel) against the authors' own code, src/pbits_im.py run unmodified (class pbits_Ising_Machine, mode 'fixed',
 16 bits with 12 fractional, algorithm 'tanh_lut', parallel; both of their schedules, A and B, see pimi.py), on the
 authors' own DI-MIMO instances from their Zenodo archives, with the same N(0, 1) samples and start states fed to both.

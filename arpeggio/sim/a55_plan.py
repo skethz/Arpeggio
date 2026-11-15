@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.5 plan and selection (PROTOCOL_A55.md sections 5-6). Pure function of the saved results: writes ROOT/plan.json with every job
+"""A5.5 plan and selection. Pure function of the saved results: writes ROOT/plan.json with every job
 that can run now, and ROOT/select.json with the picks so far. Re-run by the supervisor; safe to repeat. Order inside one key: stage A,
 then corners, then stage B, then held-out. Usage: a55_plan.py ROOT [--brief]"""
 import glob, json, math, os, sys
@@ -47,7 +47,7 @@ def name(arm, S, c, st, Ns):
         return 'abl_fam_%d_%g_%g_%s_%d' % (S, c[0], c[1], st, Ns)
     if arm == 'far':
         return 'abl_far_%d_%g_%g_%g_%s_%d' % (S, c[0], c[1], c[2], st, Ns)
-    return 'abl_ape_%g_%g_%g_%s_%d' % (c[0], c[1], c[2], st, Ns)
+    return 'abl_chord_%g_%g_%g_%s_%d' % (c[0], c[1], c[2], st, Ns)
 
 
 def jdir(st, sh, m, snr):
@@ -84,7 +84,7 @@ def x_of(cnt, sh, S, model):
 
 def job_a(pt, m):
     p = PT[pt]
-    if p['ta'] is None:                                                    # P3: section 6's stopping rule on the tuning seed
+    if p['ta'] is None:                                                    # P3: the held-out stopping rule on the tuning seed
         return dict(set='tunea', shape=p['sh'], method=m, snr=p['snr'], seed=1000, batch=p['B'], min_uses=p['hmin'], point=pt)
     return dict(set='tunea', shape=p['sh'], method=m, snr=p['snr'], seed=1000, batch=p['B'], min_vec=0, min_bit=0, min_uses=p['ta'],
                 max_bits=p['ta'] * p['bpu'], point=pt)
@@ -112,7 +112,7 @@ def rank(r, i):
 
 
 def edge_steps(c, grid):
-    """Next cells beyond a grid edge, other settings held (section 5). grid: the cells known so far for this arm and S."""
+    """Next cells beyond a grid edge, other settings held. grid: the cells known so far for this arm and S."""
     T0, T1, q = c
     steps = []
     if T0 == T1:
@@ -139,7 +139,7 @@ def edge_steps(c, grid):
     return out
 
 
-plan, sel, log = [], dict(per_s={}, corner={}, pruned={}, budget={}, ap={}, pt={}), []
+plan, sel, log = [], dict(per_s={}, corner={}, pruned={}, budget={}, chord={}, pt={}), []
 
 
 seen = set()
@@ -153,7 +153,7 @@ def add(j):
 
 
 def survive(arm, S, c, st, pt):
-    """Prune (section 5): None while unknown, else whether the cell runs. S = 64 is probed only if S = 32 survived, 128 only if 64 did."""
+    """Prune: None while unknown, else whether the cell runs. S = 64 is probed only if S = 32 survived, 128 only if 64 did."""
     p = PT[pt]
     if S >= 64:
         r = survive(arm, S // 2, c, st, pt)
@@ -175,7 +175,7 @@ def finish_cells(arm, S, pt, base):
     for c in base:
         for st in ('rand', 'bal'):
             m = name(arm, S, c, st, p['Ns'])
-            if arm != 'ape' and pt in ('P1', 'P2') and S >= 32:
+            if arm != 'chord' and pt in ('P1', 'P2') and S >= 32:
                 r = survive(arm, S, c, st, pt)
                 if r is None:
                     missing = True
@@ -222,7 +222,7 @@ for pt in PT:
     for arm, Ss, cells in (('fam', SM, cells_m), ('far', SR, cells_r)):
         for S in Ss:
             ready[(pt, arm, S)] = finish_cells(arm, S, pt, cells(S))
-    ready[(pt, 'ape', 0)] = finish_cells('ape', 0, pt, cells_a())
+    ready[(pt, 'chord', 0)] = finish_cells('chord', 0, pt, cells_a())
     p = PT[pt]
     rp = {}
     for bud in ('cyc', 'fl'):
@@ -257,8 +257,8 @@ if complete_a:
             for B in BUDGETS:
                 el = sorted([t for t in L if t[0] is not None and t[0] <= B], key=lambda t: (t[1]['ber'], t[1]['vec_err'] / t[1]['uses'], t[2]))
                 groups['%s/%s/%g' % (pt, mod, B)] = [t[2] for t in el[:3]]
-        ra = ready[(pt, 'ape', 0)]
-        groups['%s/ape' % pt] = [t[2] for t in sorted(ra, key=lambda t: (t[3]['ber'], t[3]['vec_err'] / t[3]['uses'], t[2]))[:3]]
+        ra = ready[(pt, 'chord', 0)]
+        groups['%s/chord' % pt] = [t[2] for t in sorted(ra, key=lambda t: (t[3]['ber'], t[3]['vec_err'] / t[3]['uses'], t[2]))[:3]]
         for bud in ('cyc', 'fl'):
             groups['%s/ptb/%s' % (pt, bud)] = [t[0] for t in sorted(ready[(pt, 'ptb', 0)][bud], key=lambda t: (t[1]['ber'], t[1]['vec_err'] / t[1]['uses'], t[0]))[:3]]
         for g, ms in groups.items():
@@ -271,15 +271,15 @@ if complete_a:
                     rs.append((d['ber'], d['vec_err'] / d['uses'], m))
             if ms and len(rs) == len(ms):
                 best = min(rs)[2]
-                sel['budget' if g.count('/') == 2 and '/ptb/' not in g else ('pt' if '/ptb/' in g else 'ap')][g] = dict(method=best, stage_b=rs)
+                sel['budget' if g.count('/') == 2 and '/ptb/' not in g else ('pt' if '/ptb/' in g else 'chord')][g] = dict(method=best, stage_b=rs)
     if stage_b:
         heldout_final = True
         for pt, p in PT.items():
-            L = [v['method'] for k, v in sel['per_s'].items() if k.startswith(pt + '/') and '/ape/' not in k]
+            L = [v['method'] for k, v in sel['per_s'].items() if k.startswith(pt + '/') and '/chord/' not in k]
             L += [v['method'] for k, v in sel['budget'].items() if k.startswith(pt + '/')]
-            L += [v['method'] for k, v in sel['ap'].items() if k.startswith(pt + '/')]
+            L += [v['method'] for k, v in sel['chord'].items() if k.startswith(pt + '/')]
             L += [v['method'] for k, v in sel['pt'].items() if k.startswith(pt + '/')]
-            L.append('abl_ape_0.3_0.3_0.4_bal_%d' % p['Ns'])
+            L.append('abl_chord_0.3_0.3_0.4_bal_%d' % p['Ns'])
             held[pt] = sorted(set(L))
             for m in held[pt]:
                 add(job_h(pt, m))
@@ -290,12 +290,12 @@ sel['complete_a'], sel['heldout_final'] = complete_a, heldout_final
 def cost(j):
     mult = {'probe': 0, 'tunea': 1, 'tuneb': 2, 'abl': 3}[j['set']]
     a = j['method'].split('_')
-    S = int(a[2]) if a[1] in ('fam', 'far') else 128 if a[1] == 'ape' else 8
+    S = int(a[2]) if a[1] in ('fam', 'far') else 128 if a[1] == 'chord' else 8
     return (mult, {'P3': 0, 'P1': 1, 'P2': 2}[j['point']], S, j['method'])
 
 
 plan.sort(key=cost)
-out = dict(host='hostB', amendment='A5.5 exploratory', tuned_file=os.path.join(os.path.dirname(os.path.abspath(ROOT)), 'tuned_a52.json'), jobs=plan)
+out = dict(host='hostB', experiment='A5.5', tuned_file=os.path.join(os.path.dirname(os.path.abspath(ROOT)), 'tuned_a52.json'), jobs=plan)
 with open(os.path.join(ROOT, 'plan.json.tmp'), 'w') as f:
     json.dump(out, f, indent=0)
 os.replace(os.path.join(ROOT, 'plan.json.tmp'), os.path.join(ROOT, 'plan.json'))

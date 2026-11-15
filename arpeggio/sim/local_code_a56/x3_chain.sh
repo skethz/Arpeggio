@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # A5.6 X3 chain: one production-model process at a time, nice 10; resumes from saved batches. Started once logs/a56/x3_test.ok exists.
-A=<SCRATCH>/ap_ber_20261024; R=$A/results/a56
+A=<SCRATCH>/arpeggio_ber_20261024; R=$A/results/a56
 export MIMO_GPU_UUID=<GPU_UUID>
 source $A/env_hostb_a56.sh
 run() { nice -n 10 python -u src/x3_prod.py $R "$@" >> $A/logs/a56/x3.log 2>&1; echo "$(date '+%F %T') exit $? $*" >> $A/logs/a56/x3_chain.log; }

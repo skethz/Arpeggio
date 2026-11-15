@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests of the AHC-CIM kernel (ahc_kernel.cu) against the order-defined PyTorch reference ahcfx.ahc_od (milestone C):
+"""Tests of the AHC-CIM kernel (ahc_kernel.cu) against the order-defined PyTorch reference ahcfx.ahc_od:
 per-anneal best spins and energies bit-identical on problems from the real mappings — 16x16 QPSK RI (32 spins, h != h0),
 16x16 16-QAM dDI K = 1, 2, 3 (64, 128, 192 spins), 32x32 QPSK DI (128 spins) with more anneals than warps.
 Usage: test_ahc_kernel.py CUBIN. Exit status 0 only if every check passes."""

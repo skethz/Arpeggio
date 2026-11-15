@@ -1,0 +1,2 @@
+chord_d32_p1150_r4|<SCRATCH>/arpeggio_asic_20261017/flow_v2_20261024/chord_d32_p1150_r4|chord_engine_D32_A4_SEEDL1
+chord_d64_r4|<SCRATCH>/arpeggio_asic_20261017/flow_v2_20261024/chord_d64_r4|chord_engine_D64_A4_SEEDL2

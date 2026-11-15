@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# A5.8 supervisor (PROTOCOL_A58.md section 9). Untimed BER only. hostB GPU0 and GPU1 only (env_hostb_a56.sh refuses any other UUID).
+# A5.8 supervisor. Untimed BER only. hostB GPU0 and GPU1 only (env_hostb_a56.sh refuses any other UUID).
 # Idle-with-yield: a GPU showing any compute process that is not one of our workers gets no new worker, and our workers on it are stopped
-# (they resume from saved batches; a stale claim is renamed by trace_a56.claim). Other users' and the author's processes are never touched.
+# (they resume from saved batches; a stale claim is renamed by trace_a56.claim). Other processes are never touched.
 # Every 120 s: rebuild the plan (a58_plan.py), start workers where jobs can start, write status.txt; when the held-out chunks are done, run
 # analyze_a58.py once and exit.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 R=$A/results/a58
 L=$A/logs/a58
 PY=$A/venv/bin/python
 XF=$A/results/a56/X64F/x64/a56_128_0.3_0.3_0.4_0_alt_8/snr_22.00
 W=${A58_WORKERS:-4}
-CUT3=1794308400                       # 10 Nov 2026 12:00 CET (section 9, cut 3)
+CUT3=1794308400                       # time of cut 3 (Unix seconds)
 GPUS=(<GPU_UUID> <GPU_UUID>)
 mkdir -p "$R/pids" "$L"
 log() { echo "$(date '+%m-%d %H:%M:%S') $*" >> "$L/supervisor.log"; }

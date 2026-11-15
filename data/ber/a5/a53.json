@@ -1,5 +1,5 @@
 {
- "note": "A5.3 exploratory (PROTOCOL_A53.md); reported beside the frozen A5a numbers, which are unchanged",
+ "note": "A5.3; reported beside the A5a numbers",
  "tab2_x16": {
   "points_old": 13,
   "points_sa2": 13,
@@ -12,11 +12,11 @@
     "value": 18.612374160614927,
     "kind": "="
    },
-   "antiphase": {
+   "chord": {
     "value": 19.047777730476422,
     "kind": "="
    },
-   "old_minus_antiphase": {
+   "old_minus_chord": {
     "delta": -0.44294152116295393,
     "ci": [
      -0.6916666058975871,
@@ -30,7 +30,7 @@
      0.21248218175574604
     ]
    },
-   "sa2_minus_antiphase": {
+   "sa2_minus_chord": {
     "delta": -0.43540356986149575,
     "ci": [
      -0.7017138789620408,
@@ -49,11 +49,11 @@
     "value": 20.76689901327641,
     "kind": "="
    },
-   "antiphase": {
+   "chord": {
     "value": 22.05204013452155,
     "kind": "="
    },
-   "old_minus_antiphase": {
+   "old_minus_chord": {
     "delta": -1.3955755783719646,
     "ci": [
      -1.8623882183618368,
@@ -67,7 +67,7 @@
      0.2136722239298213
     ]
    },
-   "sa2_minus_antiphase": {
+   "sa2_minus_chord": {
     "delta": -1.2851411212451396,
     "ci": [
      -1.7223040812763997,
@@ -92,11 +92,11 @@
    "value": 19.778939583238465,
    "kind": "="
   },
-  "antiphase": {
+  "chord": {
    "value": 20.89238820988916,
    "kind": "="
   },
-  "old_minus_antiphase": {
+  "old_minus_chord": {
    "delta": -1.274310170639641,
    "ci": [
     -1.5858805513295378,
@@ -111,7 +111,7 @@
    ]
   },
   "stronger_sa": "old",
-  "note": "10^-4 not run (Addendum 1); x32 10^-4 uses sa2, labelled possibly conservative"
+  "note": "10^-4 not run; x32 10^-4 uses sa2"
  },
  "sweeps_P1": {
   "series": {
@@ -724,7 +724,7 @@
     "F_SA": 42.2,
     "acc_frac": 0.66,
     "sa_cycles": 106.2,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 0.37,
     "lower_bound_ratio": 0.223
    },
@@ -733,7 +733,7 @@
     "F_SA": 88.1,
     "acc_frac": 0.6879,
     "sa_cycles": 216.1,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 0.324,
     "lower_bound_ratio": 0.192
    },
@@ -742,7 +742,7 @@
     "F_SA": 131.5,
     "acc_frac": 0.6851,
     "sa_cycles": 323.5,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 0.303,
     "lower_bound_ratio": 0.18
    }
@@ -753,7 +753,7 @@
     "F_SA": 49.8,
     "acc_frac": 0.3894,
     "sa_cycles": 177.8,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 0.619,
     "lower_bound_ratio": 0.445
    },
@@ -762,7 +762,7 @@
     "F_SA": 99.1,
     "acc_frac": 0.3873,
     "sa_cycles": 355.1,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 0.532,
     "lower_bound_ratio": 0.383
    },
@@ -771,7 +771,7 @@
     "F_SA": 154.8,
     "acc_frac": 0.4031,
     "sa_cycles": 538.8,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 0.505,
     "lower_bound_ratio": 0.36
    }
@@ -782,7 +782,7 @@
     "F_SA": 57.6,
     "acc_frac": 0.2251,
     "sa_cycles": 313.6,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 1.091,
     "lower_bound_ratio": 0.891
    },
@@ -791,7 +791,7 @@
     "F_SA": 127.6,
     "acc_frac": 0.2492,
     "sa_cycles": 639.6,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 0.958,
     "lower_bound_ratio": 0.767
    },
@@ -800,7 +800,7 @@
     "F_SA": 208.1,
     "acc_frac": 0.271,
     "sa_cycles": 976.1,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 0.914,
     "lower_bound_ratio": 0.719
    }
@@ -811,7 +811,7 @@
     "F_SA": 83.1,
     "acc_frac": 0.1622,
     "sa_cycles": 595.1,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 2.071,
     "lower_bound_ratio": 1.781
    },
@@ -820,7 +820,7 @@
     "F_SA": 213.8,
     "acc_frac": 0.2088,
     "sa_cycles": 1237.8,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 1.854,
     "lower_bound_ratio": 1.533
    },
@@ -829,7 +829,7 @@
     "F_SA": 355.7,
     "acc_frac": 0.2316,
     "sa_cycles": 1891.7,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 1.772,
     "lower_bound_ratio": 1.438
    }
@@ -840,7 +840,7 @@
     "F_SA": 136.1,
     "acc_frac": 0.1329,
     "sa_cycles": 1160.1,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 4.036,
     "lower_bound_ratio": 3.563
    },
@@ -849,7 +849,7 @@
     "F_SA": 398.8,
     "acc_frac": 0.1947,
     "sa_cycles": 2446.8,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 3.664,
     "lower_bound_ratio": 3.067
    },
@@ -858,7 +858,7 @@
     "F_SA": 663.4,
     "acc_frac": 0.216,
     "sa_cycles": 3735.4,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 3.498,
     "lower_bound_ratio": 2.877
    }
@@ -869,7 +869,7 @@
     "F_SA": 242.0,
     "acc_frac": 0.1182,
     "sa_cycles": 2290.0,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 7.968,
     "lower_bound_ratio": 7.126
    },
@@ -878,7 +878,7 @@
     "F_SA": 783.3,
     "acc_frac": 0.1912,
     "sa_cycles": 4879.3,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 7.307,
     "lower_bound_ratio": 6.134
    },
@@ -887,7 +887,7 @@
     "F_SA": 1282.9,
     "acc_frac": 0.2088,
     "sa_cycles": 7426.9,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 6.955,
     "lower_bound_ratio": 5.754
    }
@@ -898,7 +898,7 @@
     "F_SA": 452.9,
     "acc_frac": 0.1106,
     "sa_cycles": 4548.9,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 15.828,
     "lower_bound_ratio": 14.252
    },
@@ -907,7 +907,7 @@
     "F_SA": 1530.5,
     "acc_frac": 0.1868,
     "sa_cycles": 9722.5,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 14.56,
     "lower_bound_ratio": 12.268
    },
@@ -916,7 +916,7 @@
     "F_SA": 2522.9,
     "acc_frac": 0.2053,
     "sa_cycles": 14810.9,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 13.87,
     "lower_bound_ratio": 11.507
    }
@@ -927,7 +927,7 @@
     "F_SA": 873.7,
     "acc_frac": 0.1067,
     "sa_cycles": 9065.7,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 31.544,
     "lower_bound_ratio": 28.504
    },
@@ -936,7 +936,7 @@
     "F_SA": 3093.2,
     "acc_frac": 0.1888,
     "sa_cycles": 19477.2,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 29.167,
     "lower_bound_ratio": 24.535
    },
@@ -945,7 +945,7 @@
     "F_SA": 4995.8,
     "acc_frac": 0.2033,
     "sa_cycles": 29571.8,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 27.693,
     "lower_bound_ratio": 23.015
    }
@@ -956,7 +956,7 @@
     "F_SA": 42.2,
     "acc_frac": 0.66,
     "sa_cycles": 106.2,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 0.37,
     "lower_bound_ratio": 0.223
    },
@@ -965,7 +965,7 @@
     "F_SA": 88.1,
     "acc_frac": 0.6879,
     "sa_cycles": 216.1,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 0.324,
     "lower_bound_ratio": 0.192
    },
@@ -974,7 +974,7 @@
     "F_SA": 131.5,
     "acc_frac": 0.6851,
     "sa_cycles": 323.5,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 0.303,
     "lower_bound_ratio": 0.18
    }
@@ -985,7 +985,7 @@
     "F_SA": 50.2,
     "acc_frac": 0.3921,
     "sa_cycles": 178.2,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 0.62,
     "lower_bound_ratio": 0.445
    },
@@ -994,7 +994,7 @@
     "F_SA": 100.3,
     "acc_frac": 0.3917,
     "sa_cycles": 356.3,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 0.534,
     "lower_bound_ratio": 0.383
    },
@@ -1003,7 +1003,7 @@
     "F_SA": 156.9,
     "acc_frac": 0.4086,
     "sa_cycles": 540.9,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 0.507,
     "lower_bound_ratio": 0.36
    }
@@ -1014,7 +1014,7 @@
     "F_SA": 64.0,
     "acc_frac": 0.2498,
     "sa_cycles": 320.0,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 1.113,
     "lower_bound_ratio": 0.891
    },
@@ -1023,7 +1023,7 @@
     "F_SA": 148.0,
     "acc_frac": 0.2891,
     "sa_cycles": 660.0,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 0.988,
     "lower_bound_ratio": 0.767
    },
@@ -1032,7 +1032,7 @@
     "F_SA": 244.9,
     "acc_frac": 0.3188,
     "sa_cycles": 1012.9,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 0.949,
     "lower_bound_ratio": 0.719
    }
@@ -1043,7 +1043,7 @@
     "F_SA": 99.5,
     "acc_frac": 0.1943,
     "sa_cycles": 611.5,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 2.128,
     "lower_bound_ratio": 1.781
    },
@@ -1052,7 +1052,7 @@
     "F_SA": 269.2,
     "acc_frac": 0.2629,
     "sa_cycles": 1293.2,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 1.937,
     "lower_bound_ratio": 1.533
    },
@@ -1061,7 +1061,7 @@
     "F_SA": 449.5,
     "acc_frac": 0.2927,
     "sa_cycles": 1985.5,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 1.859,
     "lower_bound_ratio": 1.438
    }
@@ -1072,7 +1072,7 @@
     "F_SA": 171.6,
     "acc_frac": 0.1675,
     "sa_cycles": 1195.6,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 4.16,
     "lower_bound_ratio": 3.563
    },
@@ -1081,7 +1081,7 @@
     "F_SA": 524.7,
     "acc_frac": 0.2562,
     "sa_cycles": 2572.7,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 3.853,
     "lower_bound_ratio": 3.067
    },
@@ -1090,7 +1090,7 @@
     "F_SA": 866.9,
     "acc_frac": 0.2822,
     "sa_cycles": 3938.9,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 3.689,
     "lower_bound_ratio": 2.877
    }
@@ -1101,7 +1101,7 @@
     "F_SA": 315.1,
     "acc_frac": 0.1538,
     "sa_cycles": 2363.1,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 8.222,
     "lower_bound_ratio": 7.126
    },
@@ -1110,7 +1110,7 @@
     "F_SA": 1035.9,
     "acc_frac": 0.2529,
     "sa_cycles": 5131.9,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 7.685,
     "lower_bound_ratio": 6.134
    },
@@ -1119,7 +1119,7 @@
     "F_SA": 1705.9,
     "acc_frac": 0.2777,
     "sa_cycles": 7849.9,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 7.351,
     "lower_bound_ratio": 5.754
    }
@@ -1130,7 +1130,7 @@
     "F_SA": 601.1,
     "acc_frac": 0.1467,
     "sa_cycles": 4697.1,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 16.343,
     "lower_bound_ratio": 14.252
    },
@@ -1139,7 +1139,7 @@
     "F_SA": 2089.2,
     "acc_frac": 0.255,
     "sa_cycles": 10281.2,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 15.396,
     "lower_bound_ratio": 12.268
    },
@@ -1148,7 +1148,7 @@
     "F_SA": 3386.3,
     "acc_frac": 0.2756,
     "sa_cycles": 15674.3,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 14.678,
     "lower_bound_ratio": 11.507
    }
@@ -1159,7 +1159,7 @@
     "F_SA": 1172.4,
     "acc_frac": 0.1431,
     "sa_cycles": 9364.4,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "ratio": 32.583,
     "lower_bound_ratio": 28.504
    },
@@ -1168,7 +1168,7 @@
     "F_SA": 4177.5,
     "acc_frac": 0.255,
     "sa_cycles": 20561.5,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "ratio": 30.791,
     "lower_bound_ratio": 24.535
    },
@@ -1177,7 +1177,7 @@
     "F_SA": 6723.0,
     "acc_frac": 0.2736,
     "sa_cycles": 31299.0,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "ratio": 29.31,
     "lower_bound_ratio": 23.015
    }
@@ -1188,7 +1188,7 @@
     "F_SA": 85.1,
     "acc_frac": 0.6648,
     "sa_cycles": 213.1,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 0.68,
     "lower_bound_ratio": 0.409
    },
@@ -1197,7 +1197,7 @@
     "F_SA": 180.7,
     "acc_frac": 0.7058,
     "sa_cycles": 436.7,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 0.53,
     "lower_bound_ratio": 0.311
    },
@@ -1206,7 +1206,7 @@
     "F_SA": 264.0,
     "acc_frac": 0.6875,
     "sa_cycles": 648.0,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 0.502,
     "lower_bound_ratio": 0.298
    }
@@ -1217,7 +1217,7 @@
     "F_SA": 106.3,
     "acc_frac": 0.4152,
     "sa_cycles": 362.3,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 1.156,
     "lower_bound_ratio": 0.817
    },
@@ -1226,7 +1226,7 @@
     "F_SA": 213.0,
     "acc_frac": 0.416,
     "sa_cycles": 725.0,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 0.88,
     "lower_bound_ratio": 0.622
    },
@@ -1235,7 +1235,7 @@
     "F_SA": 300.4,
     "acc_frac": 0.3911,
     "sa_cycles": 1068.4,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 0.828,
     "lower_bound_ratio": 0.595
    }
@@ -1246,7 +1246,7 @@
     "F_SA": 115.9,
     "acc_frac": 0.2264,
     "sa_cycles": 627.9,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 2.004,
     "lower_bound_ratio": 1.634
    },
@@ -1255,7 +1255,7 @@
     "F_SA": 265.0,
     "acc_frac": 0.2587,
     "sa_cycles": 1289.0,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 1.565,
     "lower_bound_ratio": 1.243
    },
@@ -1264,7 +1264,7 @@
     "F_SA": 373.8,
     "acc_frac": 0.2433,
     "sa_cycles": 1909.8,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 1.48,
     "lower_bound_ratio": 1.191
    }
@@ -1275,7 +1275,7 @@
     "F_SA": 161.7,
     "acc_frac": 0.1579,
     "sa_cycles": 1185.7,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 3.784,
     "lower_bound_ratio": 3.268
    },
@@ -1284,7 +1284,7 @@
     "F_SA": 432.7,
     "acc_frac": 0.2113,
     "sa_cycles": 2480.7,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 3.012,
     "lower_bound_ratio": 2.487
    },
@@ -1293,7 +1293,7 @@
     "F_SA": 631.9,
     "acc_frac": 0.2057,
     "sa_cycles": 3703.9,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 2.871,
     "lower_bound_ratio": 2.381
    }
@@ -1304,7 +1304,7 @@
     "F_SA": 258.0,
     "acc_frac": 0.126,
     "sa_cycles": 2306.0,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 7.36,
     "lower_bound_ratio": 6.536
    },
@@ -1313,7 +1313,7 @@
     "F_SA": 833.4,
     "acc_frac": 0.2035,
     "sa_cycles": 4929.4,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 5.986,
     "lower_bound_ratio": 4.974
    },
@@ -1322,7 +1322,7 @@
     "F_SA": 1223.0,
     "acc_frac": 0.1991,
     "sa_cycles": 7367.0,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 5.711,
     "lower_bound_ratio": 4.763
    }
@@ -1333,7 +1333,7 @@
     "F_SA": 448.6,
     "acc_frac": 0.1095,
     "sa_cycles": 4544.6,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 14.505,
     "lower_bound_ratio": 13.073
    },
@@ -1342,7 +1342,7 @@
     "F_SA": 1620.2,
     "acc_frac": 0.1978,
     "sa_cycles": 9812.2,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 11.915,
     "lower_bound_ratio": 9.948
    },
@@ -1351,7 +1351,7 @@
     "F_SA": 2418.4,
     "acc_frac": 0.1968,
     "sa_cycles": 14706.4,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 11.4,
     "lower_bound_ratio": 9.525
    }
@@ -1362,7 +1362,7 @@
     "F_SA": 829.0,
     "acc_frac": 0.1012,
     "sa_cycles": 9021.0,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 28.791,
     "lower_bound_ratio": 26.146
    },
@@ -1371,7 +1371,7 @@
     "F_SA": 3197.1,
     "acc_frac": 0.1951,
     "sa_cycles": 19581.1,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 23.778,
     "lower_bound_ratio": 19.896
    },
@@ -1380,7 +1380,7 @@
     "F_SA": 4819.6,
     "acc_frac": 0.1961,
     "sa_cycles": 29395.6,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 22.787,
     "lower_bound_ratio": 19.051
    }
@@ -1391,7 +1391,7 @@
     "F_SA": 1584.6,
     "acc_frac": 0.0967,
     "sa_cycles": 17968.6,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 57.349,
     "lower_bound_ratio": 52.291
    },
@@ -1400,7 +1400,7 @@
     "F_SA": 6449.0,
     "acc_frac": 0.1968,
     "sa_cycles": 39217.0,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 47.622,
     "lower_bound_ratio": 39.791
    },
@@ -1409,7 +1409,7 @@
     "F_SA": 9643.0,
     "acc_frac": 0.1962,
     "sa_cycles": 58795.0,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 45.576,
     "lower_bound_ratio": 38.101
    }
@@ -1420,7 +1420,7 @@
     "F_SA": 85.1,
     "acc_frac": 0.6648,
     "sa_cycles": 213.1,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 0.68,
     "lower_bound_ratio": 0.409
    },
@@ -1429,7 +1429,7 @@
     "F_SA": 180.7,
     "acc_frac": 0.7058,
     "sa_cycles": 436.7,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 0.53,
     "lower_bound_ratio": 0.311
    },
@@ -1438,7 +1438,7 @@
     "F_SA": 264.0,
     "acc_frac": 0.6875,
     "sa_cycles": 648.0,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 0.502,
     "lower_bound_ratio": 0.298
    }
@@ -1449,7 +1449,7 @@
     "F_SA": 106.1,
     "acc_frac": 0.4144,
     "sa_cycles": 362.1,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 1.156,
     "lower_bound_ratio": 0.817
    },
@@ -1458,7 +1458,7 @@
     "F_SA": 214.7,
     "acc_frac": 0.4193,
     "sa_cycles": 726.7,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 0.882,
     "lower_bound_ratio": 0.622
    },
@@ -1467,7 +1467,7 @@
     "F_SA": 302.1,
     "acc_frac": 0.3933,
     "sa_cycles": 1070.1,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 0.829,
     "lower_bound_ratio": 0.595
    }
@@ -1478,7 +1478,7 @@
     "F_SA": 128.7,
     "acc_frac": 0.2514,
     "sa_cycles": 640.7,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 2.045,
     "lower_bound_ratio": 1.634
    },
@@ -1487,7 +1487,7 @@
     "F_SA": 308.3,
     "acc_frac": 0.3011,
     "sa_cycles": 1332.3,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 1.618,
     "lower_bound_ratio": 1.243
    },
@@ -1496,7 +1496,7 @@
     "F_SA": 441.3,
     "acc_frac": 0.2873,
     "sa_cycles": 1977.3,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 1.533,
     "lower_bound_ratio": 1.191
    }
@@ -1507,7 +1507,7 @@
     "F_SA": 192.9,
     "acc_frac": 0.1883,
     "sa_cycles": 1216.9,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 3.884,
     "lower_bound_ratio": 3.268
    },
@@ -1516,7 +1516,7 @@
     "F_SA": 548.7,
     "acc_frac": 0.2679,
     "sa_cycles": 2596.7,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 3.153,
     "lower_bound_ratio": 2.487
    },
@@ -1525,7 +1525,7 @@
     "F_SA": 802.3,
     "acc_frac": 0.2612,
     "sa_cycles": 3874.3,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 3.003,
     "lower_bound_ratio": 2.381
    }
@@ -1536,7 +1536,7 @@
     "F_SA": 323.3,
     "acc_frac": 0.1579,
     "sa_cycles": 2371.3,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 7.568,
     "lower_bound_ratio": 6.536
    },
@@ -1545,7 +1545,7 @@
     "F_SA": 1096.9,
     "acc_frac": 0.2678,
     "sa_cycles": 5192.9,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 6.306,
     "lower_bound_ratio": 4.974
    },
@@ -1554,7 +1554,7 @@
     "F_SA": 1610.9,
     "acc_frac": 0.2622,
     "sa_cycles": 7754.9,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 6.011,
     "lower_bound_ratio": 4.763
    }
@@ -1565,7 +1565,7 @@
     "F_SA": 580.9,
     "acc_frac": 0.1418,
     "sa_cycles": 4676.9,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 14.927,
     "lower_bound_ratio": 13.073
    },
@@ -1574,7 +1574,7 @@
     "F_SA": 2175.6,
     "acc_frac": 0.2656,
     "sa_cycles": 10367.6,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 12.59,
     "lower_bound_ratio": 9.948
    },
@@ -1583,7 +1583,7 @@
     "F_SA": 3253.6,
     "acc_frac": 0.2648,
     "sa_cycles": 15541.6,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 12.047,
     "lower_bound_ratio": 9.525
    }
@@ -1594,7 +1594,7 @@
     "F_SA": 1094.6,
     "acc_frac": 0.1336,
     "sa_cycles": 9286.6,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 29.639,
     "lower_bound_ratio": 26.146
    },
@@ -1603,7 +1603,7 @@
     "F_SA": 4320.7,
     "acc_frac": 0.2637,
     "sa_cycles": 20704.7,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 25.142,
     "lower_bound_ratio": 19.896
    },
@@ -1612,7 +1612,7 @@
     "F_SA": 6421.3,
     "acc_frac": 0.2613,
     "sa_cycles": 30997.3,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 24.028,
     "lower_bound_ratio": 19.051
    }
@@ -1623,7 +1623,7 @@
     "F_SA": 2123.8,
     "acc_frac": 0.1296,
     "sa_cycles": 18507.8,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "ratio": 59.07,
     "lower_bound_ratio": 52.291
    },
@@ -1632,7 +1632,7 @@
     "F_SA": 8621.6,
     "acc_frac": 0.2631,
     "sa_cycles": 41389.6,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "ratio": 50.26,
     "lower_bound_ratio": 39.791
    },
@@ -1641,7 +1641,7 @@
     "F_SA": 13115.6,
     "acc_frac": 0.2668,
     "sa_cycles": 62267.6,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "ratio": 48.268,
     "lower_bound_ratio": 38.101
    }

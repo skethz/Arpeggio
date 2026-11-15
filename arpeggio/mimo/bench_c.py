@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Milestone-C timed cohort (PROTOCOL_C.md): NVML idle of the GPU before any CUDA context; then per PLAN item
+"""Timed cohort of the MDI chain and solvers: NVML idle of the GPU before any CUDA context; then per PLAN item
 - mode 'chain': the whole MDI-MIMO chain (MMSE, MMSE-SIC, radius, dDI mapping, solver calls, selection, orchestration)
   on batches of fresh draws (up to NB distinct batches cycled), the solver wrapped in a synchronised timer;
 - mode 'solver': the solver calls captured from one untimed chain run per batch (inputs I, na, K), replayed back to
@@ -8,7 +8,7 @@ each as one untimed run, then REPS segments, a segment being back-to-back calls 
 elapsed (time-based: the segment ends with the first call that crosses MIN_S); NVML's total-energy counter at the
 segment bounds; detections/s, J per detection (total, above the no-process idle), solver seconds inside the chain,
 process CPU seconds, BER of the timed detections (chain). JSON lines to OUT.jsonl.
-Usage: bench_c.py --plan PLAN_C.json --ane-cubin C1 --ahc-cubin C2 --out PREFIX"""
+Usage: bench_c.py --plan PLAN_C.json --chord-cubin C1 --ahc-cubin C2 --out PREFIX"""
 import argparse
 import ctypes
 import json
@@ -17,7 +17,7 @@ import time
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--plan', required=True)
-ap.add_argument('--ane-cubin', required=True)
+ap.add_argument('--chord-cubin', required=True)
 ap.add_argument('--ahc-cubin', required=True)
 ap.add_argument('--out', required=True)
 ap.add_argument('--min-s', type=float, default=6.0)
@@ -56,12 +56,12 @@ P_IDLE = idle['avg_W']
 import torch  # noqa: E402
 
 import ahcfx  # noqa: E402
-import anefx  # noqa: E402
+import chordfx  # noqa: E402
 import mdi_solvers as ms  # noqa: E402
 import mimo  # noqa: E402
 
 torch.backends.cuda.matmul.allow_tf32 = False
-ka = anefx.Kernel(a.ane_cubin)
+ka = chordfx.Kernel(a.chord_cubin)
 kh = ahcfx.AhcKernel(a.ahc_cubin)
 only = set(x for x in a.only.split(',') if x)
 
@@ -74,7 +74,7 @@ def cpu_s():
 for it in plan['items']:
     if only and it['id'] not in only:
         continue
-    impl = it['method'] + '_' + it['impl']                                # ahc_torch, ane_kernel, ...
+    impl = it['method'] + '_' + it['impl']                                # ahc_torch, chord_kernel, ...
     cfg = ms.MDI[(it['shape'], it['M'])]
     B, NB = it['batch'], it.get('nb', 4)
     g = torch.Generator(device='cuda'); g.manual_seed(it.get('seed', 31_000_003))

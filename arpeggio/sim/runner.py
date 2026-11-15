@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checkpointed error-counting worker (PROTOCOL.md sections 3-4). Pulls point jobs (shape, method, SNR) from a plan in
+"""Checkpointed error-counting worker. Pulls point jobs (shape, method, SNR) from a plan in
 priority order, claims each with an exclusive claim file, and runs it batch by batch until the stopping rule holds:
 >= min_vec erroneous channel uses AND >= min_bit bit errors AND >= min_uses uses, or the bit cap (1e7 bits).
 Every batch is saved as its own .npz (atomic rename) with the per-use bit-error vector, and for each erroneous use:
@@ -28,7 +28,7 @@ ap.add_argument('--filter', default='', help='comma list of substrings; job id m
 a = ap.parse_args()
 torch.set_num_threads(a.threads)
 
-import apx  # noqa: E402
+import arpx  # noqa: E402
 
 plan = json.load(open(a.plan))
 HOST = socket.gethostname().split('.')[0]
@@ -77,7 +77,7 @@ def mhash(m):
 
 
 def bits_per_use(shape):
-    s = apx.SHAPES[shape]
+    s = arpx.SHAPES[shape]
     return 2 * s['nt'] * (1 if s['M'] == 4 else 2)
 
 
@@ -96,7 +96,7 @@ def tally(d):
 def run_job(j, ctx):
     d = job_dir(j)
     shape, method, snr, seed = j['shape'], j['method'], float(j['snr']), int(j['seed'])
-    s = apx.SHAPES[shape]
+    s = arpx.SHAPES[shape]
     nt, M = s['nt'], s['M']
     bpu = bits_per_use(shape)
     B = int(j['batch'])
@@ -108,20 +108,20 @@ def run_job(j, ctx):
             break
         bi = nb
         m = min(B, max_uses - n)
-        b = apx.draw(seed, snr, bi, B, nt, M)
+        b = arpx.draw(seed, snr, bi, B, nt, M)
         if m < B:
             for k in ('H', 'y', 'l'):
                 b[k] = b[k][:m].contiguous()
-        gs = torch.Generator(device='cuda'); gs.manual_seed(apx.draw_seed(seed, snr, bi) + 7919 + mhash(method))
+        gs = torch.Generator(device='cuda'); gs.manual_seed(arpx.draw_seed(seed, snr, bi) + 7919 + mhash(method))
         torch.cuda.synchronize(); t0 = time.time()
-        z, Ai, _ = apx.mimo.mmse(b)
-        lh, dg, info = apx.detect(method, b, shape, gs, ctx, z=z)
+        z, Ai, _ = arpx.mimo.mmse(b)
+        lh, dg, info = arpx.detect(method, b, shape, gs, ctx, z=z)
         torch.cuda.synchronize(); dt = time.time() - t0
-        bev = apx.biterr_per_use(b, lh)
+        bev = arpx.biterr_per_use(b, lh)
         err = torch.nonzero(bev > 0).flatten()
         bd = dict(H=b['H'].double(), y=b['y'].double(), l=b['l'].double())
         out = dict(biterr=bev.cpu().numpy().astype(np.uint8), err_idx=err.cpu().numpy().astype(np.int32),
-                   d_hat=apx.dist_of(bd, lh.double())[err].cpu().numpy(), d_true=apx.dist_true(bd)[err].cpu().numpy(),
+                   d_hat=arpx.dist_of(bd, lh.double())[err].cpu().numpy(), d_true=arpx.dist_true(bd)[err].cpu().numpy(),
                    xhat=lh[err].cpu().numpy().astype(np.int8))
         if dg is not None:
             for k, v in dg.items():
@@ -148,7 +148,7 @@ def run_job(j, ctx):
 tuned = plan.get('tuned', {})
 if 'tuned_file' in plan and os.path.exists(plan['tuned_file']):
     tuned.update(json.load(open(plan['tuned_file'])))
-ctx = apx.Ctx(tuned)
+ctx = arpx.Ctx(tuned)
 filt = [x for x in a.filter.split(',') if x]
 done_jobs = 0
 for j in plan['jobs']:

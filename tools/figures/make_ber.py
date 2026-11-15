@@ -1,10 +1,9 @@
-"""Labels since 9 Nov 2026 (user "Apply it"): Chord (was Antiphase), Arpeggio (first-accept); work/rename_chord_arpeggio_20261109/.
-Fig. 3 of the Antiphase paper: BER against SNR inside the MDI wrapper, 16x16 and 32x32 16-QAM (held-out seed 101).
+"""Fig. 4: BER against SNR inside the MDI wrapper, 16x16 and 32x32 16-QAM (held-out seed 101).
 
-Includes the completed held-out width-128 sweep, with bootstrap CIs recomputed from saved per-use error counts.
-Points are the Table II rerun (>= 100 erroneous uses and >= 100 bit errors per point, capped at 1e7 bits); vertical
+Includes the held-out width-128 sweep, with bootstrap CIs recomputed from saved per-use error counts.
+Points are the Table III runs (>= 100 erroneous uses and >= 100 bit errors per point, capped at 1e7 bits); vertical
 bars are 95 % cluster-bootstrap CIs; zero-error points are not drawn.
-Data: work/plan_20261024/ap_ber/data/table2/table2_curves.csv (ap_ber RESULTS.md section 1). Built from the data only.
+Data: table2/table2_curves.csv.
 """
 import csv
 from collections import defaultdict
@@ -15,22 +14,21 @@ import matplotlib.pyplot as plt
 import figstyle as fs
 
 fs.apply('ber')
-# Round-8 fit (8 Nov 2026): figure 1.78 in tall (was 1.95) with the same top margin, a 44 pt bottom margin (was 50.5) and
-# the x label closer to its ticks; the page height is set here, the shared figstyle.PRINTED['ber'] (137.056 pt) stays.
+# Figure 1.78 in tall, a 44 pt bottom margin and the x label close to its ticks; the page height is set here.
 fs.PRINTED['ber'] = (252.0, 256.29, 124.6)
 FIG_H, TOP_PT, BOT_PT, XLABEL_PAD = 1.78, 14.0, 44.0, 1.5
-DATA = fs.ROOT.parent / 'work' / 'plan_20261024' / 'ap_ber' / 'data' / 'table2' / 'table2_curves.csv'
+DATA = fs.ROOT.parent / 'work' / 'plan_20261024' / 'arpeggio_ber' / 'data' / 'table2' / 'table2_curves.csv'
 
 SERIES = [  # (row in table2_curves.csv, label, colour, linestyle, marker, line width)
-    # baselines gray (told apart by marker and dash), the published MDI-AHC solver purple, Antiphase green
+    # baselines gray (told apart by marker and dash), the published MDI-AHC solver purple, Chord green
     ('MMSE-SIC', 'MMSE-SIC', fs.BASE2, '-', 'v', 0.8),
     ('K-best, 32 candidates', 'K-best, 32', fs.BASE1, '-', 's', 0.8),
     ('K-best, 128 candidates', 'K-best, 128', fs.BASE1, '--', 's', 0.9),
     ('ML (sphere decoder)', 'SD proxy', fs.INK, ':', None, 0.8),
     ('MDI-AHC (b)', 'MDI-AHC', fs.COMP_PURPLE, '-', '^', 0.8),
-    ('Antiphase (b)', 'Chord', fs.OURS, '-', 'o', 1.1),
-    ('MDI-AHC, Ns = 8', 'MDI-AHC, $N_\\mathrm{s}=8$', fs.COMP_PURPLE, (0, (2, 1.5)), None, 0.8),   # short dashes vs Antiphase's long dashes
-    ('Antiphase, Ns = 8', 'Chord, $N_\\mathrm{s}=8$', fs.OURS, '--', None, 1.1),
+    ('Chord (b)', 'Chord', fs.OURS, '-', 'o', 1.1),
+    ('MDI-AHC, Ns = 8', 'MDI-AHC, $N_\\mathrm{s}=8$', fs.COMP_PURPLE, (0, (2, 1.5)), None, 0.8),   # short dashes vs Chord's long dashes
+    ('Chord, Ns = 8', 'Chord, $N_\\mathrm{s}=8$', fs.OURS, '--', None, 1.1),
 ]
 
 
@@ -66,7 +64,7 @@ def main():
         ax.set_yscale('log')
         ax.set_xlim(*xlim)
         ax.set_ylim(1e-6, 3e-2)
-        ax.set_xlabel('SNR (dB)', labelpad=XLABEL_PAD)   # closer to the ticks, so the shorter figure keeps a gap above the legend
+        ax.set_xlabel('SNR (dB)', labelpad=XLABEL_PAD)   # close to the ticks, so the figure keeps a gap above the legend
         fs.panel_title(ax, *title)
     axs[0].set_ylabel('Bit error rate')
     # Legend ours first, in a 4 x 2 grid filled by column: each solid line sits above its N_s = 8 variant.
@@ -76,7 +74,7 @@ def main():
     hl = dict(zip(l, h))     # key: line + marker only (h[...][0]), no CI stroke
     fig.legend([hl[k][0] for k in order], order, loc='lower center', ncol=4, handlelength=1.5, handletextpad=0.4,
                columnspacing=0.8, labelspacing=0.3, bbox_to_anchor=(0.52, -0.01))
-    fs.save(fig, 'Antiphase', 'ber')
+    fs.save(fig, 'Chord', 'ber')
 
 
 if __name__ == '__main__':

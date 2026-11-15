@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Milestone-D BER tables (markdown) from the result files: (1) the Fig. 6 validation (their report.json BER, our PIMI
+"""BER tables of the PIMI comparison (markdown) from the result files: (1) the Fig. 6 validation (their report.json BER, our PIMI
 on their instances, our PIMI on our port of their channel model, the figure reading); (2) the comparison at their
 published operating points (held-out seed 41); (3) the matched-BER ladders and (4) the ablation (seed 42).
 Usage: tables_d.py RESULTS_DIR REPORTS.jsonl > tables_d.md"""
@@ -109,20 +109,20 @@ def crosstab(cfgs, cols):
 
 
 C16 = [('mmse', 'MMSE (ours)'), ('mmseb', 'MMSE (theirs)'), ('kbest32', 'K-best 32'), ('pimi64', 'PIMI HW 64'),
-       ('pimi256', 'PIMI TO 256'), ('pimi32', 'PIMI HW 32'), ('pimi128', 'PIMI TO 128'), ('aned32', 'Antiphase, 1 stage, 32'),
-       ('aned64', 'Antiphase, 1 stage, 64'), ('mdiahc64', 'MDI-AHC Ns 64'), ('mdiane64', 'Antiphase Ns 64')]
+       ('pimi256', 'PIMI TO 256'), ('pimi32', 'PIMI HW 32'), ('pimi128', 'PIMI TO 128'), ('aned32', 'Chord, 1 stage, 32'),
+       ('aned64', 'Chord, 1 stage, 64'), ('mdiahc64', 'MDI-AHC Ns 64'), ('mdichord64', 'Chord Ns 64')]
 print('## BER at their published operating points (held-out seed 41)\n')
 tab(load('x16_a') + load('x16_ahc'), C16, '16x16 16-QAM (n 8,000; PIMI 64 / 256 steps)')
 tab(load('x8_a'), C16, '8x8 16-QAM (n 16,000; PIMI 32 / 128 steps; our 16x16 schedules and Table I settings reused)')
 CQ = [('mmse', 'MMSE'), ('kbest32', 'K-best 32'), ('pimi16', 'PIMI HW 16'), ('pimi32', 'PIMI HW 32'), ('pimi64', 'PIMI 64'),
       ('pimi128', 'PIMI TO 128'), ('pimiA16', 'PIMI-A HW 16'), ('pimiA32', 'PIMI-A HW 32'), ('pimiA64', 'PIMI-A 64'),
-      ('pimiA128', 'PIMI-A 128'), ('aned32', 'Antiphase, 1 stage, 32'), ('aned64', 'Antiphase, 1 stage, 64'),
-      ('mdiahc64', 'DI-AHC Ns 64'), ('mdiane64', 'Antiphase (DI) Ns 64')]
+      ('pimiA128', 'PIMI-A 128'), ('aned32', 'Chord, 1 stage, 32'), ('aned64', 'Chord, 1 stage, 64'),
+      ('mdiahc64', 'DI-AHC Ns 64'), ('mdichord64', 'Chord (DI) Ns 64')]
 tab(load('q16_a'), CQ, '16x16 QPSK (n 16,000; PIMI 32 / 128 steps, and 64 as their report names; schedule B, PIMI-A = schedule A)')
 tab(load('q8_a'), CQ, '8x8 QPSK (n 16,000; PIMI 16 / 64 steps)')
 XC = [('mmse', 'MMSE (ours)'), ('mmseb', 'MMSE (theirs)'), ('kbest32', 'K-best 32'), ('pimiHW', 'PIMI HW'), ('pimiTO', 'PIMI TO'),
-      ('pimiA_HW', 'PIMI-A HW'), ('aned32', 'Antiphase 1 stage 32'), ('aned64', 'Antiphase 1 stage 64'), ('mdiahc64', 'MDI-AHC / DI-AHC 64'),
-      ('mdiane64', 'Antiphase 64')]
+      ('pimiA_HW', 'PIMI-A HW'), ('aned32', 'Chord 1 stage 32'), ('aned64', 'Chord 1 stage 64'), ('mdiahc64', 'MDI-AHC / DI-AHC 64'),
+      ('mdichord64', 'Chord 64')]
 
 
 def alias(rows, hw, to, ahw=None):

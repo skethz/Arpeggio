@@ -1,6 +1,6 @@
 // PIMI (Zhu et al., arXiv:2604.17109v2; the authors' 'tanh_lut' update and 16-bit fixed point, src/pbits_im.py and
 // src/aux.py on Zenodo) for DI-MIMO detection as a CUDA kernel, bit-exact with pimi.pimi_fx. Structure as
-// ane_kernel.cu / ahc_kernel.cu: one block per instance, one warp per trial (a warp loops over trials w, w + W, ...),
+// chord_kernel.cu / ahc_kernel.cu: one block per instance, one warp per trial (a warp loops over trials w, w + W, ...),
 // the couplings in shared memory (int16, symmetric), lane L holding spins t*32 + L (t < MPL = N/32).
 // Arithmetic, in integer units of 2^-12 with q(x) = saturate(trunc(x)) to [-2^15, 2^15 - 1]:
 //   MVM = q(u) with u = J s (kept exactly, updated incrementally per changed spin: integers, so equal to recomputation);

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Anechoic on Princeton's delta formulation (dDI, K = 1) with alternating copy updates (phases = 2), tuning set
+"""Chord on Princeton's delta formulation (dDI, K = 1) with alternating copy updates (phases = 2), tuning set
 (seed 1000). Grid over S, t0, t1, q, kappa, lam; AHC-dDI on the same draws for reference. JSON lines to OUT.jsonl.
 Usage: tune_ddi.py --nt 16 --M 16 --snrs 20,24 --n 2000 --na 64 --grid JSON --out PREFIX"""
 import argparse
@@ -44,6 +44,6 @@ for S, t0, t1, q, k, lm_ in itertools.product(G['S'], G['t0'], G['t1'], G['q'], 
     if t1 > t0 or (k > 0 and lm_ > 0):
         continue
     c = dict(S=S, t0=t0, t1=t1, q=q, kappa=k, lam=lm_, phases=2)
-    r = dict(method='ane-dDI', na=a.na, nt=a.nt, cand=c,
-             ber=ber(lambda Id, gs: mimo.anechoic(Id, a.na, S, t0, t1, q, kappa=k, lam=lm_, gen=gs, phases=2)))
+    r = dict(method='chord-dDI', na=a.na, nt=a.nt, cand=c,
+             ber=ber(lambda Id, gs: mimo.chord(Id, a.na, S, t0, t1, q, kappa=k, lam=lm_, gen=gs, phases=2)))
     fo.write(json.dumps(r) + '\n'); fo.flush()

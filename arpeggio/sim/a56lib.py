@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""A5.6 library (exploratory; PROTOCOL_A56.md). apx.py, runner.py and mimo.py are not edited.
-- ape(): mimo.anechoic statement for statement (same random-number order, so bit-identical for sched='alt'), plus flip
-  counts per K and the lane-random schedule of review item X4.
-- mdi_trace(): apx.mdi_diag statement for statement, plus a checkpoint per use at the start and after every stage.
+"""A5.6 library.
+- chord(): mimo.chord statement for statement (same random-number order, so bit-identical for sched='alt'), plus flip
+  counts per K and the lane-random schedule.
+- mdi_trace(): arpx.mdi_diag statement for statement, plus a checkpoint per use at the start and after every stage.
 - stop_eval(): what any residual-test early stop would have done, from one trace.
-Method names: a56_<Sk>_<T0>_<T1>_<q>_<kappa>_<sched>_<Ns>, sched in {alt, lane}, L = Sk * 2K half-steps."""
+Method names: a56_<Sk>_<T0>_<T1>_<q>_<kappa>_<sched>_<Ns>, sched in {alt, lane}, L = Sk * 2K rounds."""
 import hashlib
 import math
 
 import numpy as np
 import torch
 
-import apx
-import apx55
+import arpx
+import arpx55
 
-mimo = apx.mimo
+mimo = arpx.mimo
 
 
 def mhash(m):
@@ -22,7 +22,7 @@ def mhash(m):
 
 
 def lane_mask(B, R, D, P, gen, dev):
-    """Exactly one active copy per coordinate and anneal, drawn independently at every half-step. Spins are copy-major:
+    """Exactly one active copy per coordinate and anneal, drawn independently at every round. Spins are copy-major:
     spin i is copy i // D of coordinate i % D. Returns a bool mask (B, R, P D)."""
     c = torch.randint(0, P, (B, R, D), generator=gen, device=dev)
     idx = torch.arange(P * D, device=dev) // D
@@ -30,9 +30,9 @@ def lane_mask(B, R, D, P, gen, dev):
 
 
 @torch.no_grad()
-def ape(I, R, S, t0, t1, q, kappa=0.0, P=1, sched='alt', gen=None, cnt=None):
-    """mimo.anechoic(I, R, S, t0, t1, q, kappa=kappa, gen=gen, phases=P), track='best', ramp=True. Returns the best state of
-    each anneal. cnt: optional dict accumulating flips, half-steps (steps) and anneals."""
+def chord(I, R, S, t0, t1, q, kappa=0.0, P=1, sched='alt', gen=None, cnt=None):
+    """mimo.chord(I, R, S, t0, t1, q, kappa=kappa, gen=gen, phases=P), track='best', ramp=True. Returns the best state of
+    each anneal. cnt: optional dict accumulating flips, rounds (steps) and anneals."""
     h, J = I['h'], I['J']
     B, N = h.shape
     dev = h.device
@@ -74,22 +74,22 @@ def ape(I, R, S, t0, t1, q, kappa=0.0, P=1, sched='alt', gen=None, cnt=None):
 
 
 def solver_for(method, shape, gs, ctx, cnt):
-    """(solver(I, na, K), to_levels or None, Ns). a56_* methods count flips per K in cnt; others are apx's, unchanged."""
+    """(solver(I, na, K), to_levels or None, Ns). a56_* methods count flips per K in cnt; others are arpx's, unchanged."""
     if method.startswith('a56_'):
         _, Sk, T0, T1, q, ka, sched, Ns = method.split('_')
         Sk, T0, T1, q, ka, Ns = int(Sk), float(T0), float(T1), float(q), float(ka), int(Ns)
 
         def f(I, na, K):
-            return ape(I, na, Sk * 2 * K, T0, T1, q, ka, 2 * K, sched, gs, cnt.setdefault(str(K), {}))
+            return chord(I, na, Sk * 2 * K, T0, T1, q, ka, 2 * K, sched, gs, cnt.setdefault(str(K), {}))
         return f, None, Ns
-    r = apx55.solver_for(method, shape, gs, ctx, cnt)                      # abl_fam_*, abl_far_*, abl_ape_*, abl_ptb_*; counts in cnt['cnt']
-    return r if r is not None else apx.mdi_solver_for(method, shape, gs, ctx)
+    r = arpx55.solver_for(method, shape, gs, ctx, cnt)                      # abl_fam_*, abl_far_*, abl_chord_*, abl_ptb_*; counts in cnt['cnt']
+    return r if r is not None else arpx.mdi_solver_for(method, shape, gs, ctx)
 
 
 @torch.no_grad()
 def mdi_trace(b, solver, Ns, Rmax, S, guesses=('mmse', 'sic'), heuristic='mean', sic_per='real', na_round='ceil',
               z_mmse=None, to_levels=None):
-    """apx.mdi_diag with omega None, statement for statement, so the output and the solver's random numbers are the same.
+    """arpx.mdi_diag with omega None, statement for statement, so the output and the solver's random numbers are the same.
     Checkpoint j = 0 is the start, j = st + 1 follows stage st; each holds what the wrapper would return if it ended there:
     d (the better guess's ||y - Hx||^2), be (its bit errors). Also ann (B, S, Rmax): anneals per stage and K; rad (B, G, S):
     radius per guess and stage; win (B, G, S): the K whose candidate became the guess at that stage, 0 if the guess stayed."""
@@ -114,12 +114,12 @@ def mdi_trace(b, solver, Ns, Rmax, S, guesses=('mmse', 'sic'), heuristic='mean',
         allc = torch.stack([cur[g] for g in guesses], 1)
         d = mimo.dist(b, allc)
         lh = allc[torch.arange(B, device=dev), d.argmin(1)]
-        ck_d[:, j] = apx.dist_of(bd64, lh.double()).cpu()
-        ck_be[:, j] = apx.biterr_per_use(b, lh).cpu()
+        ck_d[:, j] = arpx.dist_of(bd64, lh.double()).cpu()
+        ck_be[:, j] = arpx.biterr_per_use(b, lh).cpu()
 
     checkpoint(0)
     for st in range(S):
-        R = {g: apx.mdi_radius_om(b, cur[g], Rmax, heuristic, None)[0] for g in guesses}
+        R = {g: arpx.mdi_radius_om(b, cur[g], Rmax, heuristic, None)[0] for g in guesses}
         tot = sum(R[g] for g in guesses)
         for gi, g in enumerate(guesses):
             rad[:, gi, st] = R[g].to(torch.int8).cpu()

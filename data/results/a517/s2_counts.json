@@ -1,5 +1,4 @@
 {
- "protocol_sha256": "5a7f27818ae2d86bd1db4d1bf720fc06f403c7aa387775991728d44e09f558ab",
  "script_sha256": "21e497a3dfe92e7fb8b186e89a84163a76d6bd7513b9080953ba442260a8a064",
  "gates": {
   "G1_G3": {

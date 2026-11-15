@@ -3,7 +3,7 @@
   {
    "point": "P1",
    "variant": "(i) as proposed",
-   "method": "mdiane32",
+   "method": "mdichord32",
    "uses": 20000,
    "bit_err": 924,
    "vec_err": 103,
@@ -146,7 +146,7 @@
    },
    "t_torch_solver_ms": 23.52326774597168,
    "t_torch_chain_ms": 23.829469203948975,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P1",
@@ -176,7 +176,7 @@
    },
    "t_torch_solver_ms": 13.061085224151611,
    "t_torch_chain_ms": 13.252401351928711,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P1",
@@ -299,7 +299,7 @@
    },
    "t_torch_solver_ms": 243.51738834381104,
    "t_torch_chain_ms": 243.75796508789062,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P1",
@@ -329,7 +329,7 @@
    },
    "t_torch_solver_ms": 36.39432144165039,
    "t_torch_chain_ms": 36.67734432220459,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P1",
@@ -359,7 +359,7 @@
    },
    "t_torch_solver_ms": 33.32539653778076,
    "t_torch_chain_ms": 33.586442947387695,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P1",
@@ -499,7 +499,7 @@
   {
    "point": "P2",
    "variant": "(i) as proposed",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "uses": 43000,
    "bit_err": 2182,
    "vec_err": 101,
@@ -633,7 +633,7 @@
    },
    "t_torch_solver_ms": 46.87117576599121,
    "t_torch_chain_ms": 47.66360092163086,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P2",
@@ -663,7 +663,7 @@
    },
    "t_torch_solver_ms": 31.56621265411377,
    "t_torch_chain_ms": 32.17695999145508,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P2",
@@ -783,7 +783,7 @@
    },
    "t_torch_solver_ms": 1130.3087844848633,
    "t_torch_chain_ms": 1131.0002012252808,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P2",
@@ -813,7 +813,7 @@
    },
    "t_torch_solver_ms": 80.50131416320801,
    "t_torch_chain_ms": 81.3073959350586,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P2",
@@ -843,7 +843,7 @@
    },
    "t_torch_solver_ms": 94.67968559265137,
    "t_torch_chain_ms": 95.5062026977539,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P2",
@@ -983,7 +983,7 @@
   {
    "point": "P3",
    "variant": "(i) as proposed",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "uses": 156250,
    "bit_err": 65,
    "vec_err": 30,
@@ -1126,7 +1126,7 @@
    },
    "t_torch_solver_ms": 0.02872216450540643,
    "t_torch_chain_ms": 0.031771408884148845,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P3",
@@ -1156,7 +1156,7 @@
    },
    "t_torch_solver_ms": 0.029745874139997693,
    "t_torch_chain_ms": 0.0328583652558534,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P3",
@@ -1279,7 +1279,7 @@
    },
    "t_torch_solver_ms": 0.7700030505657196,
    "t_torch_chain_ms": 0.7763534784317017,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P3",
@@ -1309,7 +1309,7 @@
    },
    "t_torch_solver_ms": 0.03221371454351089,
    "t_torch_chain_ms": 0.035354200531454646,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P3",
@@ -1339,7 +1339,7 @@
    },
    "t_torch_solver_ms": 0.03563132347204746,
    "t_torch_chain_ms": 0.03869170867479765,
-   "t_torch_label": "B200, non-exclusive host; new unoptimized code, not a cost claim"
+   "t_torch_label": "B200, non-exclusive host; unoptimized PyTorch code"
   },
   {
    "point": "P3",

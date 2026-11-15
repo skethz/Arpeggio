@@ -1,5 +1,5 @@
 {
- "note": "A5.4 analysis, PROTOCOL_A54.md section 4; exploratory; modeled cycles (L + F for Antiphase, S N + F_SA for SA, Fig. 3 data); cycle mean over K is geometric, as Fig. 3 plots it; seed 102, flips seed 1000.",
+ "note": "A5.4 analysis; modeled cycles (L + F for Chord, S N + F_SA for SA, Fig. 3 data); cycle mean over K is geometric, as Fig. 3 plots it; seed 102, flips seed 1000.",
  "points": {
   "P1": {
    "rows": [
@@ -374,9 +374,9 @@
       0.949
      ],
      "Sk": 128,
-     "ap_cyc_ratio": 1.0,
+     "chord_cyc_ratio": 1.0,
      "cyc_mismatch": 0.9858871957123188,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 12000,
       "ratio": 0.3730407523510972,
       "lo": 0.2552607502287283,
@@ -402,9 +402,9 @@
       1.859
      ],
      "Sk": 256,
-     "ap_cyc_ratio": 1.8920002897841115,
+     "chord_cyc_ratio": 1.8920002897841115,
      "cyc_mismatch": 0.9596826733518264,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 16000,
       "ratio": 0.39217318900915904,
       "lo": 0.25955555555555554,
@@ -430,9 +430,9 @@
       3.689
      ],
      "Sk": 512,
-     "ap_cyc_ratio": 3.6329435718703813,
+     "chord_cyc_ratio": 3.6329435718703813,
      "cyc_mismatch": 0.9325203557359407,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 20000,
       "ratio": 0.4976873265494912,
       "lo": 0.3469767441860465,
@@ -458,9 +458,9 @@
       7.351
      ],
      "Sk": 1024,
-     "ap_cyc_ratio": 7.083706531367608,
+     "chord_cyc_ratio": 7.083706531367608,
      "cyc_mismatch": 0.9146844689491895,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 22000,
       "ratio": 0.34841628959276016,
       "lo": 0.22360953461975028,
@@ -486,9 +486,9 @@
       14.678
      ],
      "Sk": 2048,
-     "ap_cyc_ratio": 13.884316693751249,
+     "chord_cyc_ratio": 13.884316693751249,
      "cyc_mismatch": 0.8982329637921773,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 24000,
       "ratio": 0.30049261083743845,
       "lo": 0.1732283464566929,
@@ -514,9 +514,9 @@
       29.31
      ],
      "Sk": 4096,
-     "ap_cyc_ratio": 27.439950164785873,
+     "chord_cyc_ratio": 27.439950164785873,
      "cyc_mismatch": 0.8890095468270756,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 32000,
       "ratio": 0.46153846153846156,
       "lo": 0.2756756756756757,
@@ -535,8 +535,8 @@
    ],
    "verdict": {
     "saturates_at": 1024,
-    "antiphase_wins_equal_cycles_through_S": 128,
-    "longer_sa_buys_lower_ber_holds": false,
+    "chord_wins_equal_cycles_through_S": 128,
+    "sa_lower_ber_at_largest_matched": false,
     "largest_matched": {
      "S": 128,
      "Sk": 4096,
@@ -968,9 +968,9 @@
       1.48
      ],
      "Sk": 256,
-     "ap_cyc_ratio": 1.8022626359113643,
+     "chord_cyc_ratio": 1.8022626359113643,
      "cyc_mismatch": 1.0804221709698534,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 6000,
       "ratio": 0.18322427126710292,
       "lo": 0.0914985590778098,
@@ -996,9 +996,9 @@
       2.871
      ],
      "Sk": 512,
-     "ap_cyc_ratio": 3.3023932986716162,
+     "chord_cyc_ratio": 3.3023932986716162,
      "cyc_mismatch": 1.0324817053201598,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 13000,
       "ratio": 0.1509620128268377,
       "lo": 0.07180851063829788,
@@ -1024,9 +1024,9 @@
       5.711
      ],
      "Sk": 1024,
-     "ap_cyc_ratio": 6.235772556031523,
+     "chord_cyc_ratio": 6.235772556031523,
      "cyc_mismatch": 0.9877522720276006,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 22000,
       "ratio": 0.08640822045773003,
       "lo": 0.03151100987091875,
@@ -1052,9 +1052,9 @@
       11.4
      ],
      "Sk": 2048,
-     "ap_cyc_ratio": 11.948592932063393,
+     "chord_cyc_ratio": 11.948592932063393,
      "cyc_mismatch": 0.9531133559198612,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 42000,
       "ratio": 0.1273209549071618,
       "lo": 0.06240639041437843,
@@ -1080,9 +1080,9 @@
       22.787
      ],
      "Sk": 4096,
-     "ap_cyc_ratio": 23.242853929970206,
+     "chord_cyc_ratio": 23.242853929970206,
      "cyc_mismatch": 0.9302143710008949,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 60000,
       "ratio": 0.07109207708779443,
       "lo": 0.023740108288213244,
@@ -1108,9 +1108,9 @@
       45.576
      ],
      "Sk": 8192,
-     "ap_cyc_ratio": 45.9749418466866,
+     "chord_cyc_ratio": 45.9749418466866,
      "cyc_mismatch": 0.9207985492426266,
-     "ap_over_sa": {
+     "chord_over_sa": {
       "uses": 78125,
       "ratio": 0.056858147713950764,
       "lo": 0.001084010840108401,
@@ -1129,8 +1129,8 @@
    ],
    "verdict": {
     "saturates_at": null,
-    "antiphase_wins_equal_cycles_through_S": 128,
-    "longer_sa_buys_lower_ber_holds": false,
+    "chord_wins_equal_cycles_through_S": 128,
+    "sa_lower_ber_at_largest_matched": false,
     "largest_matched": {
      "S": 128,
      "Sk": 8192,

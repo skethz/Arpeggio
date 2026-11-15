@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compact milestone-C tables for RESULTS.md from the cohort (medians of 3 segments) and the held-out BER files.
+"""Compact tables from the MDI cohort (medians of 3 segments) and the held-out BER files.
 Usage: tables_c.py COHORT_DIR PLAN_C.json"""
 import json
 import statistics as st
@@ -13,12 +13,13 @@ for r in rows:
 med = {k: {f: st.median(x[f] for x in v) for f in v[0] if isinstance(v[0][f], (int, float)) and f not in ('rep',)}
        for k, v in by.items()}
 BER = {}
-for f in ('x16_a', 'x16_b_ahc', 'x16_b_ane', 'x32_a', 'x32_b_ahc', 'x32_b_ane', 'q32_a', 'q32_b', 'x64_c'):
+for f in ('x16_a', 'x16_b_ahc', 'x16_b_chord', 'x32_a', 'x32_b_ahc', 'x32_b_chord', 'q32_a', 'q32_b', 'x64_c'):
     pt, key = f.split('_')[1], {'x16': '16x16', 'x32': '32x32', 'q32': '32x32q', 'x64': '64x64'}[f.split('_')[0]]
     for l in open('../results/ber_c/%s.jsonl' % f):
         r = json.loads(l)
         if r['method'].startswith('mdi'):
-            BER[(pt, key, r['snr'], r['method'][3:6], int(r['method'][6:]))] = r['ber']
+            fam = 'ahc' if r['method'].startswith('mdiahc') else 'chord'
+            BER[(pt, key, r['snr'], fam, int(r['method'][3 + len(fam):]))] = r['ber']
 LAB = {'16x16': '16×16 16-QAM', '32x32': '32×32 16-QAM', '32x32q': '32×32 QPSK DI', '64x64': '64×64 16-QAM'}
 
 
@@ -41,10 +42,10 @@ def primary(points, title):
           '| solver-only mJ/det AHC / ours | time ratio | energy ratio |')
     print('|---|---|---|---|---|---|---|---|---|---|')
     for point, sh, snr, na, nn in points:
-        a, b = g(point, sh, snr, 'ahc', na, 'torch'), g(point, sh, snr, 'ane', nn, 'torch')
-        sa, sb = g(point, sh, snr, 'ahc', na, 'torch', 'solver'), g(point, sh, snr, 'ane', nn, 'torch', 'solver')
+        a, b = g(point, sh, snr, 'ahc', na, 'torch'), g(point, sh, snr, 'chord', nn, 'torch')
+        sa, sb = g(point, sh, snr, 'ahc', na, 'torch', 'solver'), g(point, sh, snr, 'chord', nn, 'torch', 'solver')
         print('| %s | %g | %d / %d | %s / %s | %s / %s | %.0f %% / %.0f %% | %s / %s (%s / %s) | %s / %s | **%.2f×** | **%.2f×** |' % (
-            LAB[sh], snr, na, nn, bber(point, sh, snr, 'ahc', na), bber(point, sh, snr, 'ane', nn), fm(a['ms_per_det']), fm(b['ms_per_det']),
+            LAB[sh], snr, na, nn, bber(point, sh, snr, 'ahc', na), bber(point, sh, snr, 'chord', nn), fm(a['ms_per_det']), fm(b['ms_per_det']),
             100 * a['solver_ms_per_det'] / a['ms_per_det'], 100 * b['solver_ms_per_det'] / b['ms_per_det'],
             fm(a['mJ_per_det']), fm(b['mJ_per_det']), fm(a['mJ_per_det_above_idle']), fm(b['mJ_per_det_above_idle']),
             fm(sa['mJ_per_det']), fm(sb['mJ_per_det']), a['ms_per_det'] / b['ms_per_det'], a['mJ_per_det'] / b['mJ_per_det']))
@@ -57,8 +58,8 @@ def secondary(points, title):
           '| best AHC / best ours: time ratio | energy ratio |')
     print('|---|---|---|---|---|---|---|---|---|')
     for point, sh, snr, na, nn in points:
-        ak, at, bk = g(point, sh, snr, 'ahc', na, 'kernel'), g(point, sh, snr, 'ahc', na, 'torch'), g(point, sh, snr, 'ane', nn, 'kernel')
-        bt = g(point, sh, snr, 'ane', nn, 'torch')
+        ak, at, bk = g(point, sh, snr, 'ahc', na, 'kernel'), g(point, sh, snr, 'ahc', na, 'torch'), g(point, sh, snr, 'chord', nn, 'kernel')
+        bt = g(point, sh, snr, 'chord', nn, 'torch')
         ba = min((ak, at), key=lambda x: x['ms_per_det'])
         bb = min((bk, bt), key=lambda x: x['ms_per_det'])
         print('| %s | %g | %d / %d | %s (%s) | %s (%s) | %s (%s) | %.0f %% | **%.1f×** (AHC %s) | **%.1f×** |' % (
@@ -74,12 +75,12 @@ primary(A, '**(a) Published Ns, primary (both in PyTorch, same wrapper, batches 
 secondary([p for p in A if p[1] != '32x32'], '**(a) Published Ns, secondary (each at its best implementation; kernels where the couplings fit in shared memory)**')
 B = []
 for sh, c in plan['cheapest'].items():
-    B.append(('b', sh, c['snr'], c['ahc']['Ns'], c['ane']['Ns']))
+    B.append(('b', sh, c['snr'], c['ahc']['Ns'], c['chord']['Ns']))
 primary(B, '**(b) Matched BER, primary: each method at its cheapest Ns reaching BER ≤ 10⁻³**')
 secondary([p for p in B if p[1] != '32x32'], '**(b) Matched BER, secondary**')
 E = []
 for sh, c in plan['cheapest'].items():
-    for ns in sorted({c['ahc']['Ns'], c['ane']['Ns']}):
+    for ns in sorted({c['ahc']['Ns'], c['chord']['Ns']}):
         E.append(('b', sh, c['snr'], ns, ns))
 primary(E, '**(b) Equal Ns at the matched-BER SNRs (context), primary**')
 primary([('c', '64x64', 22.0, 8, 8)], '**(c) 64×64 16-QAM at 22 dB, Ns 8 (Princeton\'s massive-MIMO setting), primary**')

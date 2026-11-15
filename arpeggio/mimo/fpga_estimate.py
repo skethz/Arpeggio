@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""V80 many-small-instance engine: a resource and throughput ESTIMATE (design only; DESIGN.md B4), from the kernel's
+"""V80 many-small-instance engine: a resource and throughput ESTIMATE (design only), from the kernel's
 measured per-instance work (flips per step and anneal, the cohort's instrumented runs) and a stated cycle and area
-model. Nothing here is synthesised. (v1, fpga_estimate_v1.py, charged 2 drain cycles per step and 150 LUTs per lane;
-this version interleaves 3 anneals per engine so the drain is hidden, and uses the paper's measured logic density.)
+model. Nothing here is synthesised.
 
 Engine model: one MIMO instance at a time; N spin lanes, each holding the spin, three field registers (three anneals
 interleaved round-robin, which hides the 2-cycle pipeline drain of a step) and a 32-bit RNG; a step issues the

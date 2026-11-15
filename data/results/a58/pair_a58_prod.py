@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Post-hoc check, 8 Nov 2026 (outside PROTOCOL_A58 section 8; the frozen verdict is against float (i) and is unchanged).
-Pairs the A5.8 B = 1 pick's 600 held-out batches (seed 344) with the production model's X3P x64 batches (Table IV row 6), index by index,
+"""Pairs the A5.8 B = 1 pick's 600 held-out batches (seed 344) with the production model's X3P x64 batches (Table IV row 6), index by index,
 with the same estimators as analyze_a58.py / analyze_a56.py (a56an.boot_ratio, a56an.mcnemar). Also recomputes SA/float and production/float
 as checks against analysis.json. CPU only. Usage: pair_a58_prod.py OUT.json"""
 import glob, json, os, sys
 import numpy as np
-A = '<SCRATCH>/ap_ber_20261024'
+A = '<SCRATCH>/arpeggio_ber_20261024'
 sys.path.insert(0, os.path.join(A, 'src'))
 import a56an as AN
 R = os.path.join(A, 'results')

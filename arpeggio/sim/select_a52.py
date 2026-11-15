@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""A5.2 selection: for each budget (cyc, fl) and point, the pick over the union of the frozen 12 cells (plan_hostb_a5.json)
+"""A5.2 selection: for each budget (cyc, fl) and point, the pick over the union of the 12 A5 cells (plan_hostb_a5.json)
 and the 6 extension cells (plan_hostb_a52.json), by the same rule (fewest bit errors, then erroneous uses, then order:
-frozen cells first). Writes a52_sel.json once (refuses to overwrite) and tuned_a52.json (= tuned_a5.json + pt2_* keys).
+A5 cells first). Writes a52_sel.json once (refuses to overwrite) and tuned_a52.json (= tuned_a5.json + pt2_* keys).
 Exit 10 when written, 0 if not all cells are done. Usage: select_a52.py ROOT"""
 import json, os, sys
 root = sys.argv[1]

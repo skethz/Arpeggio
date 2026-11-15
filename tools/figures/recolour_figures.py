@@ -1,8 +1,7 @@
-"""Rewrite the colour operators of Antiphase's vector figure PDFs; geometry and text stay untouched.
+"""Rewrite the colour operators of the vector figure PDFs; geometry and text stay untouched.
 
 Usage: recolour_figures.py IN_DIR OUT_DIR
-A colour with no entry in MAP stops the run, so nothing is left in the old palette by accident.
-The figure scripts themselves are not changed.
+A colour with no entry in MAP stops the run, so every source colour is mapped.
 """
 import re
 import sys
@@ -15,13 +14,12 @@ BLUE, NAVY, CYAN = '0077C8', '002B49', '00A3E0'
 DARK, LIGHT, BLACK, WHITE = '53565A', 'F2F4F7', '000000', 'FFFFFF'
 TINT = 'E0EFF8'   # 12% of BLUE on white: flow boxes of our method
 MID = 'A0A2A4'    # 55% of DARK on white: second baseline
-# User palette of 9 Nov 2026: Antiphase #8C1515 (was BLUE), first-accept SA #1966FF; source COMP_BLUE (was parallel trial,
-# CYAN) is first-accept in Fig. 3 since that day. AP_TINT is 12% of AP on white, as TINT was of BLUE.
-AP, AP_TINT, FA = '8C1515', 'F1E3E3', '1966FF'
+# Chord #8C1515, first-accept SA #1966FF; source COMP_BLUE is first-accept in Fig. 3. CHORD_TINT is 12% of CHORD on white.
+CHORD, CHORD_TINT, ARPEGGIO = '8C1515', 'F1E3E3', '1966FF'
 MAP = {
-    '76B900': AP, '456F00': AP, 'E8F1CC': AP_TINT,       # ours (Antiphase)
+    '76B900': CHORD, '456F00': CHORD, 'E8F1CC': CHORD_TINT,       # ours (Chord)
     'C2410C': NAVY,                                      # sequential SA
-    '2A78D6': FA,                                        # first-accept SA (Fig. 3; was parallel trial, CYAN)
+    '2A78D6': ARPEGGIO,                                        # first-accept SA (Fig. 3)
     '9C27B0': NAVY,                                      # MDI-AHC
     '5F5F5F': DARK, '57636C': DARK,                      # first baseline, secondary text
     '9AA5B1': MID, 'ABB4BA': MID,                        # second baseline, flow outlines

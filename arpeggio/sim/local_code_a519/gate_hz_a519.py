@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""A5.19 host gate HZ (ADDENDUM_A519_HOSTA.md section 4). hostA reruns five stored hostB batches, one per worker path:
-HZ1 A64 (P4, seed 344, A5.8 held0 b0), HZ2 C0 (P4, seed 344, X64F b0), HZ3 a re-tune cell (P4, seed 1000, A5.19 stage A b0, hostB),
-HZ4 A16 (P1, seed 102, A5.5 b0), HZ5 mdiane32 (P1, seed 102, b0). The jobs carry no 'saved' key (no bit-for-bit assertion); this
-script compares per-use bit errors and counters with the stored files. Pass: in each, at most 0.5% of uses differ (the G4 bound).
+"""A5.19 host check. hostA reruns five stored hostB batches, one per worker path:
+A64 (P4, seed 344, A5.8 held0 b0), C0 (P4, seed 344, X64F b0), a re-tune cell (P4, seed 1000, A5.19 stage A b0, hostB),
+A16 (P1, seed 102, A5.5 b0), mdichord32 (P1, seed 102, b0). The jobs carry no 'saved' key (no bit-for-bit assertion); this
+script compares per-use bit errors and counters with the stored files. Pass: in each, at most 0.5% of uses differ.
 Usage: gate_hz_a519.py plan ROOT REFDIR | compare ROOT REFDIR OUT.json"""
 import json
 import os
@@ -12,10 +12,10 @@ import numpy as np
 
 JOBS = [
     ('hz1', dict(shape='x64', method='abl_far_64_0.1_0.1_0_bal_8', snr=22.0, seed=344, batch=500)),
-    ('hz2', dict(shape='x64', method='a56_128_0.3_0.3_0.4_0_alt_8', stream='mdiane8', snr=22.0, seed=344, batch=500)),
-    ('hz3', dict(shape='x64', method='abl_ape_0.3_0.3_0.4_rand_8', snr=22.0, seed=1000, batch=500)),
+    ('hz2', dict(shape='x64', method='a56_128_0.3_0.3_0.4_0_alt_8', stream='mdichord8', snr=22.0, seed=344, batch=500)),
+    ('hz3', dict(shape='x64', method='abl_chord_0.3_0.3_0.4_rand_8', snr=22.0, seed=1000, batch=500)),
     ('hz4', dict(shape='x16', method='abl_far_64_0.1_0.1_0_rand_32', snr=20.0, seed=102, batch=2000)),
-    ('hz5', dict(shape='x16', method='mdiane32', snr=20.0, seed=102, batch=2000)),
+    ('hz5', dict(shape='x16', method='mdichord32', snr=20.0, seed=102, batch=2000)),
 ]
 mode, ROOT, REF = sys.argv[1], sys.argv[2], sys.argv[3]
 if mode == 'plan':

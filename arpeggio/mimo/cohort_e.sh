@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The milestone-E repeat cohort (PROTOCOL_E.md): GPU5 only. Waits until GPU5 has no compute process (checked every
+# The repeat cohort: GPU5 only. Waits until GPU5 has no compute process (checked every
 # 30 s and right before the start), then runs bench_c.py on PLAN_E_C.json and bench_d.py on PLAN_E_D.json back to back,
 # with an nvidia-smi power log at 100 ms and a 20-s watchdog of compute processes; then starts the BER streams.
 set -uo pipefail
@@ -11,8 +11,8 @@ source $R/env.sh > /dev/null 2>&1
 OUT=$R/results/cohort_e_$(date +%Y%m%dT%H%M%S); mkdir "$OUT" || exit 2
 bash $R/src/gpu_free.sh $G || { echo "GPU $G became busy" > $OUT/gate.txt; exit 4; }
 echo "$G $(nvidia-smi --query-gpu=index --format=csv,noheader -i $G) $(date '+%Y-%m-%d %H:%M:%S %Z')" > $OUT/gpu.txt
-sha256sum $R/PROTOCOL_E.md $R/PLAN_E_C.json $R/PLAN_E_D.json $R/src/bench_c.py $R/src/bench_d.py $R/src/mdi_solvers.py \
-  $R/src/mimo.py $R/src/anefx.py $R/src/ahcfx.py $R/src/pimi.py $R/build/ane_v2.cubin $R/build/ahc_v1.cubin \
+sha256sum $R/PLAN_E_C.json $R/PLAN_E_D.json $R/src/bench_c.py $R/src/bench_d.py $R/src/mdi_solvers.py \
+  $R/src/mimo.py $R/src/chordfx.py $R/src/ahcfx.py $R/src/pimi.py $R/build/chord_v2.cubin $R/build/ahc_v1.cubin \
   $R/build/pimi_v1.cubin $R/src/cohort_e.sh > $OUT/inputs.sha256
 nvidia-smi --query-gpu=index,uuid,memory.used,utilization.gpu,power.draw --format=csv > $OUT/gpus_start.csv
 nvidia-smi --query-compute-apps=gpu_uuid,pid,used_memory --format=csv > $OUT/apps_start.csv
@@ -21,9 +21,9 @@ nvidia-smi -i $G --query-gpu=timestamp,power.draw.instant,power.draw,utilization
 SMI=$!
 ( while kill -0 $SMI 2>/dev/null; do echo "$(date '+%H:%M:%S') $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep "$G" | tr '\n' ' ') load $(cut -d' ' -f1 /proc/loadavg)" >> $OUT/apps_during.txt; sleep 20; done ) &
 cd $R/src
-python bench_c.py --plan $R/PLAN_E_C.json --ane-cubin $R/build/ane_v2.cubin --ahc-cubin $R/build/ahc_v1.cubin --out $OUT/bench_c > $OUT/bench_c.log 2>&1
+python bench_c.py --plan $R/PLAN_E_C.json --chord-cubin $R/build/chord_v2.cubin --ahc-cubin $R/build/ahc_v1.cubin --out $OUT/bench_c > $OUT/bench_c.log 2>&1
 echo $? > $OUT/bench_c.exit
-python bench_d.py --plan $R/PLAN_E_D.json --ane-cubin $R/build/ane_v2.cubin --pimi-cubin $R/build/pimi_v1.cubin --out $OUT/bench_d > $OUT/bench_d.log 2>&1
+python bench_d.py --plan $R/PLAN_E_D.json --chord-cubin $R/build/chord_v2.cubin --pimi-cubin $R/build/pimi_v1.cubin --out $OUT/bench_d > $OUT/bench_d.log 2>&1
 echo $? > $OUT/bench_d.exit
 kill $SMI
 nvidia-smi --query-compute-apps=gpu_uuid,pid,used_memory --format=csv > $OUT/apps_end.csv

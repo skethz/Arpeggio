@@ -1,5 +1,5 @@
 """Princeton's AHC-CIM (Singh et al. 2024, Eqs. 9-10; mimo.ahc) with every floating-point operation in a fixed order,
-so that a CUDA kernel (ahc_kernel.cu) can reproduce it bit for bit (milestone C, DESIGN.md):
+so that a CUDA kernel (ahc_kernel.cu) can reproduce it bit for bit:
 - fp32 throughout, each product and sum rounded separately (no fused multiply-add);
 - the mat-vec sum_j Jt_ij x_j accumulated in j order 0..N (the auxiliary spin last), starting from the j = 0 product;
 - f(t, x, e): fx = ((p - 1) x - (x x) x) + ((gamma t) e) jx, fe = ((-beta) (x x - a)) e, with the scalars rounded to
@@ -15,7 +15,7 @@ import ctypes
 
 import torch
 
-import anefx
+import chordfx
 
 DEF = dict(steps=512, dt=0.005, p=0.98, a=2.0, beta=1.0, eps_max=1000.0, x0_var=0.001)
 
@@ -97,8 +97,8 @@ def ahc_od(I, x0, e0, steps=DEF['steps'], dt=DEF['dt'], p=DEF['p'], a=DEF['a'], 
     return best_s, best_e
 
 
-class AhcKernel(anefx.Kernel):
-    """Launcher of ahc_kernel.cu (same driver-API loader as anefx.py)."""
+class AhcKernel(chordfx.Kernel):
+    """Launcher of ahc_kernel.cu (same driver-API loader as chordfx.py)."""
     MPLS = (1, 2, 3, 4, 5, 6)                                             # N / 32 (energy slots); state slots N/32 + 1
 
     def ahc(self, I, x0, e0, warps=8):

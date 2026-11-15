@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Milestone-B timed cohort (PROTOCOL_B.md): NVML idle of GPU6 before any CUDA context, then the GPU items of PLAN
+"""Timed cohort of the scaling items: NVML idle of the GPU before any CUDA context, then the GPU items of PLAN
 (the custom kernel: 'e2e' = MMSE + Ising mapping + fixed point + kernel + selection, 'kernel' = the kernel call alone
 on precomputed fixed-point problems, 'mmse' = MMSE alone), each as REPS segments of back-to-back batches lasting at
 least MIN_S seconds (up to 8 distinct batches of fresh draws cycled), NVML energy at the segment bounds; then the
@@ -51,13 +51,13 @@ P_IDLE = idle['avg_W']
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 
-import anefx  # noqa: E402
+import chordfx  # noqa: E402
 import fxdetect  # noqa: E402
 import mimo  # noqa: E402
 import tree  # noqa: E402
 
 torch.backends.cuda.matmul.allow_tf32 = False
-kern = anefx.Kernel(a.cubin)
+kern = chordfx.Kernel(a.cubin)
 
 
 def segments(name, fn, nb, B, extra, gpu=True):
@@ -113,11 +113,11 @@ for it in plan['gpu']:
                 I = mimo.ising(b, z); Ps.append(1)
             else:
                 I = mimo.ising_delta_at(b, mimo.mmse_hard(b, z, Ai), 1); Ps.append(2)
-            Fs.append(anefx.to_fixed(I, sc['S'], sc['t0'], sc['t1'], sc['q'], sc.get('kappa', 0.0)))
+            Fs.append(chordfx.to_fixed(I, sc['S'], sc['t0'], sc['t1'], sc['q'], sc.get('kappa', 0.0)))
         mode = 'best' if sc['kind'] == 'ri' else 'chains'
 
         def fn(i):
-            kern.anechoic(Fs[i], it['R'], 777 + i, P=Ps[i], mode=mode)
+            kern.chord(Fs[i], it['R'], 777 + i, P=Ps[i], mode=mode)
             return 0, 0
     segments('gpu_' + it['mode'], fn, 8, B, extra)
     del bs, zs

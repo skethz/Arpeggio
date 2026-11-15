@@ -1,5 +1,4 @@
 {
- "protocol": "PROTOCOL_A512.md sha256 5dab3ffd927be94a9bd04f79f2783fe9d6c1c43fd83b4f467e27de29401076cc",
  "written": "2026-11-07 16:36:34 CET",
  "picks": {
   "pt12_c5": {
@@ -575,16 +574,5 @@
    }
   }
  },
- "predictions": {
-  "P1 c=5 ratio in 0.95-1.2": false,
-  "P1 c=3 ratio in 0.7-1": true,
-  "P1 c=2 ratio in 0.6-0.95": false,
-  "P2 c=5 ratio in 2-5": true,
-  "P2 c=3 ratio in 1.2-2": false,
-  "P2 c=2 ratio in 0.9-1.6": true,
-  "P3 c=5 ratio in 300-1000": false,
-  "P3 c=3 ratio in 30-300": true,
-  "P3 c=2 ratio in 5-100": true
- },
- "section4_row_c5": "row 1: parallel trial worse at P1-P3 even at c = 5"
+ "result_c5": "parallel trial worse at P1-P3 even at c = 5"
 }

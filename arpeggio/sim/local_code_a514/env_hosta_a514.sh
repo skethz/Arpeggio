@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ap_ber_20261024/a514z on hostA, A5.14 overflow: UNTIMED error counting only (no timing or energy is reported from this run).
-# Allowed: GPU5 only (author, 10 Nov 2026: "<instruction>"). Reuses the mimo_ising_20261016 venv read-only (torch 2.11.0+cu128, as hostB).
-Z=<SCRATCH>/ap_ber_20261024/a514z
+# arpeggio_ber_20261024/a514z on hostA, A5.14: UNTIMED error counting only (no timing or energy is reported from this run).
+# Allowed: GPU5 only. Reuses the mimo_ising_20261016 venv read-only (torch 2.11.0+cu128, as hostB).
+Z=<SCRATCH>/arpeggio_ber_20261024/a514z
 export MIMO_GPU_UUID=<GPU_UUID>
 export CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=$MIMO_GPU_UUID
 export XDG_CACHE_HOME="$Z/cache/xdg" XDG_CONFIG_HOME="$Z/cache/config" XDG_STATE_HOME="$Z/cache/state" XDG_DATA_HOME="$Z/cache/data"

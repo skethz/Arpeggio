@@ -1,5 +1,5 @@
 // Princeton's AHC-CIM (Singh et al. 2024, Eqs. 9-10; RK4, 512 steps of 0.005, p 0.98, a 2, beta 1, eps ramped to
-// 1000; auxiliary spin; every step's state a candidate) as a CUDA kernel with the same structure as ane_kernel.cu:
+// 1000; auxiliary spin; every step's state a candidate) as a CUDA kernel with the same structure as chord_kernel.cu:
 // one block per instance, one warp per anneal (warps loop over anneals), the couplings Jt ((N+1) x (N+1), fp32) in
 // shared memory, lane L holding state rows 32 t + L. Bit-exact with ahcfx.ahc_od: fp32, every product and sum rounded
 // separately (__fmul_rn / __fadd_rn / __fsub_rn; built with -fmad=false), mat-vec sums in j order, the energy in the

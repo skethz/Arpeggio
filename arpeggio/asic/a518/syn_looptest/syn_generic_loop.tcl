@@ -1,10 +1,10 @@
-# Shared Genus 25.11 synthesis for every engine of the Antiphase ASIC comparison (same library, corner, constraints).
+# Shared Genus 25.11 synthesis for every engine of the Chord ASIC comparison (same library, corner, constraints).
 # Kit paths come from <KIT_SYN_SETUP> (not included). Environment:
 #   SYN_TOP top module; SYN_FILES HDL files (space separated); SYN_DEFINES `define list (space separated, optional);
 #   SYN_PARAMS elaborate parameters "NAME=VAL ..." (optional); SYN_OUT run directory; SYN_PERIOD clock period (ps);
 #   SYN_CPUS threads; SYN_MACROS macro names (views under macros_gen, optional); SYN_RETIME module-name glob (optional);
 #   SYN_CLK clock port name (default clk); SYN_STOP "elab" to stop after elaboration; SYN_EFFORT (default medium).
-set R      <SCRATCH>/antiphase_asic_20261017
+set R      <SCRATCH>/arpeggio_asic_20261017
 set TOP    $::env(SYN_TOP)
 set OUT    $::env(SYN_OUT)
 set PER    $::env(SYN_PERIOD)

@@ -1,5 +1,5 @@
 tclmode
-# Synthesis netlist (golden) vs final routed netlist (revised); project-authored (PROTOCOL.md §3.2, as an earlier project power flow).
+# Synthesis netlist (golden) vs final routed netlist (revised).
 # Libraries (std cells + the TT macro views) come from the server-only libs_private.do, extracted from Genus' own dofile.
 # Macros are black boxes on both sides (add_notranslate_modules -library, as Genus' dofile).
 set_screen_display -noprogress

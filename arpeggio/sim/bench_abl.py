@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""PROTOCOL.md 4.5 timing pass (B200 GPU7 ONLY, in a window with no other process of ours on GPU7; label
+"""Timing pass (B200 GPU7 ONLY, in a window with no other process of ours on GPU7; label
 "non-exclusive host"). NVML idle of the GPU (30 s, before any CUDA context), then per item: one untimed call and
 REPS segments, each ending with the first call past MIN_S seconds; the solver wrapped in mdi_solvers.Timed
 (synchronised before/after every call) gives the in-chain solver time; the chain time is the wall time of the
 segment. Items: every ablation variant (PyTorch) at P1-P3; the int16 kernel for (i), (ii), (iii), (vii) at P1 and P3;
-MMSE and MMSE-SIC chains at 31.02 dB (16x16 16-QAM, regime map). Draws: apx.draw seed 106, two batches cycled.
+MMSE and MMSE-SIC chains at 31.02 dB (16x16 16-QAM, regime map). Draws: arpx.draw seed 106, two batches cycled.
 Usage: bench_abl.py --tuned results/tuned.json --out results/timing/bench [--only ID,ID]"""
 import argparse
 import ctypes
@@ -53,21 +53,21 @@ P_IDLE = idle['avg_W']
 
 import torch  # noqa: E402
 
-import anefx  # noqa: E402
-import apx  # noqa: E402
+import chordfx  # noqa: E402
+import arpx  # noqa: E402
 import mdi_solvers as ms  # noqa: E402
 import mimo  # noqa: E402
 
-ka = anefx.Kernel(os.environ['ANE_CUBIN'])
-ctx = apx.Ctx(json.load(open(a.tuned)))
+ka = chordfx.Kernel(os.environ['CHORD_CUBIN'])
+ctx = arpx.Ctx(json.load(open(a.tuned)))
 PTS = {'P1': ('x16', 20.0, 32, 500), 'P2': ('x32', 22.0, 8, 250), 'P3': ('q32', 14.0, 8, 2000)}
-VAR = ['mdiane', 'abl_noalt', 'abl_noaltq0', 'abl_q0', 'abl_qdim', 'abl_dil', 'abl_final', 'abl_ons', 'abl_pimi', 'abl_sa',
+VAR = ['mdichord', 'abl_noalt', 'abl_noaltq0', 'abl_q0', 'abl_qdim', 'abl_dil', 'abl_final', 'abl_ons', 'abl_pimi', 'abl_sa',
        'abl_sym', 'abl_symw']
-KER = {'mdiane': (True, 0.4, 0.0), 'abl_noalt': (False, 0.4, 0.0), 'abl_q0': (True, 0.0, 0.0), 'abl_ons': (True, 0.4, apx.KAPPA_ONS)}
+KER = {'mdichord': (True, 0.4, 0.0), 'abl_noalt': (False, 0.4, 0.0), 'abl_q0': (True, 0.0, 0.0), 'abl_ons': (True, 0.4, arpx.KAPPA_ONS)}
 items = []
 for pt, (sh, snr, Ns, B) in PTS.items():
     for v in VAR:
-        m = ('mdiane%d' % Ns) if v == 'mdiane' else '%s_%d' % (v, Ns)
+        m = ('mdichord%d' % Ns) if v == 'mdichord' else '%s_%d' % (v, Ns)
         items.append(dict(id='%s_%s_torch' % (pt, v), point=pt, shape=sh, snr=snr, Ns=Ns, batch=B, method=m, impl='torch'))
     if pt in ('P1', 'P3'):
         for v in KER:
@@ -85,8 +85,8 @@ def cpu_s():
 for it in items:
     if only and it['id'] not in only:
         continue
-    s = apx.SHAPES[it['shape']]
-    bs = [apx.draw(106, it['snr'], k, it['batch'], s['nt'], s['M']) for k in range(2)]
+    s = arpx.SHAPES[it['shape']]
+    bs = [arpx.draw(106, it['snr'], k, it['batch'], s['nt'], s['M']) for k in range(2)]
     gs = torch.Generator(device='cuda'); gs.manual_seed(106_000_003)
     calls = [0]
     if it['impl'] == 'kernel':
@@ -94,22 +94,22 @@ for it in items:
 
         def raw(I, na, K):
             calls[0] += 1
-            F = anefx.to_fixed(I, apx.MA['Sk'] * 2 * K, apx.MA['t0'], apx.MA['t1'], q, kap)
-            return ka.anechoic(F, na, 106_000 + 1000 * calls[0], P=2 * K if alt else 1, mode='chains')[0].float()
+            F = chordfx.to_fixed(I, arpx.MA['Sk'] * 2 * K, arpx.MA['t0'], arpx.MA['t1'], q, kap)
+            return ka.chord(F, na, 106_000 + 1000 * calls[0], P=2 * K if alt else 1, mode='chains')[0].float()
         solver, tl, Ns = ms.Timed(raw), None, it['Ns']
     elif it['method'] in ('mmse', 'sic'):
         solver = None
     else:
-        raw, tl, Ns = apx.mdi_solver_for(it['method'], it['shape'], gs, ctx)
+        raw, tl, Ns = arpx.mdi_solver_for(it['method'], it['shape'], gs, ctx)
         solver = ms.Timed(raw)
     c = s['mdi']
 
     def call(i):
         b = bs[i % 2]
         if solver is None:
-            lh, _, _ = apx.detect(it['method'], b, it['shape'], gs, ctx)
+            lh, _, _ = arpx.detect(it['method'], b, it['shape'], gs, ctx)
         else:
-            lh, _ = apx.mdi_diag(b, solver, it['Ns'], c['Rmax'], c['S'], guesses=c['guesses'], to_levels=tl)
+            lh, _ = arpx.mdi_diag(b, solver, it['Ns'], c['Rmax'], c['S'], guesses=c['guesses'], to_levels=tl)
         return mimo.bit_errors(b, lh)
     call(0); torch.cuda.synchronize()
     i = 1

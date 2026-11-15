@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Dry run of a55_plan.py's state machine, no GPU: every queued job gets synthetic results, with hot cells flipping often and BER favouring
-grid edges, until the plan is empty. Checks the order of stages and the invariants of PROTOCOL_A55.md sections 5-6. Usage: sim_a55_plan.py ROOT"""
+grid edges, until the plan is empty. Checks the order of stages and the plan invariants. Usage: sim_a55_plan.py ROOT"""
 import hashlib, json, os, subprocess, sys, time
 import numpy as np
 ROOT = sys.argv[1]
@@ -18,8 +18,8 @@ def parse(m):
         return 'fam', int(a[2]), float(a[3]), float(a[4]), 0.0, a[5], int(a[6])
     if a[1] == 'far':
         return 'far', int(a[2]), float(a[3]), float(a[4]), float(a[5]), a[6], int(a[7])
-    if a[1] == 'ape':
-        return 'ape', 128, float(a[2]), float(a[3]), float(a[4]), a[5], int(a[6])
+    if a[1] == 'chord':
+        return 'chord', 128, float(a[2]), float(a[3]), float(a[4]), a[5], int(a[6])
     return 'ptb', 8, float(a[3]), float(a[4]), 0.0, 'bal', int(a[5])
 
 
@@ -72,7 +72,7 @@ ab = {(j['shape'], j['method']) for _, j in seq if j['set'] == 'tunea'}
 assert all((j['shape'], j['method']) in ab for _, j in seq if j['set'] == 'tuneb'), 'stage B cell without stage A'
 for pt, sh, Ns in (('P1', 'x16', 32), ('P2', 'x32', 8), ('P3', 'q32', 8)):
     h = sel['held'][pt]
-    assert 'abl_ape_0.3_0.3_0.4_bal_%d' % Ns in h and len(h) == len(set(h))
+    assert 'abl_chord_0.3_0.3_0.4_bal_%d' % Ns in h and len(h) == len(set(h))
     assert all(m.endswith('_%d' % Ns) for m in h)
     assert not any(p.startswith(pt) and ('/128' in p) and p in sel['pruned'] and p in sel['per_s'] and len(sel['pruned'][p]) == 44 for p in sel['pruned'])
     print(pt, 'held', len(h), {g: v['method'] for g, v in sel['budget'].items() if g.startswith(pt + '/F-R')})
@@ -84,5 +84,5 @@ for p, L in sel['pruned'].items():
         sh = {'P1': 'x16', 'P2': 'x32'}[p[:2]]
         assert (sh, m) not in ab, 'pruned cell ran stage A'
 print('counts', {s: sum(1 for _, j in seq if j['set'] == s) for s in ('probe', 'tunea', 'tuneb', 'abl')}, 'pruned', len(pr), 'corners', sel['corner'] and len(sel['corner']), 'slowest plan run %.1f s' % tmax)
-print('rounds', it, 'per_s', len(sel['per_s']), 'budget', len(sel['budget']), 'ap', len(sel['ap']), 'pt', len(sel['pt']))
+print('rounds', it, 'per_s', len(sel['per_s']), 'budget', len(sel['budget']), 'chord', len(sel['chord']), 'pt', len(sel['pt']))
 print('SIM PASS')

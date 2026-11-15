@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# A5.4 supervisor (PROTOCOL_A54.md section 5). hostB GPU0 and GPU1 only; another user's job may share them, so no yielding to it.
+# A5.4 supervisor. hostB GPU0 and GPU1 only; another user's job may share them, so no yielding to it.
 # At most 3 workers per GPU plus one calibration process. No launch on a GPU with < 8 GB free; below 2 GB free, stop our newest worker on
 # that GPU (it resumes from saved batches). Only ever signals our own a54 processes. Writes results/a54/status.txt every 5 minutes.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 PL=$A/results/a54/plan.json; ROOT=$A/results/a54; CAL=$ROOT/flips.json; LOG=$A/logs/a54/supervisor.log
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID>)
 cd $A; source $A/venv/bin/activate

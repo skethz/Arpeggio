@@ -2259,7 +2259,7 @@
    }
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "method": "aned64",
    "n_points": 19,
@@ -2516,7 +2516,7 @@
    }
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "method": "aned64",
    "n_points": 16,
@@ -2737,9 +2737,9 @@
    }
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
-   "method": "ane64ri",
+   "method": "chord64ri",
    "n_points": 14,
    "uses_total": 956000,
    "points": [
@@ -2934,9 +2934,9 @@
    }
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
-   "method": "ane64ri",
+   "method": "chord64ri",
    "n_points": 14,
    "uses_total": 412000,
    "points": [
@@ -3931,9 +3931,9 @@
    }
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
-   "method": "mdiane64",
+   "method": "mdichord64",
    "n_points": 19,
    "uses_total": 1758500,
    "points": [
@@ -4188,9 +4188,9 @@
    }
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
-   "method": "mdiane128",
+   "method": "mdichord128",
    "n_points": 16,
    "uses_total": 702000,
    "points": [
@@ -4409,9 +4409,9 @@
    }
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
-   "method": "mdiane64",
+   "method": "mdichord64",
    "n_points": 12,
    "uses_total": 933000,
    "points": [
@@ -4582,9 +4582,9 @@
    }
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
-   "method": "mdiane64",
+   "method": "mdichord64",
    "n_points": 12,
    "uses_total": 492500,
    "points": [
@@ -5161,9 +5161,9 @@
    }
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "n_points": 15,
    "uses_total": 1171250,
    "points": [
@@ -5370,9 +5370,9 @@
    }
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
-   "method": "mdiane8",
+   "method": "mdichord8",
    "n_points": 13,
    "uses_total": 497500,
    "points": [
@@ -5557,7 +5557,7 @@
  ],
  "pairs": [
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "x16",
    "target": "1e-3",
@@ -5701,7 +5701,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "x16",
    "target": "1e-4",
@@ -5845,7 +5845,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "x32",
    "target": "1e-3",
@@ -5954,7 +5954,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "x32",
    "target": "1e-4",
@@ -6063,7 +6063,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "q16",
    "target": "1e-3",
@@ -6151,7 +6151,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "q16",
    "target": "1e-4",
@@ -6239,7 +6239,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "q32",
    "target": "1e-3",
@@ -6306,7 +6306,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "MDI-AHC (b)",
    "shape": "q32",
    "target": "1e-4",
@@ -6373,7 +6373,7 @@
    ]
   },
   {
-   "A": "Antiphase, Ns = 8",
+   "A": "Chord, Ns = 8",
    "B": "MDI-AHC, Ns = 8",
    "shape": "x16",
    "target": "1e-3",
@@ -6489,7 +6489,7 @@
    ]
   },
   {
-   "A": "Antiphase, Ns = 8",
+   "A": "Chord, Ns = 8",
    "B": "MDI-AHC, Ns = 8",
    "shape": "x16",
    "target": "1e-4",
@@ -6605,7 +6605,7 @@
    ]
   },
   {
-   "A": "Antiphase, Ns = 8",
+   "A": "Chord, Ns = 8",
    "B": "MDI-AHC, Ns = 8",
    "shape": "x32",
    "target": "1e-3",
@@ -6679,7 +6679,7 @@
    ]
   },
   {
-   "A": "Antiphase, Ns = 8",
+   "A": "Chord, Ns = 8",
    "B": "MDI-AHC, Ns = 8",
    "shape": "x32",
    "target": "1e-4",
@@ -6753,7 +6753,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "x16",
    "target": "1e-3",
@@ -6855,7 +6855,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "x16",
    "target": "1e-4",
@@ -6957,7 +6957,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "x32",
    "target": "1e-3",
@@ -7052,7 +7052,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "x32",
    "target": "1e-4",
@@ -7147,7 +7147,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "q16",
    "target": "1e-3",
@@ -7249,7 +7249,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "q16",
    "target": "1e-4",
@@ -7351,7 +7351,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "q32",
    "target": "1e-3",
@@ -7439,7 +7439,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "K-best, 32 candidates",
    "shape": "q32",
    "target": "1e-4",
@@ -7527,7 +7527,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "ML (sphere decoder)",
    "shape": "x16",
    "target": "1e-3",
@@ -7678,7 +7678,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "ML (sphere decoder)",
    "shape": "x16",
    "target": "1e-4",
@@ -7829,7 +7829,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "ML (sphere decoder)",
    "shape": "q16",
    "target": "1e-3",
@@ -7931,7 +7931,7 @@
    ]
   },
   {
-   "A": "Antiphase (b)",
+   "A": "Chord (b)",
    "B": "ML (sphere decoder)",
    "shape": "q16",
    "target": "1e-4",
@@ -9145,7 +9145,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "x16",
    "target": "1e-3",
@@ -9254,7 +9254,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "x16",
    "target": "1e-4",
@@ -9360,7 +9360,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "x32",
    "target": "1e-3",
@@ -9455,7 +9455,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "x32",
    "target": "1e-4",
@@ -9550,7 +9550,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "q16",
    "target": "1e-3",
@@ -9652,7 +9652,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "q16",
    "target": "1e-4",
@@ -9754,7 +9754,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "q32",
    "target": "1e-3",
@@ -9856,7 +9856,7 @@
    ]
   },
   {
-   "A": "Antiphase, one stage (a)",
+   "A": "Chord, one stage (a)",
    "B": "MMSE-SIC",
    "shape": "q32",
    "target": "1e-4",
@@ -10479,7 +10479,7 @@
    "search_failure_or_ml": 10
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 21.0,
    "err_uses": 115,
@@ -10494,7 +10494,7 @@
    "radius_truncation": 64
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 21.5,
    "err_uses": 122,
@@ -10509,7 +10509,7 @@
    "radius_truncation": 80
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 22.0,
    "err_uses": 111,
@@ -10524,7 +10524,7 @@
    "radius_truncation": 77
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 22.5,
    "err_uses": 130,
@@ -10539,7 +10539,7 @@
    "radius_truncation": 80
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 23.0,
    "err_uses": 112,
@@ -10554,7 +10554,7 @@
    "radius_truncation": 73
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 23.5,
    "err_uses": 106,
@@ -10569,7 +10569,7 @@
    "radius_truncation": 66
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 24.0,
    "err_uses": 101,
@@ -10584,7 +10584,7 @@
    "radius_truncation": 64
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 24.5,
    "err_uses": 115,
@@ -10599,7 +10599,7 @@
    "radius_truncation": 82
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 25.0,
    "err_uses": 105,
@@ -10614,7 +10614,7 @@
    "radius_truncation": 72
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 25.5,
    "err_uses": 104,
@@ -10629,7 +10629,7 @@
    "radius_truncation": 61
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 26.0,
    "err_uses": 101,
@@ -10644,7 +10644,7 @@
    "radius_truncation": 73
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 26.5,
    "err_uses": 105,
@@ -10659,7 +10659,7 @@
    "radius_truncation": 69
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 27.0,
    "err_uses": 102,
@@ -10674,7 +10674,7 @@
    "radius_truncation": 71
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 27.5,
    "err_uses": 105,
@@ -10689,7 +10689,7 @@
    "radius_truncation": 69
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 28.0,
    "err_uses": 101,
@@ -10704,7 +10704,7 @@
    "radius_truncation": 69
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 28.5,
    "err_uses": 103,
@@ -10719,7 +10719,7 @@
    "radius_truncation": 64
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 29.0,
    "err_uses": 105,
@@ -10734,7 +10734,7 @@
    "radius_truncation": 67
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 29.5,
    "err_uses": 102,
@@ -10749,7 +10749,7 @@
    "radius_truncation": 66
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x16",
    "snr": 30.0,
    "err_uses": 100,
@@ -10764,7 +10764,7 @@
    "radius_truncation": 69
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 20.5,
    "err_uses": 126,
@@ -10775,7 +10775,7 @@
    "radius_truncation": 42
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 21.0,
    "err_uses": 116,
@@ -10786,7 +10786,7 @@
    "radius_truncation": 47
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 21.5,
    "err_uses": 104,
@@ -10797,7 +10797,7 @@
    "radius_truncation": 36
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 22.0,
    "err_uses": 104,
@@ -10808,7 +10808,7 @@
    "radius_truncation": 33
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 22.5,
    "err_uses": 104,
@@ -10819,7 +10819,7 @@
    "radius_truncation": 45
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 23.0,
    "err_uses": 104,
@@ -10830,7 +10830,7 @@
    "radius_truncation": 43
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 23.5,
    "err_uses": 106,
@@ -10841,7 +10841,7 @@
    "radius_truncation": 51
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 24.0,
    "err_uses": 103,
@@ -10852,7 +10852,7 @@
    "radius_truncation": 47
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 24.5,
    "err_uses": 101,
@@ -10863,7 +10863,7 @@
    "radius_truncation": 48
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 25.0,
    "err_uses": 101,
@@ -10874,7 +10874,7 @@
    "radius_truncation": 47
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 25.5,
    "err_uses": 101,
@@ -10885,7 +10885,7 @@
    "radius_truncation": 51
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 26.0,
    "err_uses": 104,
@@ -10896,7 +10896,7 @@
    "radius_truncation": 53
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 26.5,
    "err_uses": 100,
@@ -10907,7 +10907,7 @@
    "radius_truncation": 55
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 27.0,
    "err_uses": 102,
@@ -10918,7 +10918,7 @@
    "radius_truncation": 55
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 27.5,
    "err_uses": 101,
@@ -10929,7 +10929,7 @@
    "radius_truncation": 47
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "x32",
    "snr": 28.0,
    "err_uses": 82,
@@ -10940,7 +10940,7 @@
    "radius_truncation": 37
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 10.0,
    "err_uses": 316,
@@ -10953,7 +10953,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 10.5,
    "err_uses": 237,
@@ -10966,7 +10966,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 11.0,
    "err_uses": 118,
@@ -10979,7 +10979,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 11.5,
    "err_uses": 178,
@@ -10992,7 +10992,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 12.0,
    "err_uses": 144,
@@ -11005,7 +11005,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 12.5,
    "err_uses": 112,
@@ -11018,7 +11018,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 13.0,
    "err_uses": 116,
@@ -11031,7 +11031,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 13.5,
    "err_uses": 103,
@@ -11044,7 +11044,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 14.0,
    "err_uses": 107,
@@ -11057,7 +11057,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 14.5,
    "err_uses": 102,
@@ -11070,7 +11070,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 15.0,
    "err_uses": 101,
@@ -11083,7 +11083,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 15.5,
    "err_uses": 102,
@@ -11096,7 +11096,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 16.0,
    "err_uses": 102,
@@ -11109,7 +11109,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q16",
    "snr": 16.5,
    "err_uses": 101,
@@ -11122,7 +11122,7 @@
    "sd_uncertified": 0
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 10.0,
    "err_uses": 789,
@@ -11131,7 +11131,7 @@
    "search_failure_or_ml": 503
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 10.5,
    "err_uses": 584,
@@ -11140,7 +11140,7 @@
    "search_failure_or_ml": 388
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 11.0,
    "err_uses": 379,
@@ -11149,7 +11149,7 @@
    "search_failure_or_ml": 283
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 11.5,
    "err_uses": 273,
@@ -11158,7 +11158,7 @@
    "search_failure_or_ml": 215
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 12.0,
    "err_uses": 153,
@@ -11167,7 +11167,7 @@
    "search_failure_or_ml": 130
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 12.5,
    "err_uses": 192,
@@ -11176,7 +11176,7 @@
    "search_failure_or_ml": 164
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 13.0,
    "err_uses": 136,
@@ -11185,7 +11185,7 @@
    "search_failure_or_ml": 127
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 13.5,
    "err_uses": 114,
@@ -11194,7 +11194,7 @@
    "search_failure_or_ml": 110
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 14.0,
    "err_uses": 108,
@@ -11203,7 +11203,7 @@
    "search_failure_or_ml": 107
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 14.5,
    "err_uses": 103,
@@ -11212,7 +11212,7 @@
    "search_failure_or_ml": 101
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 15.0,
    "err_uses": 106,
@@ -11221,7 +11221,7 @@
    "search_failure_or_ml": 104
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 15.5,
    "err_uses": 102,
@@ -11230,7 +11230,7 @@
    "search_failure_or_ml": 102
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 16.0,
    "err_uses": 101,
@@ -11239,7 +11239,7 @@
    "search_failure_or_ml": 101
   },
   {
-   "row": "Antiphase, one stage (a)",
+   "row": "Chord, one stage (a)",
    "shape": "q32",
    "snr": 16.5,
    "err_uses": 102,
@@ -11999,7 +11999,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 17.0,
    "err_uses": 279,
@@ -12014,7 +12014,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 17.5,
    "err_uses": 166,
@@ -12029,7 +12029,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 18.0,
    "err_uses": 195,
@@ -12044,7 +12044,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 18.5,
    "err_uses": 121,
@@ -12059,7 +12059,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 19.0,
    "err_uses": 105,
@@ -12074,7 +12074,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 19.5,
    "err_uses": 111,
@@ -12089,7 +12089,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 20.0,
    "err_uses": 103,
@@ -12104,7 +12104,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 20.5,
    "err_uses": 100,
@@ -12119,7 +12119,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 21.0,
    "err_uses": 100,
@@ -12134,7 +12134,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 21.5,
    "err_uses": 96,
@@ -12149,7 +12149,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 22.0,
    "err_uses": 73,
@@ -12164,7 +12164,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 22.5,
    "err_uses": 41,
@@ -12179,7 +12179,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 23.0,
    "err_uses": 20,
@@ -12194,7 +12194,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 23.5,
    "err_uses": 22,
@@ -12209,7 +12209,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 24.0,
    "err_uses": 15,
@@ -12224,7 +12224,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 24.5,
    "err_uses": 7,
@@ -12239,7 +12239,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 25.0,
    "err_uses": 2,
@@ -12254,7 +12254,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 25.5,
    "err_uses": 8,
@@ -12269,7 +12269,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x16",
    "snr": 26.0,
    "err_uses": 1,
@@ -12284,7 +12284,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 16.5,
    "err_uses": 285,
@@ -12295,7 +12295,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 17.0,
    "err_uses": 171,
@@ -12306,7 +12306,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 17.5,
    "err_uses": 178,
@@ -12317,7 +12317,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 18.0,
    "err_uses": 130,
@@ -12328,7 +12328,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 18.5,
    "err_uses": 129,
@@ -12339,7 +12339,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 19.0,
    "err_uses": 103,
@@ -12350,7 +12350,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 19.5,
    "err_uses": 104,
@@ -12361,7 +12361,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 20.0,
    "err_uses": 103,
@@ -12372,7 +12372,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 20.5,
    "err_uses": 85,
@@ -12383,7 +12383,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 21.0,
    "err_uses": 47,
@@ -12394,7 +12394,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 21.5,
    "err_uses": 28,
@@ -12405,7 +12405,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 22.0,
    "err_uses": 17,
@@ -12416,7 +12416,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 22.5,
    "err_uses": 10,
@@ -12427,7 +12427,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 23.0,
    "err_uses": 3,
@@ -12438,7 +12438,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 23.5,
    "err_uses": 5,
@@ -12449,7 +12449,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "x32",
    "snr": 24.0,
    "err_uses": 1,
@@ -12460,7 +12460,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 9.0,
    "err_uses": 704,
@@ -12475,7 +12475,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 9.5,
    "err_uses": 482,
@@ -12490,7 +12490,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 10.0,
    "err_uses": 284,
@@ -12505,7 +12505,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 10.5,
    "err_uses": 191,
@@ -12520,7 +12520,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 11.0,
    "err_uses": 194,
@@ -12535,7 +12535,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 11.5,
    "err_uses": 126,
@@ -12550,7 +12550,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 12.0,
    "err_uses": 118,
@@ -12565,7 +12565,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 12.5,
    "err_uses": 111,
@@ -12580,7 +12580,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 13.0,
    "err_uses": 103,
@@ -12595,7 +12595,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 13.5,
    "err_uses": 104,
@@ -12610,7 +12610,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 14.0,
    "err_uses": 97,
@@ -12625,7 +12625,7 @@
    "radius_truncation": 1
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q16",
    "snr": 14.5,
    "err_uses": 44,
@@ -12640,7 +12640,7 @@
    "radius_truncation": 1
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 8.5,
    "err_uses": 1470,
@@ -12651,7 +12651,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 9.0,
    "err_uses": 985,
@@ -12662,7 +12662,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 9.5,
    "err_uses": 614,
@@ -12673,7 +12673,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 10.0,
    "err_uses": 380,
@@ -12684,7 +12684,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 10.5,
    "err_uses": 234,
@@ -12695,7 +12695,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 11.0,
    "err_uses": 110,
@@ -12706,7 +12706,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 11.5,
    "err_uses": 113,
@@ -12717,7 +12717,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 12.0,
    "err_uses": 107,
@@ -12728,7 +12728,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 12.5,
    "err_uses": 100,
@@ -12739,7 +12739,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 13.0,
    "err_uses": 102,
@@ -12750,7 +12750,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 13.5,
    "err_uses": 53,
@@ -12761,7 +12761,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase (b)",
+   "row": "Chord (b)",
    "shape": "q32",
    "snr": 14.0,
    "err_uses": 21,
@@ -13159,7 +13159,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 19.0,
    "err_uses": 100,
@@ -13174,7 +13174,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 19.5,
    "err_uses": 108,
@@ -13189,7 +13189,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 20.0,
    "err_uses": 113,
@@ -13204,7 +13204,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 20.5,
    "err_uses": 104,
@@ -13219,7 +13219,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 21.0,
    "err_uses": 101,
@@ -13234,7 +13234,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 21.5,
    "err_uses": 101,
@@ -13249,7 +13249,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 22.0,
    "err_uses": 102,
@@ -13264,7 +13264,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 22.5,
    "err_uses": 107,
@@ -13279,7 +13279,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 23.0,
    "err_uses": 101,
@@ -13294,7 +13294,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 23.5,
    "err_uses": 101,
@@ -13309,7 +13309,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 24.0,
    "err_uses": 80,
@@ -13324,7 +13324,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 24.5,
    "err_uses": 54,
@@ -13339,7 +13339,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 25.0,
    "err_uses": 40,
@@ -13354,7 +13354,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 25.5,
    "err_uses": 28,
@@ -13369,7 +13369,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x16",
    "snr": 26.0,
    "err_uses": 16,
@@ -13384,7 +13384,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 18.5,
    "err_uses": 125,
@@ -13395,7 +13395,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 19.0,
    "err_uses": 120,
@@ -13406,7 +13406,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 19.5,
    "err_uses": 120,
@@ -13417,7 +13417,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 20.0,
    "err_uses": 108,
@@ -13428,7 +13428,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 20.5,
    "err_uses": 106,
@@ -13439,7 +13439,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 21.0,
    "err_uses": 101,
@@ -13450,7 +13450,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 21.5,
    "err_uses": 101,
@@ -13461,7 +13461,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 22.0,
    "err_uses": 102,
@@ -13472,7 +13472,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 22.5,
    "err_uses": 101,
@@ -13483,7 +13483,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 23.0,
    "err_uses": 68,
@@ -13494,7 +13494,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 23.5,
    "err_uses": 47,
@@ -13505,7 +13505,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 24.0,
    "err_uses": 31,
@@ -13516,7 +13516,7 @@
    "radius_truncation": 0
   },
   {
-   "row": "Antiphase, Ns = 8",
+   "row": "Chord, Ns = 8",
    "shape": "x32",
    "snr": 24.5,
    "err_uses": 18,

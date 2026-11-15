@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
-# A5.2 supervisor (nohup), v2 (Sun 25 Oct): v1 ran 3 workers on GPU0 and hit CUDA out-of-memory (the six A5 workers hold
-# about 28 GB there); the failed attempts are kept as failed.*.json and the jobs are simply retried. v2 starts at most 2
-# workers, each on a GPU with >= 8 GB free: GPU1/GPU2 only while they carry no compute process outside ap_ber_20261024,
+# A5.2 supervisor (nohup). Starts at most 2
+# workers, each on a GPU with >= 8 GB free: GPU1/GPU2 only while they carry no compute process outside arpeggio_ber_20261024,
 # else GPU0; never GPU3. CPU guard: no launch while our processes use > 20 cores. Stage 1 = extension cells; when all are
-# done, select_a52.py writes the picks and the workers are restarted for the held-out re-runs; exits when the plan is done.
-A=<SCRATCH>/ap_ber_20261024
+# done, select_a52.py writes the picks and the workers are restarted for the held-out runs; exits when the plan is done.
+A=<SCRATCH>/arpeggio_ber_20261024
 PL=$A/results/plan_hostb_a52.json
 LOG=$A/logs/supervisor_a5.log
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID> [2]=<GPU_UUID>)
 source $A/venv/bin/activate
-foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q ap_ber_20261024 || echo $p; done | wc -l; }
+foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q arpeggio_ber_20261024 || echo $p; done | wc -l; }
 freemb() { nvidia-smi --query-gpu=uuid,memory.free --format=csv,noheader,nounits | grep $1 | awk -F', ' '{print $2}'; }
-ourcpu() { ps -eo pcpu,args | grep "ap_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
+ourcpu() { ps -eo pcpu,args | grep "arpeggio_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
 cp -n $A/results/tuned_a5.json $A/results/tuned_a52.json 2>/dev/null
 launch() {
   [ "$(ourcpu)" -gt 2000 ] && { echo "$(date '+%F %T') A5.2: our CPU > 20 cores; not launching" >> $LOG; return; }

@@ -1,9 +1,9 @@
 #!/bin/bash
-# A5.18 amendment A5: RTL -> fv_map -> synthesis LEC of a synthesis DB; step 2 of fa_a511/lec_run.sh unchanged (Genus write_do_lec,
+# A5.18: RTL -> fv_map -> synthesis LEC of a synthesis DB; step 2 of arpeggio_a511/lec_run.sh (Genus write_do_lec,
 # gate_r4 count-line edit). Step 1 (syn -> routed) runs later by lec_sr_a518.sh on the routed netlist.
 # usage: lec_rtl_syn_a518.sh <run name> <syn dir> <top> <cpu list> <threads> <rtl file hashed in INPUTS>
 set -u
-R=<SCRATCH>/antiphase_asic_20261017; O=$R/a518; F=$R/flow_v2_20261024; GS=$R/fa_a511/gate_scripts
+R=<SCRATCH>/arpeggio_asic_20261017; O=$R/a518; F=$R/flow_v2_20261024; GS=$R/arpeggio_a511/gate_scripts
 RUN=$1; S=$2; TOP=$3; C=$4; TH=$5; RTL=$6
 export HOME=$R/home XDG_CONFIG_HOME=$R/home/.config
 L=$O/part2/lec/$RUN; W=$L/rtl_syn; mkdir -p $W/genus $L/tmp $L/var_tmp

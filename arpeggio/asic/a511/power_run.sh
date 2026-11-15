@@ -1,8 +1,8 @@
 #!/bin/bash
-# A5.11 §4: rescale a TCF to the accepted period (gate tcf_rescale.py) and run Innovus TT power (gate power_gate.tcl).
+# A5.11: rescale a TCF to the accepted period (gate tcf_rescale.py) and run Innovus TT power (gate power_gate.tcl).
 # usage: power_run.sh <tag> <routed run dir> <top> <period ps> <cpu list>
 set -u
-R=<SCRATCH>/antiphase_asic_20261017; O=$R/fa_a511; t=$1; RUN=$2; TOP=$3; P=$4; C=$5
+R=<SCRATCH>/arpeggio_asic_20261017; O=$R/arpeggio_a511; t=$1; RUN=$2; TOP=$3; P=$4; C=$5
 export HOME=$R/home XDG_CONFIG_HOME=$R/home/.config
 K=$(python3 -c "print($P / 1000.0)"); T0=$O/power/tcf/${t}_1000_netlist.tcf; T1=$O/power/tcf/${t}_p$P.tcf
 python3 $O/gate_scripts/tcf_rescale.py $T0 $T1 $K > $O/power/tcf/${t}_p$P.rescale.log 2>&1

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5 tuning selections (seed 1000; 4,000 uses per cell at P1/P3, 2,000 at P2; rule of PROTOCOL 4.3: fewest bit errors,
+"""A5 tuning selections (seed 1000; 4,000 uses per cell at P1/P3, 2,000 at P2; selection rule: fewest bit errors,
 then fewest erroneous uses, then plan order). Each family is selected once, when all its cells are done, into
 results/a5_sel_<family>.json (never overwritten); tuned_a5.json is the merged view (derived; rewritten on every call).
 Families: pt (pt_cyc, pt_fl at P1; pt_cyc_<shape>, pt_fl_<shape> at P2/P3), sa2, colx16 / colx32 (per m; flags col_x16 / col_x32), dim, symd,

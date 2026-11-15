@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Throughput and energy of the GPU detectors on GPU6 (PROTOCOL.md). First 30 s of idle from NVML before any CUDA
+"""Throughput and energy of the GPU detectors. First 30 s of idle from NVML before any CUDA
 context exists; then, per configuration and method, one untimed batch, then REPS timed segments, each a run of
 batches of the same size (fresh channel draws, up to 8 distinct batches cycled) lasting at least MIN_S seconds;
 NVML total-energy counter at the segment bounds; detections/s, J per detection (total and above the no-process idle)
 and the BER of the timed detections; then the mean number of spin flips per (half-)step and chain of the tuned
-Anechoic schedule (a separate instrumented batch). JSON lines to OUT.jsonl. Usage: bench.py --out PREFIX"""
+Chord schedule (a separate instrumented batch). JSON lines to OUT.jsonl. Usage: bench.py --out PREFIX"""
 import argparse
 import ctypes
 import json
@@ -49,9 +49,9 @@ import torch  # noqa: E402  (after the idle segment: no CUDA context before)
 import mimo  # noqa: E402
 
 torch.backends.cuda.matmul.allow_tf32 = False
-CFG = [  # (name, Nt, M, SNR, batch, Anechoic schedule, CIM A_s, methods): operating points from the BER sweeps
+CFG = [  # (name, Nt, M, SNR, batch, Chord schedule, CIM A_s, methods): operating points from the BER sweeps
     ('q16', 16, 4, 12.0, 20000, dict(S=128, t0=0.7, t1=0.5, q=0.6, kappa=0, phases=1), 1.0,
-     ['mmse', 'ane16', 'ane64', 'cim64', 'ahc64']),
+     ['mmse', 'chord16', 'chord64', 'cim64', 'ahc64']),
     ('x16', 16, 16, 22.0, 20000, dict(S=256, t0=0.3, t1=0.3, q=0.4, kappa=0, phases=2), 1.5,
      ['mmse', 'aned16', 'aned64', 'ahcd64']),
 ]
@@ -66,15 +66,15 @@ def run(method, b, an, cas, gs):
         Id = mimo.ising_delta(b, z, K=1)
         na = int(method[4:])
         if method.startswith('aned'):
-            S_ = mimo.anechoic(Id, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an['kappa'], gen=gs, phases=an['phases'])
+            S_ = mimo.chord(Id, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an['kappa'], gen=gs, phases=an['phases'])
         else:
             S_ = mimo.ahc(Id, na, gen=gs)
         lh, _, _ = mimo.select(b, mimo.spins_to_levels_delta(S_, Id, b['M']), lm)
         return lh
     I = mimo.ising(b, z)
-    na = int(method[3:])
-    if method.startswith('ane'):
-        S_ = mimo.anechoic(I, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an['kappa'], gen=gs)
+    na = int(method[5:] if method.startswith('chord') else method[3:])
+    if method.startswith('chord'):
+        S_ = mimo.chord(I, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an['kappa'], gen=gs)
     elif method.startswith('cim'):
         S_ = mimo.cim(I, na, As=cas, pump='time', gen=gs)
     else:
@@ -106,8 +106,8 @@ for name, Nt, M, snr, B, an, cas, methods in CFG:
             emit(dict(seg='detect', cfg=name, nt=Nt, M=M, snr=snr, method=method, rep=rep, detections=ndet, seconds=sec,
                       energy_J=ej, avg_W=ej / sec, det_per_s=ndet / sec, J_per_det=ej / ndet,
                       J_per_det_above_idle=(ej - P_IDLE * sec) / ndet, ber=err / bits, batch=B,
-                      ane=an if method.startswith('ane') else None, cim_as=cas if method.startswith('cim') else None))
-    # flips per (half-)step and chain of the tuned Anechoic schedule (instrumented, not timed)
+                      chord=an if method.startswith(('chord', 'aned')) else None, cim_as=cas if method.startswith('cim') else None))
+    # flips per (half-)step and chain of the tuned Chord schedule (instrumented, not timed)
     g = torch.Generator(device='cuda'); g.manual_seed(79)
     b = mimo.make_batch(2000, Nt, Nt, M, snr, g)
     z, Ai, el2 = mimo.mmse(b)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""A5.17 S3 analysis (AMENDMENTS_A517.md A1). Pure function of saved batches; functions as in analyze_a514.py (A5.15 sec. 5-6).
+"""A5.17 S3 analysis. Pure function of saved batches; functions as in analyze_a514.py.
 Per k in {2, 4, inf}: S*_k = largest grid S with calibration x(S) <= x_k(C1) (plan.json 'grid'/'thresholds', recomputed here);
 primary A*_k / C1 (paired bootstrap of summed bit errors, 4,000 replicates, seed 12345; exact McNemar) on the batch indices every
-arm has; also A*_k / C0 and every arm's held-out x per K; check (not a decision): x_held(A*_k) <= x_held(C1) * x_k(C1) / x_1(C1).
+arm has; also A*_k / C0 and every arm's held-out x per K; check: x_held(A*_k) <= x_held(C1) * x_k(C1) / x_1(C1).
 Usage (on hostB, from src/): s3_analyze.py RESULTS_DIR OUT.json"""
 import glob
 import json
@@ -16,7 +16,7 @@ import a56an as AN
 RES, OUT = sys.argv[1], sys.argv[2]
 PHI = json.load(open(os.path.join(RES, 'tuned_a52.json')))['flip_phi']
 PLAN = json.load(open(os.path.join(RES, 'a517s3', 'plan.json')))
-X1_C1 = 1.1204                                                           # A1: C1 at k = 1 on A5.15's calibration batch
+X1_C1 = 1.1204                                                           # C1 at k = 1 on A5.15's calibration batch
 SNR, SH = 22.0, 'x32'
 
 
@@ -83,7 +83,7 @@ for k, thr in PLAN['thresholds'].items():
     sstar[k] = max(ok)
 assert sstar == {k: int(v) for k, v in PLAN['sstar'].items()}, (sstar, PLAN['sstar'])
 
-C1 = arm(d515('abl_ape_0.2_0.2_0.2_rand_8')); C0 = arm(d515('mdiane8')); A76 = arm(d515('abl_far_76_0.1_0.1_0_rand_8'))
+C1 = arm(d515('abl_chord_0.2_0.2_0.2_rand_8')); C0 = arm(d515('mdichord8')); A76 = arm(d515('abl_far_76_0.1_0.1_0_rand_8'))
 A = {S: arm(d517('abl_far_%d_0.1_0.1_0_rand_8' % S)) for S in sorted(set(sstar.values()))}
 common = sorted(set(C1) & set(C0) & set(A76) & set.intersection(*[set(v) for v in A.values()]))
 keep = set(common)

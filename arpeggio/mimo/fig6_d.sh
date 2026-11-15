@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fig. 6 validation (PROTOCOL_D: not held-out comparisons): our PIMI on the authors' instances and on our port of their
+# Fig. 6 validation (not held-out comparisons): our PIMI on the authors' instances and on our port of their
 # channel model; then our BER evaluation of their own solved states against their report.json. Usage: fig6_d.sh UUID
 export MIMO_GPU_UUID=$1 CUDA_VISIBLE_DEVICES=$1; R=<SCRATCH>/mimo_ising_20261016; source $R/env.sh > /dev/null 2>&1; cd $R/src
 while ! grep -q CACHE_DONE $R/logs/cache_pimi_instances.log; do sleep 20; done

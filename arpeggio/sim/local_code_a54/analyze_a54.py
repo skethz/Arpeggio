@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.4 analysis, PROTOCOL_A54.md section 4 (written 5 Nov 2026 after the series finished; the rule was fixed before any run).
+"""A5.4 analysis.
 No GPU. Usage: analyze_a54.py RESULTS_DIR A53_JSON   (RESULTS_DIR = .../results; A53_JSON = data/a5/a53.json, the Fig. 3 SA cycle ratios)
 Writes RESULTS_DIR/a54/analysis.json.
 
@@ -7,8 +7,7 @@ Reported per point:
   - per Sk: uses, BER, ratio to (i) on the common prefix (paired cluster bootstrap, AN.boot_ratio) and McNemar;
     cycle ratio (L + F) / (L_128 + F_128) per K from a54/flips.json; its geometric mean over K (Fig. 3 plots this mean);
     the paired ratio to the next and the second-next doubling (saturation rule).
-  - per SA S >= 4: the Sk whose geometric-mean cycle ratio is nearest SA's on a log scale, and the paired Antiphase/SA ratio on common uses.
-Wording verdicts as section 4 states them."""
+  - per SA S >= 4: the Sk whose geometric-mean cycle ratio is nearest SA's on a log scale, and the paired Chord/SA ratio on common uses."""
 import glob
 import json
 import math
@@ -22,9 +21,9 @@ import a56an as AN  # noqa: E402
 
 RES, A53 = sys.argv[1], json.load(open(sys.argv[2]))
 FL = json.load(open(os.path.join(RES, 'a54', 'flips.json')))
-PT = {'P1': dict(sh='x16', snr=20.0, Ns=32, bpu=64, grid=[32, 64, 128, 256, 512, 1024, 2048, 4096], ref='mdiane32',
+PT = {'P1': dict(sh='x16', snr=20.0, Ns=32, bpu=64, grid=[32, 64, 128, 256, 512, 1024, 2048, 4096], ref='mdichord32',
                  sa=lambda S: 'abl_sa_32' if S == 128 else 'abl_sao_%d_32' % S, cyc='old'),
-      'P2': dict(sh='x32', snr=22.0, Ns=8, bpu=128, grid=[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192], ref='mdiane8',
+      'P2': dict(sh='x32', snr=22.0, Ns=8, bpu=128, grid=[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192], ref='mdichord8',
                  sa=lambda S: 'abl_sas_%d_8' % S, cyc='sa2')}
 SWEEPS = [4, 8, 16, 32, 64, 128]
 
@@ -69,7 +68,7 @@ def geo(v):
     return float(math.exp(np.mean(np.log(v))))
 
 
-out = dict(note='A5.4 analysis, PROTOCOL_A54.md section 4; exploratory; modeled cycles (L + F for Antiphase, S N + F_SA for SA, Fig. 3 data); '
+out = dict(note='A5.4 analysis; modeled cycles (L + F for Chord, S N + F_SA for SA, Fig. 3 data); '
                 'cycle mean over K is geometric, as Fig. 3 plots it; seed 102, flips seed 1000.', points={})
 for pt, p in PT.items():
     ref = load('abl/%s/%s/snr_%05.2f' % (p['sh'], p['ref'], p['snr']))
@@ -101,23 +100,23 @@ for pt, p in PT.items():
         best = min(rows, key=lambda r: abs(math.log(r['cyc_ratio']) - math.log(m)))
         sa = load('abl/%s/%s/snr_%05.2f' % (p['sh'], p['sa'](S), p['snr']))
         ok, nchk = aligned(arms[best['Sk']], sa)
-        q = pair(arms[best['Sk']], sa)                                        # Antiphase over SA
-        match.append(dict(S=S, sa_method=p['sa'](S), sa_cyc_ratio=m, sa_cyc_ratio_K=sr, Sk=best['Sk'], ap_cyc_ratio=best['cyc_ratio'],
-                          cyc_mismatch=best['cyc_ratio'] / m, ap_over_sa=q, aligned=ok, aligned_checked=nchk,
+        q = pair(arms[best['Sk']], sa)                                        # Chord over SA
+        match.append(dict(S=S, sa_method=p['sa'](S), sa_cyc_ratio=m, sa_cyc_ratio_K=sr, Sk=best['Sk'], chord_cyc_ratio=best['cyc_ratio'],
+                          cyc_mismatch=best['cyc_ratio'] / m, chord_over_sa=q, aligned=ok, aligned_checked=nchk,
                           sa_ber=float(sa['biterr'].sum()) / (len(sa['biterr']) * p['bpu']), sa_uses=len(sa['biterr'])))
     wins = []
     for mrow in match:
-        if mrow['ap_over_sa']['hi'] < 1:
+        if mrow['chord_over_sa']['hi'] < 1:
             wins.append(mrow['S'])
         else:
             break
-    last = match[-1]['ap_over_sa']
+    last = match[-1]['chord_over_sa']
     out['points'][pt] = dict(
         rows=rows, matched=match,
         verdict=dict(
             saturates_at=sat[0] if sat else None,
-            antiphase_wins_equal_cycles_through_S=wins[-1] if wins else None,
-            longer_sa_buys_lower_ber_holds=bool(last['lo'] > 1),
+            chord_wins_equal_cycles_through_S=wins[-1] if wins else None,
+            sa_lower_ber_at_largest_matched=bool(last['lo'] > 1),
             largest_matched=dict(S=match[-1]['S'], Sk=match[-1]['Sk'], ratio=last['ratio'], lo=last['lo'], hi=last['hi'])))
 json.dump(out, open(os.path.join(RES, 'a54', 'analysis.json'), 'w'), indent=1)
 for pt, d in out['points'].items():
@@ -129,7 +128,7 @@ for pt, d in out['points'].items():
             v['mcnemar_p'], ('%.2f [%.2f, %.2f]' % (r['vs_next']['ratio'], r['vs_next']['lo'], r['vs_next']['hi'])) if 'vs_next' in r else '-',
             r['saturates'], r['aligned_with_i'], r['aligned_checked']))
     for m in d['matched']:
-        q = m['ap_over_sa']
-        print('  S %3d x %.2f -> Sk %4d x %.2f (%.2fx)  AP/SA %.3f [%.3f, %.3f] p %.2g  uses %d err %d vs %d  align %s/%d' % (
-            m['S'], m['sa_cyc_ratio'], m['Sk'], m['ap_cyc_ratio'], m['cyc_mismatch'], q['ratio'], q['lo'], q['hi'], q['mcnemar_p'], q['uses'],
+        q = m['chord_over_sa']
+        print('  S %3d x %.2f -> Sk %4d x %.2f (%.2fx)  CHORD/SA %.3f [%.3f, %.3f] p %.2g  uses %d err %d vs %d  align %s/%d' % (
+            m['S'], m['sa_cyc_ratio'], m['Sk'], m['chord_cyc_ratio'], m['cyc_mismatch'], q['ratio'], q['lo'], q['hi'], q['mcnemar_p'], q['uses'],
             q['err_first'], q['err_second'], m['aligned'], m['aligned_checked']))

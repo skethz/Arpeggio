@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# A5.19 supervisor (PROTOCOL_A519.md section 10). Untimed BER only. hostB GPU0-3 (standing allocation, 11 Nov; env_hostb_a519.sh refuses
-# any other UUID). Shares the GPUs with the author's running jobs (author, 13 Nov: "<instruction>"): no yield, but a memory
-# guard that leaves room for the author's next queued job (about 6 GB): no new worker on a GPU with < 9,000 MiB free (one worker takes
+# A5.19 supervisor. Untimed BER only. hostB GPU0-3 (env_hostb_a519.sh refuses
+# any other UUID). Shares the GPUs with other jobs: no yield, but a memory
+# guard: no new worker on a GPU with < 9,000 MiB free (one worker takes
 # about 3,700 MiB); if a GPU falls below 2,500 MiB free, our newest worker there is stopped (it resumes from saved batches;
 # trace_a56.claim renames the stale claim). Other processes are never touched.
-# Every 120 s: rebuild the plan (a519_plan.py), start workers, write status.txt. When every held-out chunk is done, or at the time cut
-# (section 5), run analyze_a519.py once and exit.
-A=<SCRATCH>/ap_ber_20261024
+# Every 120 s: rebuild the plan (a519_plan.py), start workers, write status.txt. When every held-out chunk is done, or at the time cut,
+# run analyze_a519.py once and exit.
+A=<SCRATCH>/arpeggio_ber_20261024
 R=$A/results/a519
 L=$A/logs/a519
 PY=$A/venv/bin/python

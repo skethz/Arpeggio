@@ -1,8 +1,8 @@
 {
- "tool": "Conformal 25.10 (LEC -XL), hostC A/gate_r4_20261024T2220Z/lec",
- "method": "RTL -> fv_map -> synthesis netlist: Genus write_do_lec composite dofile from the restored v14 synthesis DB (read_db only), RTL/log paths redirected to hash-identical copies; RTL->fv_map hierarchical (dynamic hierarchy), fv_map->netlist flat with Genus' mapping files. Synthesis netlist -> final routed netlist: project-authored flat compare (TT std-cell liberty, macros black-boxed with add_notranslate_modules as Genus does, tie cells modelled as constants, name mapping). Macros: black boxes on both sides, black-box input pins mapped and compared.",
+ "tool": "Conformal 25.10 (LEC -XL)",
+ "method": "RTL -> fv_map -> synthesis netlist: Genus write_do_lec composite dofile from the restored v14 synthesis DB (read_db only); RTL->fv_map hierarchical (dynamic hierarchy), fv_map->netlist flat with Genus' mapping files. Synthesis netlist -> final routed netlist: project-authored flat compare (TT std-cell liberty, macros black-boxed with add_notranslate_modules as Genus does, tie cells modelled as constants, name mapping). Macros: black boxes on both sides, black-box input pins mapped and compared.",
  "D32": {
-  "top": "ape_engine_D32_A4_SEEDL1",
+  "top": "chord_engine_D32_A4_SEEDL1",
   "rtl_to_fvmap": {
    "module_pairs": "1/1 Equivalent (dynamic hierarchy)",
    "compare_points": 12789,
@@ -46,7 +46,7 @@
   "note": "The 209 unmapped points are clock-gating latches, unreachable on both sides after gated-clock remodelling (identical counts; = the 209 ICGs). The syn->routed dofile aborted on its last line (a non-existent get_black_boxes query) after every count and report was logged."
  },
  "D64": {
-  "top": "ape_engine_D64_A4_SEEDL2",
+  "top": "chord_engine_D64_A4_SEEDL2",
   "rtl_to_fvmap": {
    "module_pairs": "1/1 Equivalent (dynamic hierarchy)",
    "compare_points": 24122,
@@ -90,7 +90,7 @@
   "note": "The 241 unmapped points are clock-gating latches, unreachable on both sides after gated-clock remodelling (= the 241 ICGs). RTL stage took 88 min (209 datapath modules)."
  },
  "D128": {
-  "top": "ape_engine_D128_A4_SEEDL4",
+  "top": "chord_engine_D128_A4_SEEDL4",
   "rtl_to_fvmap": {
    "module_pairs": "1/1 Equivalent (dynamic hierarchy)",
    "compare_points": 46787,
@@ -117,7 +117,7 @@
    "unmapped_unreachable_dlat_each_side": 1072
   },
   "syn_to_routed": {
-   "routed_db": "ape_d128_p1200_r4 (accepted at 1.20 ns)",
+   "routed_db": "chord_d128_p1200_r4 (accepted at 1.20 ns)",
    "compare_points": 46782,
    "equivalent": 46782,
    "non_equivalent": 0,

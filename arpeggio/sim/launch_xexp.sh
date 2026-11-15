@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# A3 exploratory workers on hostB GPU0 and GPU2 (2 each, 2 threads): plan results/plan_hostb_xexp.json. Idempotent.
-A=<SCRATCH>/ap_ber_20261024
+# Workers on hostB GPU0 and GPU2 (2 each, 2 threads): plan results/plan_hostb_xexp.json. Idempotent.
+A=<SCRATCH>/arpeggio_ber_20261024
 PLAN=${1:-plan_hostb_xexp.json}
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID> [2]=<GPU_UUID>)
 for i in ${GPUS:-0 2}; do for w in a b; do

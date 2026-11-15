@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# A5.6 supervisor (PROTOCOL_A56.md section 12). hostB GPU0 and GPU1 only. 2 workers per GPU while A5.4 runs, 4 after it ends. No launch on a GPU with
+# A5.6 supervisor. hostB GPU0 and GPU1 only. 2 workers per GPU while A5.4 runs, 4 after it ends. No launch on a GPU with
 # < 8 GB free; below 2 GB free, stop our newest worker on that GPU (it resumes from saved batches). Only ever signals our own a56 processes.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 ROOT=$A/results/a56; PL=$ROOT/plan.json; LOG=$A/logs/a56/supervisor.log
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID>)
 cd $A; source $A/venv/bin/activate

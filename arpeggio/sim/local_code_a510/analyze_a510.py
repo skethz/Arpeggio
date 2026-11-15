@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""A5.10 analysis (PROTOCOL_A510.md sections 5 and 8), written before any A5.10 run. Usage: analyze_a510.py RUNS_DIR NEG.txt OUT.json"""
+"""A5.10 analysis. Usage: analyze_a510.py RUNS_DIR NEG.txt OUT.json"""
 import json, os, sys
 RUNS, NEG, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
 D = {'p1': 32, 'p2': 64}
-ENG, AS = ('v14', 'fa', 'fx2', 'fx3'), (1, 4, 6, 8)
-XFP_HELD = {'p1': 0.6326, 'p2': 0.4110}            # protocol section 2: flips.json and A5.5's ref_cost, existing B = 1 picks
-LANE_BITS = {'v14': 70, 'fa': 71, 'fx2': 98, 'fx3': 98}   # per lane per context (section 3), structural only
+ENG, AS = ('v14', 'arpeggio', 'fx2', 'fx3'), (1, 4, 6, 8)
+XFP_HELD = {'p1': 0.6326, 'p2': 0.4110}            # flips.json and A5.5's ref_cost, existing B = 1 picks
+LANE_BITS = {'v14': 70, 'arpeggio': 71, 'fx2': 98, 'fx3': 98}   # per lane per context, structural only
 CTX_BITS = 295                                       # per-context scalars (st .. cfa1), approximate
 
 
 def load(pt, eng, A):
-    stim = pt + ('ap' if eng == 'v14' else 'fa')
+    stim = pt + ('chord' if eng == 'v14' else 'arpeggio')
     p = os.path.join(RUNS, '%s_%s_a%d_d%d' % (stim, eng, A, D[pt]), 'cycles.json')
     return json.load(open(p)) if os.path.exists(p) else None
 
@@ -34,24 +34,24 @@ for pt in ('p1', 'p2'):
     Ks = ('1', '2', '3')
     have = lambda e, A: (e, A) in C
     r = dict(cycles={'%s/A%d' % k: v for k, v in C.items()})
-    # RTL over model per engine and A (v14: L + F; fa: tests + F; fx: S P + F, S P = decision-port tests T_rtl)
+    # RTL over model per engine and A (v14: L + F; arpeggio: tests + F; fx: S P + F, S P = decision-port tests T_rtl)
     rm = {}
     for (e, A), j in J.items():
-        rm['%s/A%d' % (e, A)] = {K: v['cycles_per_anneal'] / ((v['L'] + v['F']) if e == 'v14' else (v['tests'] + v['F']) if e == 'fa' else (v['T_rtl'] + v['F']))
+        rm['%s/A%d' % (e, A)] = {K: v['cycles_per_anneal'] / ((v['L'] + v['F']) if e == 'v14' else (v['tests'] + v['F']) if e == 'arpeggio' else (v['T_rtl'] + v['F']))
                                  for K, v in j['per_K'].items()}
     r['rtl_over_model'] = rm
     g = {}
     for fx in ('fx2', 'fx3'):
         for A in AS:
-            if have(fx, A) and have('fa', A):
-                g['%s/A%d' % (fx, A)] = mean([C[(fx, A)][K] / C[('fa', A)][K] for K in Ks])
+            if have(fx, A) and have('arpeggio', A):
+                g['%s/A%d' % (fx, A)] = mean([C[(fx, A)][K] / C[('arpeggio', A)][K] for K in Ks])
     r['g'] = g
     iso = {}
     for fx in ('fx2', 'fx3'):
-        fa_as = [a for a in (4, 6, 8) if have('fa', a)]
-        if have(fx, 4) and fa_as:
-            per = {K: C[(fx, 4)][K] / min(C[('fa', a)][K] for a in fa_as) for K in Ks}
-            iso[fx] = dict(value=mean(list(per.values())), per_K=per, best_fa_A={K: min(fa_as, key=lambda a: C[('fa', a)][K]) for K in Ks})
+        arpeggio_as = [a for a in (4, 6, 8) if have('arpeggio', a)]
+        if have(fx, 4) and arpeggio_as:
+            per = {K: C[(fx, 4)][K] / min(C[('arpeggio', a)][K] for a in arpeggio_as) for K in Ks}
+            iso[fx] = dict(value=mean(list(per.values())), per_K=per, best_arpeggio_A={K: min(arpeggio_as, key=lambda a: C[('arpeggio', a)][K]) for K in Ks})
     r['iso'] = iso
     x = {}
     for e in ENG:
@@ -60,8 +60,8 @@ for pt in ('p1', 'p2'):
                 x['%s/A%d' % (e, A)] = mean([C[(e, A)][K] / C[('v14', A)][K] for K in Ks])
     r['x_rtl_vs_v14_same_A'] = x
     if have('fx3', 4) and have('v14', 4):
-        fxp = J[('fx3', 4)]['per_K']; ap = J[('v14', 4)]['per_K']
-        x_stim = mean([(fxp[K]['T_rtl'] + fxp[K]['F']) / (ap[K]['L'] + ap[K]['F']) for K in Ks])
+        fxp = J[('fx3', 4)]['per_K']; chord = J[('v14', 4)]['per_K']
+        x_stim = mean([(fxp[K]['T_rtl'] + fxp[K]['F']) / (chord[K]['L'] + chord[K]['F']) for K in Ks])
         r['x_Fp_stim'] = x_stim
         r['x_hat'] = {}
         for fx in ('fx2', 'fx3'):
@@ -75,13 +75,13 @@ for pt in ('p1', 'p2'):
             lat[e] = {K: J[(e, 1)]['per_K'][K].get('lat_per_anneal') for K in Ks}
     r['latency_A1'] = lat
     r['latency_ratio_A1'] = {('%s/%s' % (a, b)): mean([lat[a][K] / lat[b][K] for K in Ks])
-                             for a in ('fx2', 'fx3') for b in ('fa', 'v14') if a in lat and b in lat}
+                             for a in ('fx2', 'fx3') for b in ('arpeggio', 'v14') if a in lat and b in lat}
     r['cycle_offset_A1'] = {e: J[(e, 1)].get('cycle_offset_A1') for e in ENG if have(e, 1)}
     r['register_bits'] = {'%s/A%d' % (e, A): A * (LANE_BITS[e] * D[pt] + CTX_BITS) for e in ENG for A in AS}
     a_ok = g.get('fx3/A4') is not None and g['fx3/A4'] <= 0.80
     b_ok = 'fx3' in iso and iso['fx3']['value'] <= 0.85
     r['criteria'] = dict(a_g4_fx3=g.get('fx3/A4'), a_ok=a_ok, b_iso_fx3=iso.get('fx3', {}).get('value'), b_ok=b_ok)
-    r['fa8_vs_fa4'] = mean([C[('fa', 8)][K] / C[('fa', 4)][K] for K in Ks]) if have('fa', 8) and have('fa', 4) else None
+    r['arpeggio8_vs_arpeggio4'] = mean([C[('arpeggio', 8)][K] / C[('arpeggio', 4)][K] for K in Ks]) if have('arpeggio', 8) and have('arpeggio', 4) else None
     res[pt] = r
 neg = {}
 for line in open(NEG):
@@ -102,11 +102,11 @@ for pt in ('p1', 'p2'):
     r = res[pt]
     print(pt, 'criteria', {k: (round(v, 3) if isinstance(v, float) else v) for k, v in r['criteria'].items()})
     print('   g', {k: round(v, 3) for k, v in r['g'].items()})
-    print('   iso', {k: round(v['value'], 3) for k, v in r['iso'].items()}, 'best FA A per K', r['iso'].get('fx3', {}).get('best_fa_A'))
+    print('   iso', {k: round(v['value'], 3) for k, v in r['iso'].items()}, 'best ARPEGGIO A per K', r['iso'].get('fx3', {}).get('best_arpeggio_A'))
     print('   x vs v14 (same A)', {k: round(v, 3) for k, v in r['x_rtl_vs_v14_same_A'].items()})
     print('   x_hat', {k: round(v['x_hat'], 3) for k, v in r.get('x_hat', {}).items()}, 'x_Fp_stim', round(r.get('x_Fp_stim', 0), 3))
     print('   latency A=1 ratios', {k: round(v, 3) for k, v in r['latency_ratio_A1'].items()}, 'offsets', r['cycle_offset_A1'])
-    print('   fa(8)/fa(4)', None if r['fa8_vs_fa4'] is None else round(r['fa8_vs_fa4'], 3))
+    print('   arpeggio(8)/arpeggio(4)', None if r['arpeggio8_vs_arpeggio4'] is None else round(r['arpeggio8_vs_arpeggio4'], 3))
     print('   rtl/model', {k: [round(x, 2) for x in v.values()] for k, v in r['rtl_over_model'].items()})
 print('negative controls', neg)
 print('outcome', res['outcome'])

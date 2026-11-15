@@ -1,7 +1,7 @@
 {
  "a5d": {
   "P1": {
-   "(i) Antiphase frozen": {
+   "(i) Chord frozen": {
     "uses": 20000,
     "bit_err": 924,
     "vec_err": 103,
@@ -12,7 +12,7 @@
     ],
     "capped": false
    },
-   "parallel trial, equal modelled cycles, P1-tuned (kill arm)": {
+   "parallel trial, equal modelled cycles, P1-tuned": {
     "method": "abl_ptc_32",
     "uses": 16000,
     "bit_err": 1032,
@@ -83,7 +83,7 @@
    }
   },
   "P2": {
-   "(i) Antiphase frozen": {
+   "(i) Chord frozen": {
     "uses": 43000,
     "bit_err": 2182,
     "vec_err": 101,
@@ -94,7 +94,7 @@
     ],
     "capped": false
    },
-   "parallel trial, equal modelled cycles, P1-tuned (kill arm)": {
+   "parallel trial, equal modelled cycles, P1-tuned": {
     "method": "abl_ptc_8",
     "uses": 4000,
     "bit_err": 2840,
@@ -211,7 +211,7 @@
    }
   },
   "P3": {
-   "(i) Antiphase frozen": {
+   "(i) Chord frozen": {
     "uses": 156250,
     "bit_err": 65,
     "vec_err": 30,
@@ -222,7 +222,7 @@
     ],
     "capped": true
    },
-   "parallel trial, equal modelled cycles, P1-tuned (kill arm)": {
+   "parallel trial, equal modelled cycles, P1-tuned": {
     "method": "abl_ptc_8",
     "uses": 8000,
     "bit_err": 8317,
@@ -343,7 +343,7 @@
     "N": 64,
     "L": 256,
     "F": 31.4,
-    "antiphase_cycles": 287.4,
+    "chord_cycles": 287.4,
     "I_equal_cycles": 41,
     "I_equal_flips": 31,
     "pt_cycles_at_Ic": 287
@@ -352,7 +352,7 @@
     "N": 128,
     "L": 512,
     "F": 155.8,
-    "antiphase_cycles": 667.8,
+    "chord_cycles": 667.8,
     "I_equal_cycles": 83,
     "I_equal_flips": 156,
     "pt_cycles_at_Ic": 664
@@ -361,7 +361,7 @@
     "N": 192,
     "L": 768,
     "F": 299.8,
-    "antiphase_cycles": 1067.8,
+    "chord_cycles": 1067.8,
     "I_equal_cycles": 119,
     "I_equal_flips": 300,
     "pt_cycles_at_Ic": 1071
@@ -370,7 +370,7 @@
     "N": 128,
     "L": 256,
     "F": 57.3,
-    "antiphase_cycles": 313.3,
+    "chord_cycles": 313.3,
     "I_equal_cycles": 39,
     "I_equal_flips": 57,
     "pt_cycles_at_Ic": 312
@@ -379,7 +379,7 @@
     "N": 256,
     "L": 512,
     "F": 311.5,
-    "antiphase_cycles": 823.5,
+    "chord_cycles": 823.5,
     "I_equal_cycles": 92,
     "I_equal_flips": 312,
     "pt_cycles_at_Ic": 828
@@ -388,7 +388,7 @@
     "N": 384,
     "L": 768,
     "F": 522.0,
-    "antiphase_cycles": 1290.0,
+    "chord_cycles": 1290.0,
     "I_equal_cycles": 129,
     "I_equal_flips": 522,
     "pt_cycles_at_Ic": 1290
@@ -397,7 +397,7 @@
     "N": 128,
     "L": 256,
     "F": 72.5,
-    "antiphase_cycles": 328.5,
+    "chord_cycles": 328.5,
     "I_equal_cycles": 41,
     "I_equal_flips": 73,
     "pt_cycles_at_Ic": 328
@@ -452,15 +452,6 @@
     "bit_err": 35,
     "vec_err": 2
    }
-  },
-  "kill_rule": {
-   "rule": "kill if the equal-modelled-cycles, P1-tuned parallel trial has an upper 95% BER-ratio CI <= 1 against (i) at >= 2 of P1-P3",
-   "hits": {
-    "P1": false,
-    "P2": false,
-    "P3": false
-   },
-   "killed": false
   }
  },
  "a5b": {
@@ -1534,11 +1525,11 @@
      "value": 18.612374160614927,
      "kind": "="
     },
-    "antiphase": {
+    "chord": {
      "value": 19.047777730476422,
      "kind": "="
     },
-    "sa_minus_antiphase": {
+    "sa_minus_chord": {
      "delta": -0.43540356986149575,
      "ci": [
       -0.6869278958472206,
@@ -1551,11 +1542,11 @@
      "value": 20.76689901327641,
      "kind": "="
     },
-    "antiphase": {
+    "chord": {
      "value": 22.05204013452155,
      "kind": "="
     },
-    "sa_minus_antiphase": {
+    "sa_minus_chord": {
      "delta": -1.2851411212451396,
      "ci": [
       -1.7456819453854626,
@@ -1571,11 +1562,11 @@
      "value": 19.778939583238465,
      "kind": "="
     },
-    "antiphase": {
+    "chord": {
      "value": 20.89238820988916,
      "kind": "="
     },
-    "sa_minus_antiphase": {
+    "sa_minus_chord": {
      "delta": -1.113448626650694,
      "ci": [
       -1.4573495351857897,
@@ -1588,11 +1579,11 @@
      "value": 22.690376931530356,
      "kind": "="
     },
-    "antiphase": {
+    "chord": {
      "value": 23.566692227331373,
      "kind": "="
     },
-    "sa_minus_antiphase": {
+    "sa_minus_chord": {
      "delta": -0.8763152958010174,
      "ci": [
       -1.396690171865233,
@@ -2232,14 +2223,6 @@
     },
     "changed": false
    }
-  },
-  "kill_rule_applied_for_information": {
-   "hits": {
-    "P1": false,
-    "P2": false,
-    "P3": false
-   },
-   "would_kill": false
   }
  }
 }

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""Tests of the PIMI CUDA kernel (pimi_kernel.cu) against its bit-exact PyTorch definition pimi.pimi_fx (milestone D),
-written before the kernel and run first against the stub (RED), then against the kernel (GREEN).
-1. The device Philox4x32-10 equals Random123's known-answer vectors (the host one is anefx's, checked in milestone B).
+"""Tests of the PIMI CUDA kernel (pimi_kernel.cu) against its bit-exact PyTorch definition pimi.pimi_fx.
+1. The device Philox4x32-10 equals Random123's known-answer vectors (the host one is chordfx's).
 2. Kernel == pimi_fx bit for bit: per-trial final spins and energies (mode 'chains') and the selected trial (mode
    'best', which must also equal pimi.select of the reference), on DI-MIMO problems from the authors' channel model
    and ours: 8x8 16-QAM (32 spins), 8x8 64-QAM (32), 16x16 QPSK and 16-QAM (64), 32x32 QPSK and 16-QAM (128), the
@@ -13,7 +12,7 @@ import sys
 
 import torch
 
-import anefx
+import chordfx
 import mimo
 import pimi
 
@@ -28,9 +27,9 @@ def check(name, cond, msg=''):
 
 
 kern = pimi.PimiKernel(sys.argv[1])
-words = torch.tensor([list(c) + list(k) for c, k, _ in anefx.KAT], dtype=torch.int64)
+words = torch.tensor([list(c) + list(k) for c, k, _ in chordfx.KAT], dtype=torch.int64)
 dev = kern.philox_kat(words)
-want = torch.tensor([list(w) for _, _, w in anefx.KAT], dtype=torch.int64)
+want = torch.tensor([list(w) for _, _, w in chordfx.KAT], dtype=torch.int64)
 check('device Philox KAT', torch.equal(dev.cpu(), want), str(dev.cpu().tolist()))
 
 

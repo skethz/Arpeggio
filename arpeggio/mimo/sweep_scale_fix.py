@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Held-out scaling sweeps (seed 1) for every milestone-B configuration: grids placed from the tuning-set pre-scan,
-Anechoic schedules = the best of tuning rounds 1 and 2 on the i.i.d. channel of the same shape and modulation
+"""Held-out scaling sweeps (seed 1) for every scaling configuration: grids placed from the tuning-set pre-scan,
+Chord schedules = the best of tuning rounds 1 and 2 on the i.i.d. channel of the same shape and modulation
 (reused for rho = 0.5), K-best and anneal ladders 1..256, the sphere decoder, and for 32x64 Princeton's published
-massive-MIMO MDI settings (QPSK: DI-MIMO, 64 anneals; 16-QAM: Ns 8, R_max 3, S 8) with AHC and with Anechoic.
+massive-MIMO MDI settings (QPSK: DI-MIMO, 64 anneals; 16-QAM: Ns 8, R_max 3, S 8) with AHC and with Chord.
 About 4e5 bits per SNR point. Usage: sweep_scale.py CUBIN OUTDIR [SHAPES]"""
 import json
 import os
@@ -33,7 +33,7 @@ GRID = {  # (nt, nr, M, rho) -> SNR list (dB)
     (32, 128, 16, 0.0): range(8, 14), (32, 128, 16, 0.5): range(8, 15),
 }
 order = sorted(GRID, key=lambda k: (k[0] == 64, k[2], k[3], k[0], k[1]))   # 64x64 last (the slowest)
-if len(sys.argv) > 3:                       # a subset, e.g. "16x128" (rerun of configurations that failed)
+if len(sys.argv) > 3:                       # a subset, e.g. "16x128"
     order = [k for k in order if '%dx%d' % (k[0], k[1]) in sys.argv[3].split(',')]
 for nt, nr, M, rho in order:
     sc = best[(nt, nr, M)]['sched']
@@ -47,7 +47,7 @@ for nt, nr, M, rho in order:
            '--snrs=' + ','.join(str(s) for s in GRID[(nt, nr, M, rho)]), '--n', str(n), '--batch', str(batch),
            '--seed', '1', '--sd', '--sched', json.dumps(sched), '--cubin', cubin, '--out', os.path.join(out, tag)]
     if (nt, nr) == (32, 64):
-        cmd += ['--mdi', 'mdiahc64,mdiane64' if M == 4 else 'mdiahc8,mdiane8']
+        cmd += ['--mdi', 'mdiahc64,mdichord64' if M == 4 else 'mdiahc8,mdichord8']
     print(' '.join(cmd), flush=True)
     rc = subprocess.call(cmd, stdout=open(os.path.join(out, tag + '.log'), 'w'), stderr=subprocess.STDOUT)
     print(tag, 'exit', rc, flush=True)

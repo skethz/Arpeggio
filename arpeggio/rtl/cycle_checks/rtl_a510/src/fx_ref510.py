@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""A5.10 (PROTOCOL_A510.md section 3): fa_ref59.py plus checks for the fused engines fx2/fx3 (same accepted-lane sequence as mode fa,
+"""A5.10: arpeggio_ref59.py plus checks for the fused engines fx2/fx3 (same accepted-lane sequence as mode arpeggio,
 one decision-port test per pass, A = 1 cycles 3 S P + 2 F (fx2) or 3 S P + 3 F - F_last (fx3)) and per-K D-port tests and last-lane flips.
-A5.9 copy of the A5.5 fixed-point reference (PROTOCOL_A59.md section 3; changes: R and D parameters, par runs S x P half-steps,
-n1 and per-K cycle accounting). Original: A5.5 fixed-point reference (PROTOCOL_A55.md section 8) in plain Python integers, written from DESIGN's equations and not from the first-accept
-RTL: an index-order sequential scan per pass with Philox4x32-10 numbers, one per (sweep, copy, lane). Also mode 'par' (v1.4's parallel half-step),
-the baseline that the harness itself is right.
+A5.9 fixed-point reference with R and D parameters, par runs of S x P rounds,
+n1 and per-K cycle accounting, in plain Python integers, written from the equations and not from the first-accept
+RTL: an index-order sequential scan per pass with Philox4x32-10 numbers, one per (sweep, copy, lane). Also mode 'par' (Chord's parallel round),
+the baseline that checks the harness itself.
   gen OUT_DIR CAPTURE.pt S T0 T1 q start mode    write stim.txt and ref.json
-  check OUT_DIR A ENG                            ENG in fa, fx2, fx3, v14; compare rtl_events.txt with ref.json; exit 1 on FAIL"""
+  check OUT_DIR A ENG                            ENG in arpeggio, fx2, fx3, v14; compare rtl_events.txt with ref.json; exit 1 on FAIL"""
 import json, os, sys
 M = 0xFFFFFFFF
 CW, SEED, TAG0 = 14, 0x1234567890ABCDEF, 1
@@ -58,7 +58,7 @@ def anneal(G, h, P, T, q, r, inst, start, mode):
         p, n = k % P, k // P
         A, Bk = 4 * T[k], q + 2 * T[k]
         u = [philox(n >> 2, p * D + j, r, inst, k0, k1)[n & 3] for j in range(D)]
-        if mode == 'fa':
+        if mode == 'arpeggio':
             t = 1
             for j in range(D):
                 if u[j] * A > (s[p][j] * w[j] + 2 * diag[j] + Bk) << 32:       # lanes after a flip see the updated field
@@ -89,17 +89,17 @@ def anneal(G, h, P, T, q, r, inst, start, mode):
 
 def gen(out, cap, S, T0, T1, q, start, mode):
     import torch
-    sys.path.insert(0, os.environ.get('MIMO_SRC', '<SCRATCH>/ap_ber_20261024/code_mimo/src'))
-    import anefx, mimo
+    sys.path.insert(0, os.environ.get('MIMO_SRC', '<SCRATCH>/arpeggio_ber_20261024/code_mimo/src'))
+    import chordfx, mimo
     os.makedirs(out, exist_ok=True)
     D_ = torch.load(cap)
-    Q = anefx.QSCALE
+    Q = chordfx.QSCALE
     Tsw = [int(round(v * Q)) for v in mimo.geom(T0, T1, S, 'cpu').double().tolist()]
     qi = int(round(q * Q))
     ref, cmds, tag = {}, [], TAG0
     for K in (1, 2, 3):
         P = 2 * K
-        T = [t for t in Tsw for _ in range(P)]                                  # A5.9: S sweeps x P half-steps in both modes (L = 128 P)
+        T = [t for t in Tsw for _ in range(P)]                                  # A5.9: S sweeps x P rounds in both modes (L = 128 P)
         for k, t in enumerate(T):
             cmds.append('3 %d %x' % (k, t & 0xFFFF))                            # c = 0
         G_, h_ = D_[K]['G'], D_[K]['h']
@@ -147,8 +147,8 @@ def check(out, A, eng):
             e['B'][int(a[3])] = a[4]; e['de'] = int(a[5]); e['B_cyc'].append(int(a[6]))
     fx = eng in ('fx2', 'fx3')
     if fx:
-        assert mode == 'fa', 'fused engines are checked against the first-accept reference'
-    cname = {'fa': 'cycles = 3 tests + 2 F (A = 1)', 'fx2': 'cycles = 3 S P + 2 F (A = 1)', 'fx3': 'cycles = 3 S P + 3 F - F_last (A = 1)'}.get(eng, 'cycles')
+        assert mode == 'arpeggio', 'fused engines are checked against the first-accept reference'
+    cname = {'arpeggio': 'cycles = 3 tests + 2 F (A = 1)', 'fx2': 'cycles = 3 S P + 2 F (A = 1)', 'fx3': 'cycles = 3 S P + 3 F - F_last (A = 1)'}.get(eng, 'cycles')
     fails = {'accepted-lane sequence': 0, 'decision-port tests per pass': 0, 'R-port flips': 0,
              ('one decision-port test per pass' if fx else 'tests = S P + flips not on a last lane'): 0,
              'best spins and energy': 0, 'init ops': 0, cname: 0}
@@ -157,7 +157,7 @@ def check(out, A, eng):
         e = ev[k]
         D = r['D']
         acc = [tuple(x) for x in r['acc']]
-        if mode == 'fa':
+        if mode == 'arpeggio':
             fails['accepted-lane sequence'] += e['F'] != acc
         else:
             fails['accepted-lane sequence'] += sorted(e['F']) != sorted(acc)
@@ -172,7 +172,7 @@ def check(out, A, eng):
         r['_fl'] = fl; r['_T'] = sum(tk)
         if fx:
             fails['one decision-port test per pass'] += sum(tk) != r['S']
-        elif mode == 'fa':
+        elif mode == 'arpeggio':
             fails['tests = S P + flips not on a last lane'] += sum(tk) != r['S'] + nl
         bs = [e['B'].get(p) for p in range(r['P'])]
         want = [('%x' % int(b, 2)).zfill(D // 4) for b in r['bs']]
@@ -180,14 +180,14 @@ def check(out, A, eng):
         fails['init ops'] += e['I'] != r['init']
         if A == 1:
             c = e['E'] - e['T0'] if e['E'] is not None and e['T0'] is not None else -10 ** 9   # first D0 of the anneal to the first cycle in OUTQ
-            want_c = {'fa': 3 * sum(tk) + 2 * len(acc), 'fx2': 3 * r['S'] + 2 * len(acc), 'fx3': 3 * r['S'] + 3 * len(acc) - fl}.get(eng) if mode == 'fa' else None
+            want_c = {'arpeggio': 3 * sum(tk) + 2 * len(acc), 'fx2': 3 * r['S'] + 2 * len(acc), 'fx3': 3 * r['S'] + 3 * len(acc) - fl}.get(eng) if mode == 'arpeggio' else None
             r['_lat'] = c
             totC += c
             if want_c is not None:
                 r['_c'] = c
                 r['_w'] = want_c
         totT += sum(tk); totF += len(acc)
-    if A == 1 and mode == 'fa':
+    if A == 1 and mode == 'arpeggio':
         off = {r['_c'] - r['_w'] for r in ref.values()}
         print('cycles from first D0 to OUTQ, minus the %s model:' % eng, sorted(off)[:10])
         fails[cname] += 0 if len(off) == 1 else len(ref)              # offset 0, or one constant logging offset (reported)
@@ -198,7 +198,7 @@ def check(out, A, eng):
     for name, n in fails.items():
         if A != 1 and name.startswith('cycles'):
             continue
-        if mode != 'fa' and (name.startswith('tests =') or name.startswith('cycles') or name.startswith('one decision')):
+        if mode != 'arpeggio' and (name.startswith('tests =') or name.startswith('cycles') or name.startswith('one decision')):
             continue
         print('%s %s (%d anneals, %d failed)' % ('PASS' if n == 0 else 'FAIL', name, len(ref), n))
         bad += n
@@ -208,7 +208,7 @@ def check(out, A, eng):
 
 
 def cycles(out, A, J, ev, bad, eng, cyc_off):
-    """A5.9 section 4: a K block runs from its first accepted LOAD_ROW to its last output beat, plus one (schedule-table loads excluded)."""
+    """A5.9: a K block runs from its first accepted LOAD_ROW to its last output beat, plus one (schedule-table loads excluded)."""
     ref = J['ref']
     blocks, prev, cur = [], None, None
     for line in open(os.path.join(out, 'rtl_events.txt')):

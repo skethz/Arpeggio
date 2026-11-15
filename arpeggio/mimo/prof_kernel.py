@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Development timing of the kernel pipeline stages (shared GPU6; not the cohort): MMSE, Ising mapping, fixed point,
+"""Timing of the kernel pipeline stages (shared GPU6): MMSE, Ising mapping, fixed point,
 kernel, selection, for 16x16 QPSK RI and 16x16 16-QAM dDI."""
 import sys
 import time
 
 import torch
 
-import anefx
+import chordfx
 import fxdetect
 import mimo
 
 torch.backends.cuda.matmul.allow_tf32 = False
-kern = anefx.Kernel(sys.argv[1])
+kern = chordfx.Kernel(sys.argv[1])
 B = int(sys.argv[2]) if len(sys.argv) > 2 else 100000
 
 
@@ -34,10 +34,10 @@ for name in ('q16', 'x16'):
         t_map, I = tm(lambda: mimo.ising(b, z)); P = 1
     else:
         t_map, I = tm(lambda: mimo.ising_delta_at(b, lm, 1)); P = 2
-    t_fx, F = tm(lambda: anefx.to_fixed(I, sc['S'], sc['t0'], sc['t1'], sc['q'], sc['kappa']))
+    t_fx, F = tm(lambda: chordfx.to_fixed(I, sc['S'], sc['t0'], sc['t1'], sc['q'], sc['kappa']))
     for R in (1, 4, 16, 64):
         mode = 'best' if sc['kind'] == 'ri' else 'chains'
-        t_k, (s8, e) = tm(lambda: kern.anechoic(F, R, 9, P=P, mode=mode))
+        t_k, (s8, e) = tm(lambda: kern.chord(F, R, 9, P=P, mode=mode))
         s = s8.float()[:, None, :] if mode == 'best' else s8.float()
         D = b['H'].shape[-1]
         L = (lambda: mimo.spins_to_levels(s, b['M'], D)) if sc['kind'] == 'ri' else (lambda: mimo.spins_to_levels_delta(s, I, b['M']))

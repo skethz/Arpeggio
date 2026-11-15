@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Milestone-D timed cohort (PROTOCOL_D.md), structured as bench_c.py: NVML idle of the GPU before any CUDA context;
+"""Timed cohort of the PIMI comparison, structured as bench_c.py: NVML idle of the GPU before any CUDA context;
 then per PLAN item one untimed call and REPS segments, each a run of back-to-back calls ending with the first call that
 brings the elapsed time to at least MIN_S seconds; NVML's total-energy counter at the segment bounds; detections/s,
 ms and mJ per detection (total and above the no-process idle), solver seconds inside the chain, process CPU seconds,
 BER of the timed detections (chain modes). Methods and implementations:
   pimi    PIMI chain (their MMSE, DI mapping, fixed point, solver, selection, reconstruction): torch | kernel;
           mode 'solver' = the solver alone on prepared fixed-point problems (kernel: the platform row)
-  ane_mdi Antiphase in the MDI wrapper (formerly MDI-Anechoic; mdi_solvers 'ane_torch' / 'ane_kernel')
-  ane_ss  Antiphase, one delta stage (dDI K = 1 around MMSE, S 256, T 0.3, q 0.4, 2 phases), R anneals
-  abl     ablation of Antiphase in MDI: variant i / ii / iii / iv (alternating copies on/off, kappa 0 / 0.3)
-Usage: bench_d.py --plan PLAN_D.json --ane-cubin C1 --pimi-cubin C2 --out PREFIX"""
+  chord_mdi Chord in the MDI wrapper (mdi_solvers 'chord_torch' / 'chord_kernel')
+  chord_ss  Chord, one delta stage (dDI K = 1 around MMSE, S 256, T 0.3, q 0.4, 2 phases), R anneals
+  abl     ablation of Chord in MDI: variant i / ii / iii / iv (alternating copies on/off, kappa 0 / 0.3)
+Usage: bench_d.py --plan PLAN_D.json --chord-cubin C1 --pimi-cubin C2 --out PREFIX"""
 import argparse
 import ctypes
 import json
@@ -18,7 +18,7 @@ import time
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--plan', required=True)
-ap.add_argument('--ane-cubin', required=True)
+ap.add_argument('--chord-cubin', required=True)
 ap.add_argument('--pimi-cubin', required=True)
 ap.add_argument('--out', required=True)
 ap.add_argument('--min-s', type=float, default=6.0)
@@ -56,16 +56,16 @@ P_IDLE = idle['avg_W']
 
 import torch  # noqa: E402
 
-import anefx  # noqa: E402
+import chordfx  # noqa: E402
 import mdi_solvers as ms  # noqa: E402
 import mimo  # noqa: E402
 import pimi  # noqa: E402
 
 torch.backends.cuda.matmul.allow_tf32 = False
-ka = anefx.Kernel(a.ane_cubin)
+ka = chordfx.Kernel(a.chord_cubin)
 kp = pimi.PimiKernel(a.pimi_cubin)
 only = set(x for x in a.only.split(',') if x)
-MA = ms.MDIANE
+MA = ms.MDICHORD
 KAPPA_A = 0.3
 ABL = {'i': (True, 0.0), 'ii': (False, 0.0), 'iii': (True, KAPPA_A), 'iv': (False, KAPPA_A)}
 
@@ -78,13 +78,13 @@ def cpu_s():
 def abl_solver(impl, alt, kappa, gs, seed0):
     calls = [0]
     if impl == 'torch':
-        return lambda I, na, K: mimo.anechoic(I, na, MA['Sk'] * 2 * K, MA['t0'], MA['t1'], MA['q'], kappa=kappa, gen=gs,
+        return lambda I, na, K: mimo.chord(I, na, MA['Sk'] * 2 * K, MA['t0'], MA['t1'], MA['q'], kappa=kappa, gen=gs,
                                               phases=2 * K if alt else 1)
 
     def f(I, na, K):
         calls[0] += 1
-        F = anefx.to_fixed(I, MA['Sk'] * 2 * K, MA['t0'], MA['t1'], MA['q'], kappa)
-        return ka.anechoic(F, na, seed0 + 1000 * calls[0], P=2 * K if alt else 1, mode='chains')[0].float()
+        F = chordfx.to_fixed(I, MA['Sk'] * 2 * K, MA['t0'], MA['t1'], MA['q'], kappa)
+        return ka.chord(F, na, seed0 + 1000 * calls[0], P=2 * K if alt else 1, mode='chains')[0].float()
     return f
 
 
@@ -129,10 +129,10 @@ for it in plan['items']:
                 P = pimi.problem(b, pimi.slice_levels(pimi.mmse_z(b), M))
                 sb = tsync(solve, P)
                 return mimo.bit_errors(b, pimi.decide(P, sb, M))
-    elif meth in ('ane_mdi', 'abl'):
+    elif meth in ('chord_mdi', 'abl'):
         cfg = ms.MDI[(it['shape'], M)]
-        if meth == 'ane_mdi':
-            raw = ms.make_solver('ane_' + impl, gs, ka, None, seed0=seed - 3)
+        if meth == 'chord_mdi':
+            raw = ms.make_solver('chord_' + impl, gs, ka, None, seed0=seed - 3)
         else:
             alt, kap = ABL[it['variant']]
             raw = abl_solver(impl, alt, kap, gs, seed - 3)
@@ -140,17 +140,17 @@ for it in plan['items']:
 
         def call(i):
             b = bs[i % NB]
-            lh, st = ms.detect(b, 'ane_' + impl, it['Ns'], cfg, solver)
+            lh, st = ms.detect(b, 'chord_' + impl, it['Ns'], cfg, solver)
             return mimo.bit_errors(b, lh)
-    elif meth == 'ane_ss':
+    elif meth == 'chord_ss':
         R = it['R']
 
         def solve_ss(Id):
             if impl == 'torch':
-                return mimo.anechoic(Id, R, 2 * MA['Sk'], MA['t0'], MA['t1'], MA['q'], kappa=0.0, gen=gs, phases=2)
+                return mimo.chord(Id, R, 2 * MA['Sk'], MA['t0'], MA['t1'], MA['q'], kappa=0.0, gen=gs, phases=2)
             ctr[0] += 1
-            F = anefx.to_fixed(Id, 2 * MA['Sk'], MA['t0'], MA['t1'], MA['q'], 0.0)
-            return ka.anechoic(F, R, seed + 1000 * ctr[0], P=2, mode='chains')[0].float()
+            F = chordfx.to_fixed(Id, 2 * MA['Sk'], MA['t0'], MA['t1'], MA['q'], 0.0)
+            return ka.chord(F, R, seed + 1000 * ctr[0], P=2, mode='chains')[0].float()
 
         def call(i):
             b = bs[i % NB]
@@ -167,7 +167,7 @@ for it in plan['items']:
     for rep in range(a.reps):
         err = bits = nd = 0
         timer['t'] = 0.0
-        if meth in ('ane_mdi', 'abl'):
+        if meth in ('chord_mdi', 'abl'):
             solver.t = 0.0
         torch.cuda.synchronize()
         c1, e1, t1 = cpu_s(), joules(), time.time()
@@ -179,7 +179,7 @@ for it in plan['items']:
                 break
         t2, e2, c2 = time.time(), joules(), cpu_s()
         sec, ej = t2 - t1, e2 - e1
-        st_ = solver.t if meth in ('ane_mdi', 'abl') else timer['t']
+        st_ = solver.t if meth in ('chord_mdi', 'abl') else timer['t']
         r = dict(seg=mode, id=it['id'], point=it.get('point'), t_start=t1, t_end=t2, shape=it['shape'], M=M,
                  snr=it['snr'], method=meth, impl=impl, steps=it.get('steps'), Ns=it.get('Ns'), R=it.get('R'),
                  variant=it.get('variant'), rep=rep, batch=B, detections=nd, seconds=sec, det_per_s=nd / sec,

@@ -1,24 +1,24 @@
-"""Shared style for the regenerated figures of both papers.
+"""Shared style for the figures.
 
 8 pt Times New Roman, TrueType (Type 42) fonts, vector PDF with embedded rasters only for layout images,
 IEEE text width 7.16 in.
 
-Colour roles follow the author's manuscript colour principle (ckpt/SpinSCI/hardware/manuscript_color.md, 26 Oct 2026):
-  OURS (#76B900) marks what we sell: our method, our chosen design point and headline values.
+Colour roles:
+  OURS (#76B900) marks our method, our chosen design point and headline values.
       Text on a green fill is white (OURS_TEXT); OURS_TINT is the table-row tint; OURS_SIDE is only for a 3-D side face.
   BASE1-3 (grays) are baselines; INK is text, GRID the grid.
   COMP_* (blue, orange, purple; alternates and tints) are competitors and other series.
   No other green is used anywhere (no dark green, no teal). Variants within one role differ by marker and line
   style, not by new hues, and every series also carries a marker, a dash pattern or a direct label so that it stays
   distinguishable in grayscale print.
-Palette check (dataviz validate_palette, light mode): see the report of 26 Oct 2026. #76B900 is 2.4:1 on white, so
+Palette check (light mode): #76B900 is 2.4:1 on white, so
 green marks are never thin hairlines and never carry text in green; labels are set in INK beside the green mark.
 #2A78D6 and #9C27B0 are the weakest pair under deuteranopia (dE 6.5), so they never differ by colour alone.
 
-Typography and chrome (polish pass, 26 Oct 2026), set at the size each figure prints in the paper:
+Typography and chrome, set at the size each figure prints in the paper:
   one serif family (Times New Roman, STIX math); ticks 7 pt, axis labels and panel titles 8 pt, annotations and
-  legends 7 pt. Every figure PDF keeps exactly its pre-polish page size (PRINTED below), so its printed scale and the
-  float heights in the papers stay fixed; apply(name) divides the target sizes by that scale.
+  legends 7 pt. Every figure PDF keeps exactly its page size (PRINTED below), so its printed scale and the
+  float heights in the paper stay fixed; apply(name) divides the target sizes by that scale.
   Axes 0.5 pt hairlines; reference and target lines 0.5 pt dotted in BASE2 (REF); error bars 0.5 pt, capless, in
   the series colour at reduced opacity (ebar), clipped to the axes.
 """
@@ -49,7 +49,7 @@ SURF = '#FFFFFF'          # chart surface
 
 
 def on_fill(color):
-    """Text colour on a filled mark: white on the green fill (author's rule), else white or ink by WCAG contrast."""
+    """Text colour on a filled mark: white on the green fill, else white or ink by WCAG contrast."""
     if color.upper() == OURS.upper():
         return OURS_TEXT
     r, g, b = (int(color.lstrip('#')[i:i + 2], 16) / 255 for i in (0, 2, 4))
@@ -59,7 +59,7 @@ def on_fill(color):
 
 
 # Printed width in the paper (pt; IEEEtran 10 pt conference: columnwidth 252 pt, textwidth 516 pt) and the
-# pre-polish PDF page size (pt). save() writes each of these figures at exactly this page size.
+# PDF page size (pt). save() writes each of these figures at exactly this page size.
 PRINTED = {
     'mechanism': (252.0, 248.104, 184.624), 'price': (516.0, 511.547, 137.24), 'ber': (252.0, 256.29, 137.056),
     'asic_layout_r4': (252.0, 250.56, 160.27), 'fig_ttq': (516.0, 523.214, 164.506),
@@ -107,7 +107,7 @@ def panel_title(ax, letter, text):
 
 
 def _fixed_bbox(fig, name):
-    """Bounding box (inches) of exactly the pre-polish PDF size, centred on the tight bounding box of the content."""
+    """Bounding box (inches) of exactly the PRINTED PDF size, centred on the tight bounding box of the content."""
     from matplotlib.transforms import Bbox
     w, h = PRINTED[name][1] / 72.0, PRINTED[name][2] / 72.0
     tb = fig.get_tightbbox(fig.canvas.get_renderer())
@@ -120,7 +120,7 @@ def _fixed_bbox(fig, name):
 
 
 def save(fig, paper, name, dpi=600):
-    assert paper == 'Antiphase'
+    assert paper == 'Chord'
     out = ROOT / 'figures'
     out.mkdir(exist_ok=True)
     meta = {'Author': '', 'Creator': '', 'Producer': '', 'Title': name}

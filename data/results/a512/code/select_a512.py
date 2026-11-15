@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.12 selection (PROTOCOL_A512.md section 2): for each c, once all 18 P1 cells are done, the pick by fewest bit errors, then
+"""A5.12 selection: for each c, once all 18 P1 cells are done, the pick by fewest bit errors, then
 fewest erroneous uses, then grid order (A5 cells first). Writes pt12_c<k> into tuned_a512.json and a512_sel.json; a pick is
 never overwritten. Exit 10 if a pick was written, else 0. Usage: select_a512.py ROOT"""
 import json, os, sys

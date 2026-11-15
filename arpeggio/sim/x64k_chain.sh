@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# A5.6 amendment 6: K-best K on the X64 draws, CPU only, nice 10, 2 numba threads; one process per K; resumes from saved batches.
-A=<SCRATCH>/ap_ber_20261024; R=$A/results/a56
+# A5.6: K-best K on the X64 draws, CPU only, nice 10, 2 numba threads; one process per K; resumes from saved batches.
+A=<SCRATCH>/arpeggio_ber_20261024; R=$A/results/a56
 export MIMO_GPU_UUID=<GPU_UUID>
 source $A/env_hostb_a56.sh
 export CUDA_VISIBLE_DEVICES=

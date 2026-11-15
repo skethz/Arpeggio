@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# A5.14-A5.16 supervisor (PROTOCOL_A514/A515/A516 section 10). Untimed BER only. hostB GPU0-3 (env_hostb_a514.sh refuses any other UUID).
+# A5.14-A5.16 supervisor. Untimed BER only. hostB GPU0-3 (env_hostb_a514.sh refuses any other UUID).
 # Idle-with-yield, as supervise_a58.sh: a GPU showing any compute process that is not ours gets no new worker, and our float workers on it
 # are stopped (they resume from saved batches; trace_a56.claim renames a stale claim). Other users' processes are never touched.
 # Workers per GPU: NW (default "4 4 4 3": 15 workers, 2 threads each; with two 4-thread fixed-point processes the total stays <= 24 cores).
 # Every 120 s: count startable jobs in the static plan, start workers, write status.txt. Exits when no job is left and no worker runs,
-# or at the cut (11 Nov 2026 20:00 CET), when it stops our workers.
-A=<SCRATCH>/ap_ber_20261024
+# or at the time cut CUT, when it stops our workers.
+A=<SCRATCH>/arpeggio_ber_20261024
 R=$A/results/a514
 L=$A/logs/a514
 PY=$A/venv/bin/python

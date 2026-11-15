@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# A5.19 share with hostB GPU2-3 (ADDENDUM_A519_HOSTB.md), runs on hostB every 120 s:
-#  (1) push: hostB's held-out and (amendment 2) calibration batch files (b*.npz, written atomically) into hostA's results/a519,
+# A5.19 share with hostB, runs on hostB every 120 s:
+#  (1) push: hostB's held-out and calibration batch files (b*.npz, written atomically) into hostA's results/a519,
 #      then the done.json of chunks finished more than a minute ago. A file hostA already has is never overwritten; claims and
 #      temporary files are never copied.
-#  (2) take: hostB keeps up to (GPUs not yielding) + BUF chunks open (amendment 1: BUF 2 waiting chunks so a worker never idles
+#  (2) take: hostB keeps up to (GPUs not yielding) + BUF chunks open (BUF 2 waiting chunks so a worker never idles
 #      between chunks); hostA hands over the missing number from the end of its plan
 #      (mz_claims_a519.py take N KEEP; at least KEEP chunks stay for hostA's own workers); they are added to hostB's plan.json.
-# Amendment 2: calibration jobs go first in hostB's plan; KEEP is read from a519m/keep.txt each cycle (0 while hostA is paused).
-# Exits after a last push when hostA's supervisor has exited (analysis done) or at 16 Nov 2026 11:58 CET.
-A=<SCRATCH>/ap_ber_20261024
+# Calibration jobs go first in hostB's plan; KEEP is read from a519m/keep.txt each cycle (0 while hostA is paused).
+# Exits after a last push when hostA's supervisor has exited (analysis done) or at 11:58 CET.
+A=<SCRATCH>/arpeggio_ber_20261024
 M=$A/a519m
 R=$M/results/a519
 L=$M/logs/sync.log
-Z=<SCRATCH>/ap_ber_20261024/a519z
+Z=<SCRATCH>/arpeggio_ber_20261024/a519z
 PY=$A/venv/bin/python
 BUF=2
 KEEP0=3
@@ -45,11 +45,11 @@ R = sys.argv[1]; p = os.path.join(R, "plan.json")
 try:
     plan = json.load(open(p))
 except Exception:
-    plan = dict(host="hostB", amendment="A5.19 share (ADDENDUM_A519_HOSTB.md)", jobs=[])
+    plan = dict(host="hostB", experiment="A5.19 share", jobs=[])
 have = {(j["set"], j["method"]) for j in plan["jobs"]}
 new = [json.loads(l) for l in sys.stdin if l.strip()]
 plan["jobs"] += [j for j in new if (j["set"], j["method"]) not in have]
-plan["jobs"].sort(key=lambda j: j["set"] != "calib")   # amendment 2: calibration first (stable)
+plan["jobs"].sort(key=lambda j: j["set"] != "calib")   # calibration first (stable)
 json.dump(plan, open(p + ".tmp", "w"), indent=1); os.replace(p + ".tmp", p)
 print(len(new))' "$R"
 }
@@ -60,7 +60,7 @@ while true; do
   took=0
   KEEP=$(cat "$M/keep.txt" 2>/dev/null | tr -cd 0-9); KEEP=${KEEP:-$KEEP0}
   op=$(nopen); ng=$(tr ' ' '\n' < "$R/busy.txt" 2>/dev/null | grep -c '^0$'); cap=0; [ "$ng" -gt 0 ] && cap=$((ng + BUF)); free=$((cap - op))
-  [ "$free" -lt 0 ] && free=0                 # amendment 2: take is called every cycle; with 0 it hands over calibration jobs only
+  [ "$free" -lt 0 ] && free=0                 # take is called every cycle; with 0 it hands over calibration jobs only
   if [ "$(date +%s)" -lt "$STOPTAKE" ]; then
     got=$(ssh -n -o BatchMode=yes -o ConnectTimeout=20 <USER>@hostA "python3 $Z/src/mz_claims_a519.py take $free $KEEP" 2>> "$L")
     [ -n "$got" ] && took=$(echo "$got" | merge)

@@ -180,8 +180,8 @@
    "vec_err": 8,
    "uses": 4000
   },
-  "P1/ape/0": {
-   "method": "abl_ape_0.3_0.3_0.4_rand_32",
+  "P1/chord/0": {
+   "method": "abl_chord_0.3_0.3_0.4_rand_32",
    "cell": [
     0.3,
     0.3,
@@ -372,8 +372,8 @@
    "vec_err": 2,
    "uses": 2000
   },
-  "P2/ape/0": {
-   "method": "abl_ape_0.6_0.1_0.2_rand_8",
+  "P2/chord/0": {
+   "method": "abl_chord_0.6_0.1_0.2_rand_8",
    "cell": [
     0.6,
     0.1,
@@ -564,8 +564,8 @@
    "vec_err": 27,
    "uses": 156250
   },
-  "P3/ape/0": {
-   "method": "abl_ape_0.3_0.3_0.4_rand_8",
+  "P3/chord/0": {
+   "method": "abl_chord_0.3_0.3_0.4_rand_8",
    "cell": [
     0.3,
     0.3,
@@ -1585,64 +1585,64 @@
    ]
   }
  },
- "ap": {
-  "P1/ape": {
-   "method": "abl_ape_0.3_0.3_0.4_rand_32",
+ "chord": {
+  "P1/chord": {
+   "method": "abl_chord_0.3_0.3_0.4_rand_32",
    "stage_b": [
     [
      0.000640625,
      0.0045,
-     "abl_ape_0.3_0.3_0.4_rand_32"
+     "abl_chord_0.3_0.3_0.4_rand_32"
     ],
     [
      0.0008697916666666667,
      0.005833333333333334,
-     "abl_ape_1.2_0.2_0.4_rand_32"
+     "abl_chord_1.2_0.2_0.4_rand_32"
     ],
     [
      0.0011171875,
      0.007333333333333333,
-     "abl_ape_0.6_0.1_0.2_bal_32"
+     "abl_chord_0.6_0.1_0.2_bal_32"
     ]
    ]
   },
-  "P2/ape": {
-   "method": "abl_ape_0.2_0.2_0.2_rand_8",
+  "P2/chord": {
+   "method": "abl_chord_0.2_0.2_0.2_rand_8",
    "stage_b": [
     [
      0.0006232638888888889,
      0.0038888888888888888,
-     "abl_ape_0.6_0.1_0.2_rand_8"
+     "abl_chord_0.6_0.1_0.2_rand_8"
     ],
     [
      0.000553125,
      0.0033,
-     "abl_ape_1.2_0.2_0.4_bal_8"
+     "abl_chord_1.2_0.2_0.4_bal_8"
     ],
     [
      0.0004393028846153846,
      0.0025384615384615385,
-     "abl_ape_0.2_0.2_0.2_rand_8"
+     "abl_chord_0.2_0.2_0.2_rand_8"
     ]
    ]
   },
-  "P3/ape": {
-   "method": "abl_ape_0.6_0.1_0.2_bal_8",
+  "P3/chord": {
+   "method": "abl_chord_0.6_0.1_0.2_bal_8",
    "stage_b": [
     [
      7.1e-06,
      0.0001792,
-     "abl_ape_0.3_0.3_0.4_rand_8"
+     "abl_chord_0.3_0.3_0.4_rand_8"
     ],
     [
      7.4e-06,
      0.0002048,
-     "abl_ape_0.15_0.15_0.1_bal_8"
+     "abl_chord_0.15_0.15_0.1_bal_8"
     ],
     [
      6.6e-06,
      0.0001856,
-     "abl_ape_0.6_0.1_0.2_bal_8"
+     "abl_chord_0.6_0.1_0.2_bal_8"
     ]
    ]
   }
@@ -1771,8 +1771,8 @@
  },
  "held": {
   "P1": [
-   "abl_ape_0.3_0.3_0.4_bal_32",
-   "abl_ape_0.3_0.3_0.4_rand_32",
+   "abl_chord_0.3_0.3_0.4_bal_32",
+   "abl_chord_0.3_0.3_0.4_rand_32",
    "abl_fam_128_0.1_0.1_rand_32",
    "abl_fam_16_0.3_0.05_rand_32",
    "abl_fam_16_1.2_0.0125_bal_32",
@@ -1797,8 +1797,8 @@
    "abl_ptb_fl_1.2_0.05_32"
   ],
   "P2": [
-   "abl_ape_0.2_0.2_0.2_rand_8",
-   "abl_ape_0.3_0.3_0.4_bal_8",
+   "abl_chord_0.2_0.2_0.2_rand_8",
+   "abl_chord_0.3_0.3_0.4_bal_8",
    "abl_fam_128_0.15_0.05_rand_8",
    "abl_fam_16_0.2_0.2_rand_8",
    "abl_fam_16_0.3_0.05_bal_8",
@@ -1827,8 +1827,8 @@
    "abl_ptb_fl_0.3_0.05_8"
   ],
   "P3": [
-   "abl_ape_0.3_0.3_0.4_bal_8",
-   "abl_ape_0.6_0.1_0.2_bal_8",
+   "abl_chord_0.3_0.3_0.4_bal_8",
+   "abl_chord_0.6_0.1_0.2_bal_8",
    "abl_fam_128_0.1_0.1_bal_8",
    "abl_fam_16_0.3_0.05_rand_8",
    "abl_fam_1_0.05_0.05_bal_8",

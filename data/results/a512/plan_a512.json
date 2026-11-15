@@ -1,8 +1,7 @@
 {
 "host": "hostA",
-"amendment": "A5.12 exploratory",
-"protocol_sha256": "5dab3ffd927be94a9bd04f79f2783fe9d6c1c43fd83b4f467e27de29401076cc",
-"tuned_file": "<SCRATCH>/ap_ber_20261024/a512/results/tuned_a512.json",
+"experiment": "A5.12",
+"tuned_file": "<SCRATCH>/arpeggio_ber_20261024/a512/results/tuned_a512.json",
 "jobs": [
 {
 "set": "abl",

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# A5.13 launch (PROTOCOL_A513.md sections 2-3): hostA GPU7 only (env_ap.sh), 4 threads per process, nice 10.
-source <SCRATCH>/ap_ber_20261024/env_ap.sh > /dev/null 2>&1
+# A5.13 launch: hostA GPU7 only (env_chord.sh), 4 threads per process, nice 10.
+source <SCRATCH>/arpeggio_ber_20261024/env_chord.sh > /dev/null 2>&1
 export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4
-cd <SCRATCH>/ap_ber_20261024/a513
+cd <SCRATCH>/arpeggio_ber_20261024/a513
 run() { nice -n 10 python src/run_a513.py "$@"; }
 X16="--tag x16 --nt 16 --M 16 --snr 20 --seed 102 --B 2000"
 X32="--tag x32 --nt 32 --M 16 --snr 22 --seed 102 --B 1000"

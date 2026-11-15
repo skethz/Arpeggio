@@ -1,7 +1,7 @@
 #!/bin/bash
 # usage: run_v2.sh <out dir> <syn dir> <top> "<macros>" <util> <cpus> <stop> <timeout_s> <cpu list> [sdc override]
 set -u
-A=<SCRATCH>/antiphase_asic_20261017; F=$A/flow_v2_20261024
+A=<SCRATCH>/arpeggio_asic_20261017; F=$A/flow_v2_20261024
 O=$1; S=$2; T=$3; M=$4; U=$5; C=$6; STOP=$7; TMO=$8; CPUL=$9; SDC=${10:-}
 mkdir -p $O/tmp $O/var_tmp $O/db $O/reports
 ENVS="PNR_OUT=$O PNR_SYN=$S PNR_TOP=$T PNR_MACROS=$M PNR_UTIL=$U PNR_CPUS=$C PNR_CORNER=TT FLOW_STOP=$STOP FLOW_MAPS=$F/maps"

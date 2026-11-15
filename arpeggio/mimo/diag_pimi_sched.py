@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Diagnostic (milestone D, not tuning): which of the two schedules present in the authors' code reproduces their own
+"""Diagnostic (not tuning): which of the two schedules present in the authors' code reproduces their own
 published BER (report.json) on their own instances, per Fig. 6 panel. Candidates, both from their Zenodo code:
   A  16-QAM run notebooks (run_experiment_*.ipynb, 8x8 and 16x16): beta 2, gamma linspace(0.1, 0.999)
   B  BER_*/gen_noise.py (the FPGA noise-table generator): beta 1, gamma linspace(0.01, 0.999)

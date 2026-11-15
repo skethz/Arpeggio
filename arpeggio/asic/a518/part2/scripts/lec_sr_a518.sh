@@ -1,9 +1,9 @@
 #!/bin/bash
-# A5.18 part 2 W4: synthesis netlist -> routed netlist LEC (step 1 of fa_a511/lec_run.sh, project dofile lec_syn_routed.do)
+# A5.18 part 2: synthesis netlist -> routed netlist LEC (step 1 of arpeggio_a511/lec_run.sh, project dofile lec_syn_routed.do)
 # for a layout changed by the closure pass; RTL -> fv_map -> synthesis is unchanged from gate_r4 / A5.11 (same synthesis DB).
 # usage: lec_sr_a518.sh <name> <syn dir> <routed netlist> <top> <cpu list> <threads>
 set -u
-R=<SCRATCH>/antiphase_asic_20261017; F=$R/flow_v2_20261024; GS=$R/a518/part2/gate_scripts
+R=<SCRATCH>/arpeggio_asic_20261017; F=$R/flow_v2_20261024; GS=$R/a518/part2/gate_scripts
 n=$1; SD=$2; RN=$3; TOP=$4; C=$5; TH=$6
 LOG=$R/a518/RUNLOG.txt; [ "$(hostname -s)" = hostC ] && LOG=$R/a518/RUNLOG_hostc.txt
 export HOME=$R/home XDG_CONFIG_HOME=$R/home/.config

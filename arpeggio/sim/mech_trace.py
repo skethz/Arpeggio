@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""PROTOCOL.md 6(a): per-half-step traces of the Antiphase solver with and without copy alternation on real delta
+"""Per-round traces of the Chord solver with and without copy alternation on real delta
 sub-problems (seed 103, 16x16 16-QAM, 20 dB, around the MMSE guess, K = 1 and K = 2), from the same random start,
-T 0.3, q 0.4 (and q 0 as plain synchronous SCA). Same update as mimo.anechoic (kappa 0, constant T); every state is
+T 0.3, q 0.4 (and q 0 as plain synchronous SCA). Same update as mimo.chord (kappa 0, constant T); every state is
 recorded. Writes OUT.json: example traces (d_m(t), energy) and population curves / summaries over the instances whose
 MMSE guess is wrong but whose truth lies inside the K-box. Usage: mech_trace.py OUT.json"""
 import json
@@ -9,12 +9,12 @@ import sys
 
 import torch
 
-import apx
+import arpx
 import mimo
 
 torch.backends.cuda.matmul.allow_tf32 = False
 OUT = sys.argv[1]
-b = apx.draw(103, 20.0, 0, 2000, 16, 16)
+b = arpx.draw(103, 20.0, 0, 2000, 16, 16)
 z, _, _ = mimo.mmse(b)
 lm = mimo.quantize_levels(z / mimo._mu(b, z), 16)
 D = 32
@@ -23,7 +23,7 @@ res = dict(seed=103, snr=20.0, shape='x16', T=0.3, q=0.4, cases={})
 
 @torch.no_grad()
 def run(I, s0, S, T, q, phases, gen):
-    """mimo.anechoic's update with the start state given and every state kept: returns S+1 states and energies."""
+    """mimo.chord's update with the start state given and every state kept: returns S+1 states and energies."""
     h, J = I['h'], I['J']
     B, R, N = s0.shape
     s = s0.clone()
@@ -65,9 +65,9 @@ for K in (1, 2):
         st, en = st[:, :, 0], en[:, :, 0]                                  # one anneal: (S+1, B, N), (S+1, B)
         d = st.reshape(S + 1, len(ix), P, D).sum(2)                        # (S+1, B, D)
         dd = d[1:] - d[:-1]
-        over = (dd.abs() >= 4).float()                                     # >= 2 levels in one half-step
+        over = (dd.abs() >= 4).float()                                     # >= 2 levels in one round
         p2 = ((d[2:] == d[:-2]) & (d[1:-1] != d[:-2])).float()             # period-2 return
-        flips = (st[1:] != st[:-1]).float().sum(-1)                        # spins flipped per half-step
+        flips = (st[1:] != st[:-1]).float().sum(-1)                        # spins flipped per round
         gap = en - eT[None]                                                # energy above the truth's energy
         best = torch.cummin(en, 0).values - eT[None]
         dist = (d - tdk[None]).abs().sum(-1) / 2                           # L1 distance to truth in levels
@@ -86,7 +86,7 @@ for K in (1, 2):
                            truth_d=tdk[e].tolist()))
         v['examples'] = ex
         case['variants'][name] = v
-        print('K', K, name, 'reached truth energy %.3f, overshoot(first 50 half-steps) %.3f, period-2 dims %.3f, final gap %.3f' % (
+        print('K', K, name, 'reached truth energy %.3f, overshoot(first 50 rounds) %.3f, period-2 dims %.3f, final gap %.3f' % (
             v['frac_reached_truth_energy'], v['frac_halfsteps_with_overshoot_first50'], v['frac_dims_period2_any'],
             v['final_best_gap_mean']), flush=True)
     res['cases']['K%d' % K] = case

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Synthetic run of a519_plan.py and analyze_a519.py to the end (no GPU). Fakes every queued job (done.json plus batch files with
-counters, toy BER and cycles) and checks what PROTOCOL_A519 says: seeds, sizes, queue order, corners, stage B, the S* rule with grid
+counters, toy BER and cycles) and checks seeds, sizes, queue order, corners, stage B, the S* rule with grid
 extension, held-out coverage, and that no held-out arm that depends on a pick is queued before the pick exists.
 Usage: sim_a519_plan.py SRC_DIR A58_SELECT_JSON [xc]   (xc: the fake re-tuned Chord's calibrated x; default 1.40 forces an upward extension)"""
 import json
@@ -32,14 +32,14 @@ def toy_x(m):
     a = m.split('_')
     if m.startswith('abl_far_'):
         return 0.115 + 0.007 * int(a[2])
-    if m.startswith('abl_ape_'):
+    if m.startswith('abl_chord_'):
         T0, q = float(a[2]), float(a[4])
-        return XC if m == 'abl_ape_0.6_0.1_0.4_rand_8' else 1.0 + 0.3 * T0 - 0.2 * q
+        return XC if m == 'abl_chord_0.6_0.1_0.4_rand_8' else 1.0 + 0.3 * T0 - 0.2 * q
     return 1.0
 
 
 def toy_ber(m):
-    if m.startswith('abl_ape_'):
+    if m.startswith('abl_chord_'):
         a = m.split('_'); T0, T1, q = float(a[2]), float(a[3]), float(a[4])
         return 3e-4 * (1 + abs(np.log(T0 / 0.6)) + abs(np.log(T1 / 0.1)) + abs(q - 0.4)) * (1.1 if '_bal_' in m else 1.0)
     return 2e-4
@@ -55,12 +55,12 @@ def fake(j):
         cyc = {str(K): toy_x(m) * REF[str(K)] * ann for K in Ks}
         if m.startswith('abl_far_'):
             c = {'cnt': {str(K): dict(flips=0.3 * cyc[str(K)], tests=0.7 * cyc[str(K)], anneals=ann) for K in Ks}}
-        elif m.startswith('abl_ape_'):
+        elif m.startswith('abl_chord_'):
             c = {'cnt': {str(K): dict(flips=cyc[str(K)] - 256 * K * ann, steps=256 * K * ann, anneals=ann) for K in Ks}}
         else:
             c = {str(K): dict(flips=cyc[str(K)] - 256 * K * ann, steps=256 * K * ann, anneals=ann) for K in Ks}
     else:
-        c = {} if m == 'mdiane32' else {'cnt': {str(K): dict(flips=100.0, tests=600.0, anneals=1.0) for K in Ks}}
+        c = {} if m == 'mdichord32' else {'cnt': {str(K): dict(flips=100.0, tests=600.0, anneals=1.0) for K in Ks}}
     nb = j.get('n_batches') or 24
     b0 = j.get('first_batch', 0)
     p = toy_ber(m) * (0.8 if m.startswith('abl_far_') else 1.0) * 40
@@ -102,10 +102,10 @@ while True:
         else:
             check(j['seed'] == 2028, 'held-out seed 2028')
             if sel['pick'] is None:
-                check(j['method'] in ('a56_128_0.3_0.3_0.4_0_alt_8', 'abl_far_64_0.1_0.1_0_bal_8', 'mdiane32', 'abl_far_64_0.1_0.1_0_rand_32'),
+                check(j['method'] in ('a56_128_0.3_0.3_0.4_0_alt_8', 'abl_far_64_0.1_0.1_0_bal_8', 'mdichord32', 'abl_far_64_0.1_0.1_0_rand_32'),
                       'held-out arm before the pick: %s' % j['method'])
             if j['method'] == 'a56_128_0.3_0.3_0.4_0_alt_8':
-                check(j.get('stream') == 'mdiane8', 'C0 stream mdiane8')
+                check(j.get('stream') == 'mdichord8', 'C0 stream mdichord8')
     if out[2] == '1':
         break
     if not jobs:

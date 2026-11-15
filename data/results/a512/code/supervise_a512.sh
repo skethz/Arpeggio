@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# A5.12 supervisor (PROTOCOL_A512.md section 6), run with nohup on hostA. GPU7 only; 2 workers, each started with --max-jobs 1
+# A5.12 supervisor, run with nohup on hostA. GPU7 only; 2 workers, each started with --max-jobs 1
 # and relaunched, so every start re-reads tuned_a512.json (no restart after a pick). Idle-with-yield: any compute process on
 # GPU7 that is not ours stops our workers; they resume when it is gone. Our runner CPU <= 12 cores. Stops on a job with
 # >= 3 failed attempts. 24 h wall-clock cap. When every job is done: analyze_a512.py, then A512_DONE.
-B=<SCRATCH>/ap_ber_20261024/a512
+B=<SCRATCH>/arpeggio_ber_20261024/a512
 U=<GPU_UUID>
 PL=$B/results/plan_a512.json
 LOG=$B/logs/supervisor_a512.log
-REF=<SCRATCH_MOUNT>/ap_ber_20261024/results
+REF=<SCRATCH_MOUNT>/arpeggio_ber_20261024/results
 source $B/env_a512.sh
 T0=$(date +%s)
 foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $U | awk -F', ' '{print $2}'); do

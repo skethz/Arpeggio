@@ -1,8 +1,8 @@
 {
  "A515": {
   "methods": {
-   "C0": "mdiane8",
-   "C1": "abl_ape_0.2_0.2_0.2_rand_8",
+   "C0": "mdichord8",
+   "C1": "abl_chord_0.2_0.2_0.2_rand_8",
    "Astar": "abl_far_76_0.1_0.1_0_rand_8",
    "A32": "abl_far_32_0.1_0.1_0_rand_8"
   },

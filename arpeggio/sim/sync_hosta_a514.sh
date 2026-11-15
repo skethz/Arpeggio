@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Pulls finished hostA batches (b*.npz) and done.json of the P4 W = 4 overflow into hostB's results/a514 every 600 s
-# (ADDENDUM_A514_HOSTA.md). Claims and temporary files are never copied. Stops after hostA's supervisor exits and a last pull.
-A=<SCRATCH>/ap_ber_20261024
-Z=<SCRATCH>/ap_ber_20261024/a514z
+# Pulls finished hostA batches (b*.npz) and done.json of the P4 W = 4 overflow into hostB's results/a514 every 600 s.
+# Claims and temporary files are never copied. Stops after hostA's supervisor exits and a last pull.
+A=<SCRATCH>/arpeggio_ber_20261024
+Z=<SCRATCH>/arpeggio_ber_20261024/a514z
 R=$A/results/a514
 L=$A/logs/a514/sync_hosta.log
 END=$(date -d '2026-11-11 21:00 CET' +%s)

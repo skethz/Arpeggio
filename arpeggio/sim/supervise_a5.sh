@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# A5 supervisor (nohup, one instance) -- hostB GPU0 ONLY (GPU1-GPU3: other projects).
-# Before every launch: if GPU0 carries any compute process outside ap_ber_20261024, launch nothing and wait.
+# A5 supervisor (nohup, one instance) -- hostB GPU0 ONLY.
+# Before every launch: if GPU0 carries any compute process outside arpeggio_ber_20261024, launch nothing and wait.
 # Order: flip calibration (seed 1000) -> merge tuned_a5.json -> 6 GPU workers + 1 CPU worker (K-sweep); every 5 min:
 # selections of finished tuning families (select_a5.py; exit 10 = new pick -> restart GPU workers), relaunch finished or
 # dead workers, status file; exit when the plan has nothing pending or running.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 PL=$A/results/plan_hostb_a5.json
 LOG=$A/logs/supervisor_a5.log
 G0=<GPU_UUID>
 source $A/venv/bin/activate
 foreign() {   # compute processes on GPU0 whose command line is not ours
   for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $G0 | awk -F', ' '{print $2}'); do
-    tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q ap_ber_20261024 || echo $p
+    tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q arpeggio_ber_20261024 || echo $p
   done | wc -l
 }
 launch() {

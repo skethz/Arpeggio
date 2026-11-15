@@ -1,6 +1,6 @@
-# Read-only r4 render (26 Oct 2026): restore an accepted final checkpoint (never saved), write die/core boxes and a
+# Read-only r4 render: restore an accepted final checkpoint (never saved), write die/core boxes and a
 # private per-instance table, then dump one square, die-framed routed view with GUI violation overlays and all GUI
-# text (instance, pin and net labels) hidden. Pass 1 (26 Oct) lacked the text switches and is kept server-side only.
+# text (instance, pin and net labels) hidden.
 setMultiCpuUsage -localCpu 4
 set OUT $::env(PNR_OUT)
 proc mark {x} {set f [open $::OUT/phase.txt w];puts $f $x;close $f}

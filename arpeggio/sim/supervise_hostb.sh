@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # hostB supervisor (nohup; one instance): every 5 min
-#  - once all 52 tuning jobs are done and results/tuned.json is absent: run select_tuned.py (PROTOCOL 4.3), then restart
+#  - once all 52 tuning jobs are done and results/tuned.json is absent: run select_tuned.py, then restart
 #    the workers so that the tuned-variant ablation jobs become runnable (running jobs resume from their saved batches);
 #  - relaunch any worker that has died (launch_hostb.sh is idempotent);
 #  - guard: if MemAvailable < 210 GB, stop starting workers (log it); stop everything if < 200 GB;
 #  - write results/status_hostb.txt; exit when no job is pending or running.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 LOG=$A/logs/supervisor.log
 while true; do
   source $A/venv/bin/activate

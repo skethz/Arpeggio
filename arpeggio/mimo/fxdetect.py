@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Detection with the custom kernel (DESIGN.md B3), and the BER-equivalence check against the float reference.
+"""Detection with the custom kernel, and the BER-equivalence check against the float reference.
 detect(): MMSE -> Ising mapping (RI-MIMO, or dDI K = 1 around the MMSE estimate) -> fixed point -> kernel (best
 anneal per instance) -> levels -> the lower ||y - Hx||^2 of that candidate and MMSE.
 Usage (equivalence): fxdetect.py --cubin C --out PREFIX --cfg q16|x16|... --snrs ... --n N --seed 1 --anneals 16,64"""
@@ -10,10 +10,10 @@ import time
 
 import torch
 
-import anefx
+import chordfx
 import mimo
 
-SCHED = {  # tuned schedules (LEDGER milestone A; milestone B shapes are added as they are tuned)
+SCHED = {  # tuned schedules
     'q16': dict(kind='ri', Nt=16, Nr=16, M=4, S=128, t0=0.7, t1=0.5, q=0.6, kappa=0.0),
     'q32': dict(kind='ri', Nt=32, Nr=32, M=4, S=128, t0=0.5, t1=0.4, q=0.4, kappa=0.0),
     'x16': dict(kind='ddi', Nt=16, Nr=16, M=16, S=256, t0=0.3, t1=0.3, q=0.4, kappa=0.0),
@@ -32,11 +32,11 @@ def detect(b, sc, R, kern, seed, inst0=0, z=None, Ai=None, stats=None):
     else:
         I = mimo.ising_delta_at(b, lm, 1)
         P = 2
-    F = anefx.to_fixed(I, sc['S'], sc['t0'], sc['t1'], sc['q'], sc.get('kappa', 0.0))
+    F = chordfx.to_fixed(I, sc['S'], sc['t0'], sc['t1'], sc['q'], sc.get('kappa', 0.0))
     # RI: spins map one-to-one to levels, so the lowest-energy anneal is the lowest-distance one (mode 'best').
     # dDI: candidates are clipped to the constellation, which the Ising energy does not see, so every anneal's best
     # state goes to the distance-based selection, as in the float reference (mode 'chains').
-    s8, e = kern.anechoic(F, R, seed, P=P, inst0=inst0, mode='best' if sc['kind'] == 'ri' else 'chains', stats=stats)
+    s8, e = kern.chord(F, R, seed, P=P, inst0=inst0, mode='best' if sc['kind'] == 'ri' else 'chains', stats=stats)
     s = s8.float()[:, None, :] if sc['kind'] == 'ri' else s8.float()
     L = mimo.spins_to_levels(s, b['M'], D) if sc['kind'] == 'ri' else mimo.spins_to_levels_delta(s, I, b['M'])
     lh, _, _ = mimo.select(b, L, lm)
@@ -50,11 +50,11 @@ def detect_float(b, sc, R, gen, z=None, Ai=None):
     D = b['H'].shape[-1]
     if sc['kind'] == 'ri':
         I = mimo.ising(b, z)
-        S_ = mimo.anechoic(I, R, sc['S'], sc['t0'], sc['t1'], sc['q'], kappa=sc.get('kappa', 0.0), gen=gen)
+        S_ = mimo.chord(I, R, sc['S'], sc['t0'], sc['t1'], sc['q'], kappa=sc.get('kappa', 0.0), gen=gen)
         L = mimo.spins_to_levels(S_, b['M'], D)
     else:
         I = mimo.ising_delta_at(b, lm, 1)
-        S_ = mimo.anechoic(I, R, sc['S'], sc['t0'], sc['t1'], sc['q'], kappa=sc.get('kappa', 0.0), gen=gen, phases=2)
+        S_ = mimo.chord(I, R, sc['S'], sc['t0'], sc['t1'], sc['q'], kappa=sc.get('kappa', 0.0), gen=gen, phases=2)
         L = mimo.spins_to_levels_delta(S_, I, b['M'])
     lh, _, _ = mimo.select(b, L, lm)
     return lh
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     sc = dict(SCHED.get(a.cfg, {}))
     if a.sched:
         sc.update(json.loads(a.sched))
-    kern = anefx.Kernel(a.cubin)
+    kern = chordfx.Kernel(a.cubin)
     fo = open(a.out + '.jsonl', 'a')
     for si, snr in enumerate(float(x) for x in a.snrs.split(',')):
         for R in (int(x) for x in a.anneals.split(',')):

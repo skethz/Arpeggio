@@ -1,5 +1,5 @@
 # Writes Genus' composite LEC dofile (RTL -> fv_map -> netlist) from the restored synthesis database. read_db only:
-# no mapping, optimisation or netlist writing (PROTOCOL.md §3.1). Environment: L_DB (opt.db copy), L_NETLIST (the
+# no mapping, optimisation or netlist writing. Environment: L_DB (opt.db copy), L_NETLIST (the
 # synthesis netlist the layout read), L_WORK (dir holding the copied fv/ verification directory).
 set_db max_cpus_per_server 2
 cd $::env(L_WORK)

@@ -1,9 +1,9 @@
-"""Antiphase: accepted flow-v2 rev4 GF22 layouts of the D=128, 64 and 32 engines at one common scale (column width).
+"""Routed GF22 layouts of the D=128, 64 and 32 engines at one common scale (column width).
 
 Each engine shows its Innovus routed view (all routing layers; GUI text and violation overlays hidden) directly above
 its placed cells colored by RTL function (server-side aggregate raster). Dies are rotated 90 degrees counterclockwise
 so the long axis runs horizontally (memory-macro column at the bottom edge). One scale bar serves every panel.
-Data: <PROJECT>/data/asic_layout_r4/ (see PROVENANCE.md there).
+Data: data/layout/ (see PROVENANCE.md there).
 """
 import json
 import numpy as np
@@ -13,20 +13,19 @@ import figstyle as fs
 import layoutlib as ll
 
 fs.apply('asic_layout_r4')
-P = fs.ROOT / 'Antiphase_DAC27' / 'data' / 'asic_layout_r4'
+P = fs.ROOT / 'Arpeggio_DAC27' / 'data' / 'asic_layout_r4'
 # Categorical RTL-function map: the supplied palette is all blues and grays, which merge on the map, so each logic
 # function gets its own hue family. Blue is the palette's; orange, green and yellow are added for this figure only.
 COLORS = {'Coupling and schedule memory': '#53565A', 'Multipliers (decision or MAC)': '#0077C8',
           'Adders and nonlinear units': '#E06A00', 'State and control registers': '#00A36A',
           'RNG and seeding': '#F2C200', 'Unattributed logic and buffers': '#CBCCCD'}
-# Legend names follow the RTL-name rules (rules_ape.json): 'Multipliers' held the decision stages (d0-d2, dec_) with the
-# per-lane temperature multiplies (MULT), and 'nonlinear units' held only synthesized carry-save adder trees (csa_tree)
-# (round-3 review 15, audit 5.6, 8 Nov 2026). Group keys, colours and the map are unchanged.
+# Legend names follow the RTL-name rules (rules_engine.json): 'Multipliers' holds the decision stages (d0-d2, dec_) with the
+# per-lane temperature multiplies (MULT), and 'nonlinear units' holds only synthesized carry-save adder trees (csa_tree).
 LABELS = [('Memory macros', 'Coupling and schedule memory'), ('Decision stages', 'Multipliers (decision or MAC)'),
           ('Adder trees', 'Adders and nonlinear units'),
           ('State, control registers', 'State and control registers'),
           ('RNG, seeding', 'RNG and seeding'), ('Unattributed logic', 'Unattributed logic and buffers')]
-CASES = [('ape_d128_p1200_r4', 'a', 128, '1.20'), ('ape_d64_r4', 'b', 64, '1.00'), ('ape_d32_p1150_r4', 'c', 32, '1.15')]
+CASES = [('chord_d128_p1200_r4', 'a', 128, '1.20'), ('chord_d64_r4', 'b', 64, '1.00'), ('chord_d32_p1150_r4', 'c', 32, '1.15')]
 
 
 def load(name):
@@ -68,11 +67,11 @@ SHOWN = shown_colours()
 print('legend swatches', SHOWN)
 FW = fs.COL_W
 m = 0.03                                   # side margin (in)
-S = (FW - 2 * m) / E['ape_d128_p1200_r4']['L']   # inches per micrometre, shared by all panels
-# top_pad + block_gap = 0.05 in as before (FH unchanged); top_pad makes room for the title baseline 4 pt above panel (a).
+S = (FW - 2 * m) / E['chord_d128_p1200_r4']['L']   # inches per micrometre, shared by all panels
+# top_pad + block_gap = 0.05 in; top_pad makes room for the title baseline 4 pt above panel (a).
 title_h, pair_gap, block_gap, col_gap, leg_h, top_pad = 0.15, 0.022, 0.03, 0.10, 0.27, 0.02
-blk1 = title_h + 2 * E['ape_d128_p1200_r4']['T'] * S + pair_gap
-t2 = max(E[n]['T'] for n in ('ape_d64_r4', 'ape_d32_p1150_r4')) * S
+blk1 = title_h + 2 * E['chord_d128_p1200_r4']['T'] * S + pair_gap
+t2 = max(E[n]['T'] for n in ('chord_d64_r4', 'chord_d32_p1150_r4')) * S
 blk2 = title_h + 2 * t2 + pair_gap
 FH = top_pad + blk1 + block_gap + blk2 + leg_h
 fig = plt.figure(figsize=(FW, FH))
@@ -124,7 +123,7 @@ for name, *_ in CASES:
     print(name, 'die %.1f x %.1f um' % tuple(g['die_um']), 'cells %.0f um2' % sum(g['area_um2']),
           'scale %.4f in/mm' % (S * 1e3))
 print('figure %.2f x %.2f in' % (FW, FH))
-fs.save(fig, 'Antiphase', 'asic_layout_r4', dpi=500)
+fs.save(fig, 'Chord', 'asic_layout_r4', dpi=500)
 import os
 from pathlib import Path
-fs.jpeg_compress_pdf((Path(os.environ['FIG_OUT']) if 'FIG_OUT' in os.environ else fs.ROOT / 'Antiphase_DAC27' / 'figures') / 'asic_layout_r4.pdf')
+fs.jpeg_compress_pdf((Path(os.environ['FIG_OUT']) if 'FIG_OUT' in os.environ else fs.ROOT / 'Arpeggio_DAC27' / 'figures') / 'asic_layout_r4.pdf')

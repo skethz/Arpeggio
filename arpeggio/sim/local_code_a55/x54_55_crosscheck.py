@@ -1,14 +1,14 @@
-# Exploratory cross-check (not PROTOCOL_A55 section 9): A5.4 Antiphase budget series vs A5.5 re-tuned SA per-S picks at nearest modeled cycles.
+# Cross-check: A5.4 Chord budget series vs A5.5 re-tuned SA per-S picks at nearest modeled cycles.
 import json, math, os, sys
-sys.path.insert(0, '<SCRATCH>/ap_ber_20261024/src')
-sys.argv = ['x', '<SCRATCH>/ap_ber_20261024/results']
+sys.path.insert(0, '<SCRATCH>/arpeggio_ber_20261024/src')
+sys.argv = ['x', '<SCRATCH>/arpeggio_ber_20261024/results']
 import importlib.util
-spec = importlib.util.spec_from_file_location('an55', '<SCRATCH>/ap_ber_20261024/src/analyze_a55.py')
-RES = '<SCRATCH>/ap_ber_20261024/results'
+spec = importlib.util.spec_from_file_location('an55', '<SCRATCH>/arpeggio_ber_20261024/src/analyze_a55.py')
+RES = '<SCRATCH>/arpeggio_ber_20261024/results'
 A54 = json.load(open(RES + '/a54/analysis.json'))
 A55 = json.load(open(RES + '/a55/analysis.json'))
 import numpy as np, glob
-sys.path.insert(0, '<SCRATCH>/ap_ber_20261024/src'); import a56an as AN
+sys.path.insert(0, '<SCRATCH>/arpeggio_ber_20261024/src'); import a56an as AN
 def load(d):
     fs = sorted(glob.glob(d + '/b*.npz')); zs = [np.load(f) for f in fs]
     return [z['biterr'].astype(np.int64) for z in zs]
@@ -32,4 +32,4 @@ for pt, (sh, snr, Ns) in PT.items():
             a = load('%s/a54/abl/%s/abl_anel_%d_%d/snr_%05.2f' % (RES, sh, best['Sk'], Ns, snr))
             b = load('%s/a55/abl/%s/%s/snr_%05.2f' % (RES, sh, v['method'], snr))
             r, lo, hi, n = pair(a, b)
-            print('%s %s-%s S %3d x %.2f | Antiphase Sk %4d x %.2f | AP/SA %.3f [%.3f, %.3f] uses %d' % (pt, arm, xk, S, xs, best['Sk'], best['cyc_ratio'], r, lo, hi, n))
+            print('%s %s-%s S %3d x %.2f | Chord Sk %4d x %.2f | CHORD/SA %.3f [%.3f, %.3f] uses %d' % (pt, arm, xk, S, xs, best['Sk'], best['cyc_ratio'], r, lo, hi, n))

@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""PLAN_D.json for the milestone-D timed cohort, by the rules frozen in PROTOCOL_D.md, from the held-out seed-42 BER
+"""PLAN_D.json for the timed cohort of the PIMI comparison, from the held-out seed-42 BER
 results (results/ber_d/*_b.jsonl):
-- points: P1 16x16 16-QAM 20 dB, P2 32x32 16-QAM 22 dB, P3 32x32 QPSK 14 dB (milestone C's matched-BER SNRs) and P4
+- points: P1 16x16 16-QAM 20 dB, P2 32x32 16-QAM 22 dB, P3 32x32 QPSK 14 dB (PLAN_C.json's matched-BER SNRs) and P4
   16x16 16-QAM 31.02 dB (their operating point, Eb/N0 25 dB);
 - PIMI: both published-rule settings (hardware steps and 4x), torch and kernel chains; its matched-BER setting is the
   cheaper one with BER <= 1e-3 on seed 42, else the 4x setting, marked 'never';
-- Antiphase (MDI): Ns 32 / 8 / 8 at P1-P3 (milestone C's cheapest, frozen), at P4 the cheapest Ns of {8, 16, 32, 64}
+- Chord (MDI): Ns 32 / 8 / 8 at P1-P3 (PLAN_C.json's cheapest), at P4 the cheapest Ns of {8, 16, 32, 64}
   with BER <= 1e-3 on seed 42 (else 64, 'never'); torch chain everywhere, kernel chain where the couplings fit (P1, P3, P4);
-- Antiphase, one stage: at P4 the cheapest R of {1, 2, 4, 8, 16, 32, 64} with BER <= 1e-3 (else 64, 'never');
-- ablation: variants ii, iii, iv at Antiphase's Ns per point (variant i is the Antiphase item itself), torch and kernel
-  as for Antiphase;
+- Chord, one stage: at P4 the cheapest R of {1, 2, 4, 8, 16, 32, 64} with BER <= 1e-3 (else 64, 'never');
+- ablation: variants ii, iii, iv at Chord's Ns per point (variant i is the Chord item itself), torch and kernel
+  as for Chord;
 - platform rows: the PIMI kernel alone (solver mode) and its chain at batch 10,000 for 8x8 and 16x16 16-QAM at their
   Table I hardware steps (32, 64), Eb/N0 25 dB.
-Batches as milestone C: 500 (16x16), 250 (32x32 16-QAM), 2,000 (32x32 QPSK); draws seed 41,000,003, two batches cycled.
+Batches as PLAN_C.json: 500 (16x16), 250 (32x32 16-QAM), 2,000 (32x32 QPSK); draws seed 41,000,003, two batches cycled.
 Usage: make_plan_d.py BER_DIR OUT.json"""
 import glob
 import json
@@ -59,17 +59,17 @@ for p, (shape, nt, M, snr, B, steps, ns_c, w) in PTS.items():
         for impl in ('torch', 'kernel'):
             add(**base, method='pimi', impl=impl, mode='chain', steps=st, warps=w)
     if ns_c is None:
-        ns, nev = cheapest(nt, M, snr, [8, 16, 32, 64], 'mdiane%d')
+        ns, nev = cheapest(nt, M, snr, [8, 16, 32, 64], 'mdichord%d')
         R, rnev = cheapest(nt, M, snr, [1, 2, 4, 8, 16, 32, 64], 'aned%d')
-        cheap[p].update(ane_ss_R=R, ane_ss_never=rnev, ane_ss_ber=ber(nt, M, snr, 'aned%d' % R))
+        cheap[p].update(chord_ss_R=R, chord_ss_never=rnev, chord_ss_ber=ber(nt, M, snr, 'aned%d' % R))
         for impl in ('torch', 'kernel'):
-            add(**base, method='ane_ss', impl=impl, mode='chain', R=R)
+            add(**base, method='chord_ss', impl=impl, mode='chain', R=R)
     else:
-        ns, nev = ns_c, ber(nt, M, snr, 'mdiane%d' % ns_c) > 1e-3
-    cheap[p].update(ane_Ns=ns, ane_never=nev, ane_ber=ber(nt, M, snr, 'mdiane%d' % ns))
+        ns, nev = ns_c, ber(nt, M, snr, 'mdichord%d' % ns_c) > 1e-3
+    cheap[p].update(chord_Ns=ns, chord_never=nev, chord_ber=ber(nt, M, snr, 'mdichord%d' % ns))
     impls = ('torch', 'kernel') if p in KERNEL_OK else ('torch',)
     for impl in impls:
-        add(**base, method='ane_mdi', impl=impl, mode='chain', Ns=ns)
+        add(**base, method='chord_mdi', impl=impl, mode='chain', Ns=ns)
         for v in ('ii', 'iii', 'iv'):
             add(**base, method='abl', impl=impl, mode='chain', Ns=ns, variant=v)
 for nt, st, w in ((16, 64, 8), (8, 32, 4)):

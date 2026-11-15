@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Scaling pre-scan on the tuning set (seed 1000): BER of MMSE, MMSE-SIC and K-best 32 on a coarse SNR grid for every
-milestone-B configuration, to place the held-out grids. One JSON line per (config, SNR, method)."""
+scaling configuration, to place the held-out grids. One JSON line per (config, SNR, method)."""
 import json
 import sys
 

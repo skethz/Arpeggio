@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""A5.6 worker (exploratory; PROTOCOL_A56.md). Pulls jobs from a plan with exclusive claim files, as src/runner.py does, and runs
+"""A5.6 worker. Pulls jobs from a plan with exclusive claim files, as src/runner.py does, and runs
 each batch by batch through a56lib.mdi_trace with the runner's draws and solver seeds, so the output is what the runner would give.
-Stopping rule as PROTOCOL 3.4 unless the job fixes n_batches. A job with 'saved' must reproduce that directory's bit errors and
+Stopping rule on min_vec, min_bit, min_uses and max_uses unless the job fixes n_batches. A job with 'saved' must reproduce that directory's bit errors and
 erroneous x_hat exactly, batch by batch; a mismatch fails the batch and is logged. Nothing is ever overwritten.
 Usage: trace_a56.py --plan PLAN.json --root RESULTS_DIR --worker NAME [--threads 2] [--mem 0.20]"""
 import argparse
@@ -23,7 +23,7 @@ a = ap.parse_args()
 torch.set_num_threads(a.threads)
 torch.cuda.set_per_process_memory_fraction(a.mem, 0)
 
-import apx  # noqa: E402
+import arpx  # noqa: E402
 import a56lib as L  # noqa: E402
 
 HOST = socket.gethostname().split('.')[0]
@@ -69,7 +69,7 @@ def claim(j):
 
 
 def bits_per_use(shape):
-    s = apx.SHAPES[shape]
+    s = arpx.SHAPES[shape]
     return 2 * s['nt'] * (1 if s['M'] == 4 else 2)
 
 
@@ -86,23 +86,23 @@ def tally(d):
 def run_batch(j, bi, m, ctx):
     """One batch; returns the arrays to save. Used by the worker and by test_a56.py."""
     shape, method, snr, seed = j['shape'], j['method'], float(j['snr']), int(j['seed'])
-    s = apx.SHAPES[shape]
+    s = arpx.SHAPES[shape]
     c = s['mdi']
     Rmax = int(j.get('Rmax', c['Rmax']))
     B = int(j['batch'])
-    b = apx.draw(seed, snr, bi, B, s['nt'], s['M'])
+    b = arpx.draw(seed, snr, bi, B, s['nt'], s['M'])
     if m < B:
         for k in ('H', 'y', 'l'):
             b[k] = b[k][:m].contiguous()
     stream = j.get('stream', method)
-    gs = torch.Generator(device='cuda'); gs.manual_seed(apx.draw_seed(seed, snr, bi) + 7919 + L.mhash(stream))
-    z, Ai, _ = apx.mimo.mmse(b)
+    gs = torch.Generator(device='cuda'); gs.manual_seed(arpx.draw_seed(seed, snr, bi) + 7919 + L.mhash(stream))
+    z, Ai, _ = arpx.mimo.mmse(b)
     cnt = {}
     solver, tl, Ns = L.solver_for(method, shape, gs, ctx, cnt)
     t0 = time.time()
     lh, tr = L.mdi_trace(b, solver, Ns, Rmax, c['S'], guesses=c['guesses'], z_mmse=z, to_levels=tl)
     torch.cuda.synchronize()
-    bev = apx.biterr_per_use(b, lh)
+    bev = arpx.biterr_per_use(b, lh)
     err = torch.nonzero(bev > 0).flatten()
     out = dict(biterr=bev.cpu().numpy().astype(np.uint8), err_idx=err.cpu().numpy().astype(np.int32),
                xhat=lh[err].cpu().numpy().astype(np.int8), t=(tr['d'] / b['N0']).astype(np.float32),
@@ -149,8 +149,8 @@ def run_job(j, ctx):
 
 
 if __name__ == '__main__':
-    tuned = json.load(open('<SCRATCH>/ap_ber_20261024/results/tuned_a5.json'))
-    ctx = apx.Ctx(tuned)
+    tuned = json.load(open('<SCRATCH>/arpeggio_ber_20261024/results/tuned_a5.json'))
+    ctx = arpx.Ctx(tuned)
     while True:                                                            # the plan is read again before every job: new picks and order apply at once
         j = next((x for x in json.load(open(a.plan))['jobs'] if claim(x)), None)
         if j is None:

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# A5.14 P4 W = 4 overflow on hostA GPU5 (ADDENDUM_A514_HOSTA.md). Untimed BER only. Idle-with-yield as supervise_a514.sh: if GPU5 shows
+# A5.14 P4 W = 4 overflow on hostA GPU5. Untimed BER only. Idle-with-yield as supervise_a514.sh: if GPU5 shows
 # any compute process that is not ours, our workers there are stopped (they resume from saved batches) and none is started.
 # Other users' processes are never touched. Workers: NW (default 6), 2 threads each. Every 120 s; exits when no job is left and no
-# worker runs, or at the cut (11 Nov 2026 20:00 CET).
-Z=<SCRATCH>/ap_ber_20261024/a514z
+# worker runs, or at the time cut CUT.
+Z=<SCRATCH>/arpeggio_ber_20261024/a514z
 R=$Z/results/a514
 L=$Z/logs/a514
 PY=<SCRATCH>/mimo_ising_20261016/venv/bin/python

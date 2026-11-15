@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """BER equivalence of the PIMI kernel (Philox + inverse-CDF noise, bit-exact with pimi.pimi_fx) and the PyTorch PIMI
-(torch.randn / torch.randint noise) on the same channel draws (milestone D; seed 46, not a held-out comparison seed):
+(torch.randn / torch.randint noise) on the same channel draws (seed 46, not a held-out comparison seed):
 the two differ only in their random-number source. Usage: equiv_pimi_d.py CUBIN OUT.jsonl"""
 import json
 import sys

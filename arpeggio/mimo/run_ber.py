@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Uncoded BER of several detectors on the same channel draws. One JSON line per (method, SNR) to OUT.jsonl.
 Usage: run_ber.py --nt 16 --nr 16 --M 16 [--rho 0] --snrs 10,14,18 --n 20000 --batch 2000 --seed 1 --out PREFIX
-       --methods mmse,sd,kbest32,cim64,ane64 [--ane '{"S":128,"t0":..,"t1":..,"q":..,"kappa":..}'] [--cim-as 10]
+       --methods mmse,sd,kbest32,cim64,chord64 [--chord '{"S":128,"t0":..,"t1":..,"q":..,"kappa":..}'] [--cim-as 10]
 Seeds: channel draws come from a torch generator seeded with (seed, SNR index, batch index); the solvers' random
 numbers from a separate generator seeded with seed + 7919."""
 import argparse
@@ -25,21 +25,21 @@ ap.add_argument('--n', type=int, required=True)
 ap.add_argument('--batch', type=int, default=2000)
 ap.add_argument('--seed', type=int, default=1)
 ap.add_argument('--methods', required=True)
-ap.add_argument('--ane', default='{"S":128,"t0":2.0,"t1":0.05,"q":0.5,"kappa":0.3}')
+ap.add_argument('--chord', default='{"S":128,"t0":2.0,"t1":0.05,"q":0.5,"kappa":0.3}')
 ap.add_argument('--aned', default='{"S":256,"t0":0.2,"t1":0.1,"q":0.2,"phases":2}')
 ap.add_argument('--cim-as', type=float, default=10.0)
 ap.add_argument('--cim-pump', default='step')
 ap.add_argument('--sd-cap', type=int, default=2_000_000)
 ap.add_argument('--mdi', default='{"Ns":64,"Rmax":3,"S":8,"guesses":["mmse","sic"]}')   # Singh et al. 2024 Table I
-ap.add_argument('--mdiane', default='{"Sk":128,"t0":0.3,"t1":0.3,"q":0.4,"kappa":0}')  # ours: S = Sk * 2K half-steps
+ap.add_argument('--mdichord', default='{"Sk":128,"t0":0.3,"t1":0.3,"q":0.4,"kappa":0}')  # ours: S = Sk * 2K rounds
 ap.add_argument('--out', required=True)
 a = ap.parse_args()
 torch.backends.cuda.matmul.allow_tf32 = False
 methods = a.methods.split(',')
-ane = json.loads(a.ane)
+chord = json.loads(a.chord)
 aned = json.loads(a.aned)
 mdic = json.loads(a.mdi)
-mdiane = json.loads(a.mdiane)
+mdichord = json.loads(a.mdichord)
 levels = np.array(mimo.PAM[a.M]['levels'], np.float64)
 D = 2 * a.nt
 fo = open(a.out + '.jsonl', 'a')
@@ -60,13 +60,14 @@ for si, snr in enumerate(float(x) for x in a.snrs.split(',')):
                 lh = lm
             elif m == 'sic':
                 lh = mimo.mmse_sic(b, 'real')
-            elif m.startswith('mdiahc') or m.startswith('mdiane'):        # milestone B: multi-stage MDI-MIMO
-                Ns = int(m[6:]) if len(m) > 6 else mdic['Ns']               # mdiahcN / mdianeN: N anneals per stage
+            elif m.startswith('mdiahc') or m.startswith('mdichord'):        # multi-stage MDI-MIMO
+                p = 6 if m.startswith('mdiahc') else 8
+                Ns = int(m[p:]) if len(m) > p else mdic['Ns']               # mdiahcN / mdichordN: N anneals per stage
                 if m.startswith('mdiahc'):
                     solver = lambda I_, na, K: mimo.ahc(I_, na, gen=gs)
                 else:
-                    solver = lambda I_, na, K: mimo.anechoic(I_, na, mdiane['Sk'] * 2 * K, mdiane['t0'], mdiane['t1'],
-                                                             mdiane['q'], kappa=mdiane.get('kappa', 0.0), gen=gs,
+                    solver = lambda I_, na, K: mimo.chord(I_, na, mdichord['Sk'] * 2 * K, mdichord['t0'], mdichord['t1'],
+                                                             mdichord['q'], kappa=mdichord.get('kappa', 0.0), gen=gs,
                                                              phases=2 * K)
                 st = {}
                 lh = mimo.mdi(b, solver, Ns, mdic['Rmax'], mdic['S'], guesses=tuple(mdic['guesses']),
@@ -86,7 +87,7 @@ for si, snr in enumerate(float(x) for x in a.snrs.split(',')):
                 Id = mimo.ising_delta(b, z, K=1)
                 na = int(m[4:])
                 if m.startswith('aned'):
-                    S_ = mimo.anechoic(Id, na, aned['S'], aned['t0'], aned['t1'], aned['q'], kappa=aned.get('kappa', 0.0),
+                    S_ = mimo.chord(Id, na, aned['S'], aned['t0'], aned['t1'], aned['q'], kappa=aned.get('kappa', 0.0),
                                        lam=aned.get('lam', 0.0), gen=gs, phases=aned.get('phases', 2))
                 elif m.startswith('ahcd'):
                     S_ = mimo.ahc(Id, na, gen=gs)
@@ -102,9 +103,9 @@ for si, snr in enumerate(float(x) for x in a.snrs.split(',')):
                     S_ = mimo.ahc(I, int(m[3:]), gen=gs)
                 elif m.startswith('cim'):
                     S_ = mimo.cim(I, int(m[3:]), As=a.cim_as, gen=gs, pump=a.cim_pump)
-                elif m.startswith('ane'):
-                    S_ = mimo.anechoic(I, int(m[3:]), ane['S'], ane['t0'], ane['t1'], ane['q'], kappa=ane.get('kappa', 0.0),
-                                       lam=ane.get('lam', 0.0), ramp=ane.get('ramp', True), gen=gs)
+                elif m.startswith('chord'):
+                    S_ = mimo.chord(I, int(m[5:]), chord['S'], chord['t0'], chord['t1'], chord['q'], kappa=chord.get('kappa', 0.0),
+                                       lam=chord.get('lam', 0.0), ramp=chord.get('ramp', True), gen=gs)
                 else:
                     raise SystemExit('unknown method ' + m)
                 lh, _, _ = mimo.select(b, mimo.spins_to_levels(S_, a.M, D), lm)
@@ -118,13 +119,14 @@ for si, snr in enumerate(float(x) for x in a.snrs.split(',')):
             r['sd_unfinished'] = acc[m]['extra']
         if m.startswith('mdi'):
             r['mdi'] = mdic; r['mean_anneals'] = acc[m]['extra'] / a.n
-            r['Ns'] = int(m[6:]) if len(m) > 6 else mdic['Ns']
-            if m.startswith('mdiane'):
-                r['mdiane'] = mdiane
+            p = 6 if m.startswith('mdiahc') else 8
+            r['Ns'] = int(m[p:]) if len(m) > p else mdic['Ns']
+            if m.startswith('mdichord'):
+                r['mdichord'] = mdichord
         if m.startswith('aned'):
             r['aned'] = aned
-        elif m.startswith('ane'):
-            r['ane'] = ane
+        elif m.startswith('chord'):
+            r['chord'] = chord
         if m.startswith('cim'):
             r['cim_as'] = a.cim_as; r['cim_pump'] = a.cim_pump
         fo.write(json.dumps(r) + '\n'); fo.flush()

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Coded BLER with soft-output detectors (DESIGN.md). Each user sends one 5G NR LDPC codeword (Sionna 2.2, rate k/n,
+"""Coded BLER with soft-output detectors. Each user sends one 5G NR LDPC codeword (Sionna 2.2, rate k/n,
 20 flooding BP iterations, boxplus-phi) per frame; its n / log2(M) symbols go over that many channel uses with
 independent channels (fast fading); all Nt users transmit at once. Detectors: softlib.detect_llr. List detectors' LLRs
 are multiplied by their calibration factor alpha (--alpha JSON {method: alpha}, fitted on the tuning set by calib.py;
 1 if absent) and clipped to +-20 (the decoder's llr_max). 'hard:X' feeds X's hard decisions as LLRs +-4.
-One JSON line per (method, SNR). (soft_v1_dev.py: the first version, before calibration.) Usage:
-  soft.py --nt 16 --nr 16 --M 16 --snrs 14,16 --frames 200 --fbatch 20 --methods mmse,kbest32,ane64 --k 1024 --n 2048
-          --ane JSON --sane JSON --alpha JSON --out PREFIX"""
+One JSON line per (method, SNR). Usage:
+  soft.py --nt 16 --nr 16 --M 16 --snrs 14,16 --frames 200 --fbatch 20 --methods mmse,kbest32,chord64 --k 1024 --n 2048
+          --chord JSON --sane JSON --alpha JSON --out PREFIX"""
 import argparse
 import json
 import math
@@ -28,7 +28,7 @@ ap.add_argument('--frames', type=int, required=True)
 ap.add_argument('--fbatch', type=int, default=20)
 ap.add_argument('--seed', type=int, default=1)
 ap.add_argument('--methods', required=True)
-ap.add_argument('--ane', default='{"S":128,"t0":0.5,"t1":0.5,"q":0.6,"kappa":0}')
+ap.add_argument('--chord', default='{"S":128,"t0":0.5,"t1":0.5,"q":0.6,"kappa":0}')
 ap.add_argument('--sane', default='{"S":128,"t_abs":0.4,"q":0.4,"reg":true}')
 ap.add_argument('--aned', default='{"S":256,"t0":0.2,"t1":0.1,"q":0.2,"phases":2}')
 ap.add_argument('--cim-as', type=float, default=1.5)
@@ -42,7 +42,7 @@ torch.backends.cuda.matmul.allow_tf32 = False
 dev = 'cuda:0'
 enc = LDPC5GEncoder(a.k, a.n, device=dev)
 dec = LDPC5GDecoder(enc, num_iter=20, hard_out=True, device=dev)
-cfg = dict(ane=json.loads(a.ane), sane=json.loads(a.sane), aned=json.loads(a.aned), cim_as=a.cim_as, cim_pump=a.cim_pump)
+cfg = dict(chord=json.loads(a.chord), sane=json.loads(a.sane), aned=json.loads(a.aned), cim_as=a.cim_as, cim_pump=a.cim_pump)
 alpha = json.loads(a.alpha)
 M, Nt = a.M, a.nt
 D = 2 * Nt
@@ -91,8 +91,8 @@ for si, snr in enumerate(float(x) for x in a.snrs.split(',')):
                  alpha=alpha.get(m, 1.0))
         if 'sane' in m:
             r['sane'] = cfg['sane']
-        elif 'ane' in m:
-            r['ane'] = cfg['ane']
+        elif 'chord' in m:
+            r['chord'] = cfg['chord']
         if 'cim' in m:
             r['cim_as'] = a.cim_as; r['cim_pump'] = a.cim_pump
         fo.write(json.dumps(r) + '\n'); fo.flush()

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""A5.12 supplementary (written after the analysis, not in PROTOCOL_A512): BER ratio PT/(i) against (i)'s FULL held-out run, as A5d
-reported its 1.40/14/2,500 (stats_ap convention: the common prefix is resampled with one index vector for both, the tails beyond the
+"""A5.12 supplementary: BER ratio PT/(i) against (i)'s FULL held-out run, as A5d
+reported its 1.40/14/2,500 (stats_chord convention: the common prefix is resampled with one index vector for both, the tails beyond the
 shorter run independently; cluster bootstrap over uses, B = 4000, percentile 95 %). Usage: supp_a512.py ROOT REF_ROOT"""
 import glob, json, os, sys
 import numpy as np
 ROOT, REF = sys.argv[1], sys.argv[2]
-PT = {'P1': ('x16', 20.0, 32, 'mdiane32', 64), 'P2': ('x32', 22.0, 8, 'mdiane8', 128), 'P3': ('q32', 14.0, 8, 'mdiane8', 64)}
+PT = {'P1': ('x16', 20.0, 32, 'mdichord32', 64), 'P2': ('x32', 22.0, 8, 'mdichord8', 128), 'P3': ('q32', 14.0, 8, 'mdichord8', 64)}
 def be(d):
     fs = sorted(glob.glob(os.path.join(d, 'b*.npz')))
     return [np.load(f)['biterr'].astype(np.int64) for f in fs]

@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""A5.8 plan and selection (PROTOCOL_A58.md sections 4-6). Pure function of the saved results: writes ROOT/plan.json with every job that can
-run now and ROOT/select.json with the picks so far. Re-run by the supervisor; safe to repeat. Adapted from a55_plan.py (P4 only, rule (2)
-first-accept only, B = 1 only). Jobs run through src/trace_x64.py. Usage: a58_plan.py ROOT"""
+"""A5.8 plan and selection. Pure function of the saved results: writes ROOT/plan.json with every job that can
+run now and ROOT/select.json with the picks so far. Re-run by the supervisor; safe to repeat. As a55_plan.py for P4, rule (2)
+first-accept and B = 1 only. Jobs run through src/trace_x64.py. Usage: a58_plan.py ROOT"""
 import glob, json, os, sys, time
 import numpy as np
 
 ROOT = sys.argv[1]
 P = dict(pt='P4', sh='x64', snr=22.0, Ns=8, B=500, bpu=256, Rmax=3)
-REF, REF_STREAM = 'a56_128_0.3_0.3_0.4_0_alt_8', 'mdiane8'
+REF, REF_STREAM = 'a56_128_0.3_0.3_0.4_0_alt_8', 'mdichord8'
 SR = (8, 16, 32, 64, 128)
 XPROBE, BUD = 1.25, 1.0
-CUT1 = 1794157200                                                         # 8 Nov 2026 18:00 CET (section 9, cuts 1 and 2)
+CUT1 = 1794157200                                                         # 8 Nov 2026 18:00 CET
 NOW = float(os.environ.get('A58_NOW', time.time()))
 NA, NCHUNK, CHUNK = 8, 12, 50                                              # stage A batches; held-out chunks of 50 batches of 500
 
@@ -234,7 +234,7 @@ def order(j):
 
 
 plan.sort(key=order)
-out = dict(host='hostB', amendment='A5.8 exploratory', jobs=plan)
+out = dict(host='hostB', experiment='A5.8', jobs=plan)
 for fn, obj in (('plan.json', out), ('select.json', sel)):
     tmp = os.path.join(ROOT, fn + '.tmp')
     with open(tmp, 'w') as f:

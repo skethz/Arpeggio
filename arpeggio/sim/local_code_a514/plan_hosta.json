@@ -1,6 +1,6 @@
 {
  "host": "hostA",
- "amendment": "A5.14 P4 W=4 overflow (ADDENDUM_A514_HOSTA.md)",
+ "experiment": "A5.14 P4 W=4 overflow",
  "jobs": [
   {
    "set": "a514_c149",

@@ -149,7 +149,7 @@ def kbest(H, y, levels, K):
     return out, dists
 
 
-# ---------------------------------------------------------------- milestone B: K-best without path copies
+# ---------------------------------------------------------------- K-best without path copies
 @njit(cache=True)
 def _kbest_one2(R, yt, levels, K):
     """Same survivors as _kbest_one (same candidate order and sort), but candidates are (parent, level) pairs and only

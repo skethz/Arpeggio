@@ -1,8 +1,8 @@
 #!/bin/bash
-# A5.18 part 2 W3 (PROTOCOL_A518_part2.md 0d0eeeee): copy of fa_a511/power_run.sh with the TCF source, DB and output as arguments.
+# A5.18 part 2: copy of arpeggio_a511/power_run.sh with the TCF source, DB and output as arguments.
 # usage: power_run_a518.sh <key> <tag> <tcf at 1000 ps> <routed db .enc.dat> <top> <period ps> <cpu list>
 set -u
-R=<SCRATCH>/antiphase_asic_20261017; G=$R/fa_a511/gate_scripts; P=$R/a518/part2
+R=<SCRATCH>/arpeggio_asic_20261017; G=$R/arpeggio_a511/gate_scripts; P=$R/a518/part2
 key=$1; t=$2; T0=$3; DB=$4; TOP=$5; PS=$6; C=$7
 export HOME=$R/home XDG_CONFIG_HOME=$R/home/.config
 K=$(python3 -c "print($PS / 1000.0)"); T1=$P/power/tcf/${key}_${t}_p$PS.tcf

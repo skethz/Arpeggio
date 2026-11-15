@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""A5.17 S2 analysis (PROTOCOL_A517.md sections 3-6): x'_k = mean_K c_K / (L_K + c_k,K), with c_K = x_K * ref_K Arpeggio's
+"""A5.17 S2 analysis: x'_k = mean_K c_K / (L_K + c_k,K), with c_K = x_K * ref_K Arpeggio's
 held-out cycles per anneal (unchanged by k) and L_K + c_k,K Chord's k-row cost on the calibration draws that define ref_K.
 Q4 uses re-tuned C1's own k-row cost per K as the denominator (as S1 used C1's L_K). Usage: s2_analyze.py S2.json S1.json OUT.json"""
 import json, sys
 S2, S1, OUT = (json.load(open(sys.argv[1])), json.load(open(sys.argv[2])), sys.argv[3])
 assert all(S2['gates']['G1_G3'].values()) and all(v for k, v in S2['gates'].items() if k.startswith('G2')), S2['gates']
-a = json.load(open('<LOCAL>/work/plan_20261024/ap_ber/results_a514/analysis_a514_final_20261111.json'))
+a = json.load(open('<LOCAL>/work/plan_20261024/arpeggio_ber/results_a514/analysis_a514_final_20261111.json'))
 A516 = a['A516_stage1']
 R = S2['runs']
 KS = ('c1', 'c2', 'c4', 'cinf')

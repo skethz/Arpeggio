@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""A5.13 gates (PROTOCOL_A513.md section 4). No held-out draw is read except the saved X3P batches named in G2.
-  g1 OUT.json   G1a: fa_fx.cu against fa_ref59.anneal (the A5.9 file, unchanged; its bottom command block is not run) on A5.5/A5.9's
+"""A5.13 checks. No held-out draw is read except the saved X3P batches named in G2.
+  g1 OUT.json   G1a: arpeggio_fx.cu against arpeggio_ref59.anneal (the A5.9 file; its bottom command block is not run) on A5.5/A5.9's
                 captured sub-problems (P1 D = 32, P2 D = 64), K = 1-3, two keys, both starts, two schedules.
                 G1b: on real sub-problems recorded through run_a513.detect on dev seed 9600 at x16, x32 and x64 (D = 32, 64, 128),
                 with the keys and instance numbers of the run itself.
@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import numpy as np
 
-REF = os.path.join(HERE, 'fa_ref59.py')
+REF = os.path.join(HERE, 'arpeggio_ref59.py')
 CAPS = {'P1': os.path.join(HERE, '..', 'refs', 'capture_9600.pt'), 'P2': os.path.join(HERE, '..', 'refs', 'capture_p2_9600.pt')}
 A59_SEED = 0x1234567890ABCDEF
 
@@ -26,7 +26,7 @@ A59_SEED = 0x1234567890ABCDEF
 def load_ref():
     src = open(REF).read()
     cut = src.index("\nif sys.argv[1] == 'gen':")
-    ns = {'__name__': 'fa_ref59'}
+    ns = {'__name__': 'arpeggio_ref59'}
     exec(compile(src[:cut], REF, 'exec'), ns)
     return ns
 
@@ -44,7 +44,7 @@ def check(ns, G, h, P, T, q, inst, key, start, spins, de, st, rs):
     for b in range(B):
         Gl, hl = [[int(v) for v in row] for row in G[b]], [int(v) for v in h[b]]
         for r in rs:
-            ref = ns['anneal'](Gl, hl, P, T, q, r, int(inst[b]), start, 'fa')
+            ref = ns['anneal'](Gl, hl, P, T, q, r, int(inst[b]), start, 'arpeggio')
             got = dict(best=int(de[b, r]), bs=bits(spins[b, r], P, D), flips=int(st[b, r, 0]), tests=int(st[b, r, 1]))
             want = dict(best=ref['best'], bs=ref['bs'], flips=len(ref['acc']), tests=sum(ref['tests']))
             n += 1
@@ -58,15 +58,15 @@ def check(ns, G, h, P, T, q, inst, key, start, spins, de, st, rs):
 
 def g1(out):
     import torch
-    import anefx
+    import chordfx
     import mimo
-    import fafx
+    import arpeggiofx
     import run_a513
     torch.set_num_threads(4)
     ns = load_ref()
     res = dict(g1a={}, g1b={})
     rnd = random.Random(513)
-    Q = anefx.QSCALE
+    Q = chordfx.QSCALE
     picks = {'P1': 'abl_far_64_0.1_0.1_0_rand_32', 'P2': 'abl_far_32_0.1_0.1_0_rand_8'}
     tot_n = tot_bad = 0
     for cap, path in CAPS.items():
@@ -84,7 +84,7 @@ def g1(out):
                     for start in ('rand', 'bal'):
                         inst = np.array([1000 * K + b for b in range(G.shape[0])], dtype=np.int64)
                         t0 = time.time()
-                        spins, de, st = fafx.solve(G, h, P, 2, T, qi, inst, key, start)
+                        spins, de, st = arpeggiofx.solve(G, h, P, 2, T, qi, inst, key, start)
                         n, bad, det = check(ns, G.numpy(), h.numpy(), P, T, qi, inst, key, start, spins, de, st, (0, 1))
                         k = '%s/K%d/%s/%s/%x' % (cap, K, sname, start, key)
                         res['g1a'][k] = dict(anneals=n, failed=bad, flips=int(st[..., 0].sum()), sec=round(time.time() - t0, 1), first=det)
@@ -92,12 +92,12 @@ def g1(out):
                         print('G1a', k, n, 'anneals', bad, 'failed', int(st[..., 0].sum()), 'flips', flush=True)
     shapes = {'x16': (16, 20.0, 'abl_far_64_0.1_0.1_0_rand_32'), 'x32': (32, 22.0, 'abl_far_32_0.1_0.1_0_rand_8'),
               'x64': (64, 22.0, 'abl_far_64_0.1_0.1_0_bal_8')}
-    import apx
+    import arpx
     for tag, (nt, snr, pick) in shapes.items():
         rec = []
-        b = apx.draw(9600, snr, 0, 40, nt, 16, dev='cpu')
+        b = arpx.draw(9600, snr, 0, 40, nt, 16, dev='cpu')
         pk = run_a513.parse_pick(pick)
-        run_a513.detect(b, nt, 16, apx.draw_seed(9600, snr, 0), pk, 'fafx', 4, hook=rec.append)
+        run_a513.detect(b, nt, 16, arpx.draw_seed(9600, snr, 0), pk, 'arpeggiofx', 4, hook=rec.append)
         seenK = {}
         for c in rec:
             K = c['P'] // 2

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Anechoic schedules (usage: tune_scale.py CUBIN OUT.jsonl [round2|ddi_qpsk]) for the milestone-B shapes on the tuning set (seed 1000), i.i.d. channels only (reused for
-rho = 0.5): S fixed (128 steps RI; 256 half-steps dDI, i.e. 128 updates per spin), 16 anneals, the custom kernel;
+"""Chord schedules (usage: tune_scale.py CUBIN OUT.jsonl [round2|ddi_qpsk]) for the scaling shapes on the tuning set (seed 1000), i.i.d. channels only (reused for
+rho = 0.5): S fixed (128 steps RI; 256 rounds dDI, i.e. 128 updates per spin), 16 anneals, the custom kernel;
 grid over (t0, t1) and q at one SNR per configuration (K-best 32's 1e-3 point from the pre-scan, rounded).
 Output: one JSON line per (configuration, schedule) and the best per configuration."""
 import json
@@ -8,12 +8,12 @@ import sys
 
 import torch
 
-import anefx
+import chordfx
 import fxdetect
 import mimo
 
 torch.backends.cuda.matmul.allow_tf32 = False
-kern = anefx.Kernel(sys.argv[1])
+kern = chordfx.Kernel(sys.argv[1])
 fo = open(sys.argv[2], 'a')
 CFG = [(64, 64, 4, 13.0), (16, 64, 4, 4.0), (16, 128, 4, 1.0), (32, 64, 4, 7.0), (32, 128, 4, 4.0),
        (64, 64, 16, 23.0), (16, 64, 16, 11.0), (16, 128, 16, 8.0), (32, 64, 16, 14.0), (32, 128, 16, 10.5)]

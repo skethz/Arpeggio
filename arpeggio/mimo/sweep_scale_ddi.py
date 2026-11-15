@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""QPSK in the delta formulation (DI-MIMO with Anechoic, kernel): the anneal ladder on exactly the draws of
+"""QPSK in the delta formulation (DI-MIMO with Chord, kernel): the anneal ladder on exactly the draws of
 sweep_scale.py's QPSK runs (same SNR lists, n, batch, seed), with schedules from tune_scale.py ddi_qpsk; MMSE and SIC
 repeated as a check that the draws match; no K-best or SD (they are in the main files). Output tags *_ddi.
 Derived from sweep_scale.py:
-Held-out scaling sweeps (seed 1) for every milestone-B configuration: grids placed from the tuning-set pre-scan,
-Anechoic schedules = the best of tuning rounds 1 and 2 on the i.i.d. channel of the same shape and modulation
+Held-out scaling sweeps (seed 1) for every scaling configuration: grids placed from the tuning-set pre-scan,
+Chord schedules = the best of tuning rounds 1 and 2 on the i.i.d. channel of the same shape and modulation
 (reused for rho = 0.5), K-best and anneal ladders 1..256, the sphere decoder, and for 32x64 Princeton's published
-massive-MIMO MDI settings (QPSK: DI-MIMO, 64 anneals; 16-QAM: Ns 8, R_max 3, S 8) with AHC and with Anechoic.
+massive-MIMO MDI settings (QPSK: DI-MIMO, 64 anneals; 16-QAM: Ns 8, R_max 3, S 8) with AHC and with Chord.
 About 4e5 bits per SNR point. Usage: sweep_scale.py CUBIN OUTDIR [SHAPES]"""
 import json
 import os
@@ -37,7 +37,7 @@ GRID = {  # (nt, nr, M, rho) -> SNR list (dB)
     (32, 128, 16, 0.0): range(8, 14), (32, 128, 16, 0.5): range(8, 15),
 }
 order = sorted([k for k in GRID if k[2] == 4], key=lambda k: (k[0] == 64, k[3], k[0], k[1]))
-if len(sys.argv) > 3:                       # a subset, e.g. "16x128" (rerun of configurations that failed)
+if len(sys.argv) > 3:                       # a subset, e.g. "16x128"
     order = [k for k in order if '%dx%d' % (k[0], k[1]) in sys.argv[3].split(',')]
 for nt, nr, M, rho in order:
     sc = best[(nt, nr, M)]['sched']

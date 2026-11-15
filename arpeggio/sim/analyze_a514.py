@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.14-A5.16 analysis (PROTOCOL_A514.md 6-7, PROTOCOL_A515.md 6-7, PROTOCOL_A516.md 5-6). Pure function of saved batches.
+"""A5.14-A5.16 analysis. Pure function of saved batches.
 Pairs two arms on the batch indices both have (file bNNNNN.npz = global batch index), concatenates per-use bit errors in batch order,
 and reports the ratio of summed bit errors with a56an.boot_ratio (4,000 replicates, seed 12345) and a56an.mcnemar, plus held-out
 cycles per K (x) where counters exist. Usage: analyze_a514.py ROOT OUT.json"""
@@ -82,7 +82,7 @@ def chunk_dirs(tag, shape, m, snr):
 
 out = {}
 # ---------------- A5.15 (P2, seed 2027)
-m15 = dict(C0='mdiane8', C1='abl_ape_0.2_0.2_0.2_rand_8', Astar=SEL['A515']['method'], A32='abl_far_32_0.1_0.1_0_rand_8')
+m15 = dict(C0='mdichord8', C1='abl_chord_0.2_0.2_0.2_rand_8', Astar=SEL['A515']['method'], A32='abl_far_32_0.1_0.1_0_rand_8')
 A15 = {k: arm(chunk_dirs('a515', 'x32', m, 22.0), 'x32') for k, m in m15.items()}
 o = dict(methods=m15, x={k: xs(v, 'x32') for k, v in A15.items()})
 for nm, (p, q) in dict(primary_Astar_C1=('Astar', 'C1'), A32_C0=('A32', 'C0'), C1_C0=('C1', 'C0'), Astar_C0=('Astar', 'C0'),
@@ -108,7 +108,7 @@ def w1_dirs(pt):
 W1 = {pt: arm(w1_dirs(pt), FL[pt][0]) for pt in FL}
 o = {}
 for pt, (sh, snr, m) in FL.items():
-    fx = arm([os.path.join(ROOT, 'a513_fixed', sh, m.replace('abl_far_', 'fafx_'), 'snr_%05.2f' % snr)], sh)
+    fx = arm([os.path.join(ROOT, 'a513_fixed', sh, m.replace('abl_far_', 'arpeggiofx_'), 'snr_%05.2f' % snr)], sh)
     c = compare(fx, W1[pt], sh)
     if c:
         c['term'] = term(c, 'fixed better', 'fixed worse'); c['passes_1.10'] = c['hi'] < 1.10
@@ -116,11 +116,11 @@ for pt, (sh, snr, m) in FL.items():
                  float_x=xs(W1[pt], sh), fixed_x=xs(fx, sh))
 out['A516_stage1'] = o
 
-# ---------------- A5.16 stage 2 (fixed variants at P1, hostB)
+# ---------------- A5.16 stage 2 (fixed variants at P1)
 o = {}
 sh, snr, m = FL['P1']
 V = {}
-for v, nm in dict(V0='fafx_', V1='fafxq16_', V2='fafxka516_').items():
+for v, nm in dict(V0='arpeggiofx_', V1='arpeggiofxq16_', V2='arpeggiofxka516_').items():
     V[v] = arm([os.path.join(ROOT, 'a516x', 'x16', m.replace('abl_far_', nm), 'snr_%05.2f' % snr)], sh)
 for nm, (p, q) in dict(V1_V0=('V1', 'V0'), V2_V0=('V2', 'V0'), V0_float=('V0', None), V1_float=('V1', None),
                        V2_float=('V2', None)).items():

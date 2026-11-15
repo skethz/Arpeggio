@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
-# A5.3 supervisor (exploratory; PROTOCOL_A53.md). At most 3 processes of ours for A5.3: runner workers a53g<gpu><a|b|c> on
+# A5.3 supervisor. At most 3 processes of ours for A5.3: runner workers a53g<gpu><a|b|c> on
 # plan_hostb_a53.json plus, until it has finished, one flip-calibration process (calib_flips_sa.py, counts as one slot).
-# Launch only on a GPU with >= 6 GB free, NO compute process outside ap_ber_20261024 and no other A5.3 process (one A5.3
-# process per GPU, so A5 workers keep headroom to grow; order GPU1, GPU2, GPU0; never GPU3); CPU guard: no launch while our processes use > 20 cores. Yield (every 60 s): on GPU1/GPU2, if a foreign process
+# Launch only on a GPU with >= 6 GB free, NO compute process outside arpeggio_ber_20261024 and no other A5.3 process (one A5.3
+# process per GPU, so A5 workers keep headroom to grow; order GPU1, GPU2, GPU0); CPU guard: no launch while our processes use > 20 cores. Yield (every 60 s): on GPU1/GPU2, if a foreign process
 # appears, terminate every A5.3 process of ours on that GPU (workers resume later from saved batches via the stale-claim
 # reclaim; the calibration resumes from its per-entry JSON). A5 workers are never touched. Exits when the plan and the
 # calibration are done.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 PL=$A/results/plan_hostb_a53.json
 CAL=$A/results/a53_flips_sa.json
 LOG=$A/logs/supervisor_a5.log
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID> [2]=<GPU_UUID>)
 cd $A
 source $A/venv/bin/activate
-foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q ap_ber_20261024 || echo $p; done | wc -l; }
+foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q arpeggio_ber_20261024 || echo $p; done | wc -l; }
 freemb() { nvidia-smi --query-gpu=uuid,memory.free --format=csv,noheader,nounits | grep $1 | awk -F', ' '{print $2}'; }
-ourcpu() { ps -eo pcpu,args | grep "ap_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
+ourcpu() { ps -eo pcpu,args | grep "arpeggio_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
 nslots() { echo $(( $(pgrep -f "runner.py --plan $PL" | wc -l) + $(pgrep -f "calib_flips_sa.py" | wc -l) )); }
 caldone() { [ -f $CAL ] && python -c "import json,sys; sys.exit(0 if len(json.load(open('$CAL'))['F'])==32 else 1)"; }
 ours53() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -qE "plan_hostb_a53|calib_flips_sa" && echo $p; done | wc -l; }

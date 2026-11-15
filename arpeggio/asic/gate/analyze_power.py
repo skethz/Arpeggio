@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ASIC-server-only aggregation of one gate_r4 Innovus power case (Python 3.6). Reads the private reports of CASE_DIR and the
 session's insts_private.tsv and writes CASE_DIR/public_summary.json with aggregates only (no instance/net/cell/library
-names). Template: an earlier project analysis script. usage: analyze_power.py SESSION_DIR TAG AREA_PUBLIC_TXT"""
+names). usage: analyze_power.py SESSION_DIR TAG AREA_PUBLIC_TXT"""
 import base64, collections, json, os, re, subprocess, sys
 sess, tag, area_f = sys.argv[1:4]
 d = os.path.join(sess, tag)

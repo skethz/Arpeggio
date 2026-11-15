@@ -1,9 +1,9 @@
-# Slow-corner HOLD at a given SS period for the three I/O latency rules (gate_r4, extra to PROTOCOL.md §5 / A2). Analysis only: restore, time,
+# Slow-corner HOLD at a given SS period for the three I/O latency rules. Analysis only: restore, time,
 # nothing optimised or saved. SS objects from the server MMMC (PNR_CORNER=SSG, renamed). Constraints: the engine's routed
 # SDC rescaled by sdc_scale.py + set_propagated_clock (as the saved mode). I/O source-latency rules, each walked at 50 ps:
 #   R2 re-derived: a latency file (ccopt's form, 8 lines) = -(mean clock arrival at register clock pins, rise/fall) measured
 #      in that corner with zero source latency (the TT closure contract: sinks at the ideal edge);
-#   R1 the saved TT latency file unchanged;  R0 no source latency (as an earlier project STA script).
+#   R1 the saved TT latency file unchanged;  R0 no source latency.
 # Primary = R2 if, at TT and the accepted period, R2 reproduces the accepted WNS (all groups) within 5 ps; else R1.
 # Environment: CL_DB CL_TOP PNR_OUT STA_SDC_BASE STA_ACCEPT_PS STA_START_PS STA_FLOW STA_MACROS STA_CPUS STA_MMMC
 setMultiCpuUsage -localCpu $::env(STA_CPUS)

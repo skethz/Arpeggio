@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Parameter selection on a declared tuning set (seeds >= 1000; the held-out evaluation uses seeds < 1000).
-Anechoic: a grid over (t0, t1, q, kappa) at fixed S and Na. CIM: the unpublished noise amplitude As and the pump-time
+Chord: a grid over (t0, t1, q, kappa) at fixed S and Na. CIM: the unpublished noise amplitude As and the pump-time
 interpretation (step index vs. normalised time), chosen to give the baseline its best BER. Objective: total bit errors
 over the listed SNRs (one shared set of channel draws per SNR). One JSON line per candidate to OUT.jsonl.
-Usage: tune.py --nt 16 --nr 16 --M 4 --snrs 10,12 --n 2000 --na 64 --which ane|cim --out PREFIX [--S 128]"""
+Usage: tune.py --nt 16 --nr 16 --M 4 --snrs 10,12 --n 2000 --na 64 --which chord|cim --out PREFIX [--S 128]"""
 import argparse
 import itertools
 import json
@@ -35,7 +35,7 @@ for si, snr in enumerate(float(x) for x in a.snrs.split(',')):
     z, Ai, el2 = mimo.mmse(b)
     lm = mimo.mmse_hard(b, z, Ai)
     batches.append((snr, b, lm, mimo.ising(b, z)))
-if a.which == 'ane':
+if a.which == 'chord':
     grid = json.loads(a.grid) if a.grid else dict(t0=[0.5, 1, 2, 4], t1=[0.02, 0.05, 0.1], q=[0, 0.25, 0.5, 1], kappa=[0, 0.2, 0.4])
     cands = [dict(S=a.S, t0=t0, t1=t1, q=q, kappa=k, lam=lm) for t0, t1, q, k, lm in
              itertools.product(grid['t0'], grid['t1'], grid['q'], grid.get('kappa', [0.0]), grid.get('lam', [0.0]))
@@ -48,8 +48,8 @@ for c in cands:
     gs = torch.Generator(device='cuda'); gs.manual_seed(1000 + 7919)
     err, bits, per = 0, 0, {}
     for snr, b, lm, I in batches:
-        if a.which == 'ane':
-            S_ = mimo.anechoic(I, a.na, c['S'], c['t0'], c['t1'], c['q'], kappa=c['kappa'], lam=c['lam'], gen=gs)
+        if a.which == 'chord':
+            S_ = mimo.chord(I, a.na, c['S'], c['t0'], c['t1'], c['q'], kappa=c['kappa'], lam=c['lam'], gen=gs)
         else:
             S_ = mimo.cim(I, a.na, As=c['As'], gen=gs, pump=c['pump'])
         lh, _, _ = mimo.select(b, mimo.spins_to_levels(S_, a.M, D), lm)

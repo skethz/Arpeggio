@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# A5 companion supervisor (author's permission, 24 Oct 23:46): use hostB GPU1/GPU2 ONLY while they carry no compute process
-# outside ap_ber_20261024; GPU3 never. Every 60 s: on a GPU with a foreign process, terminate our workers there (yield) and
+# A5 companion supervisor: use hostB GPU1/GPU2 ONLY while they carry no compute process
+# outside arpeggio_ber_20261024. Every 60 s: on a GPU with a foreign process, terminate our workers there (yield) and
 # do not launch; every 5 min: on a fully idle GPU, start up to 4 workers (UUID-bound; 4 not 6, to keep our total CPU
 # <= 24 cores: we also run 6 workers on GPU0 and the K-best CPU worker) unless our processes already use > 20 cores.
 # Killed workers leave claim.json + saved batches; the runner on any host GPU reclaims a dead worker's claim (same host,
 # pid not alive) and resumes from the saved batches (draws and solver seeds depend only on seed/SNR/batch/method).
 # Exits (after stopping its workers) when the main A5 supervisor has exited.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 PL=$A/results/plan_hostb_a5.json
 LOG=$A/logs/supervisor_a5.log
 declare -A G=([1]=<GPU_UUID> [2]=<GPU_UUID>)
 NPER=4
 foreign() {
   for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep "$1" | awk -F', ' '{print $2}'); do
-    tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q ap_ber_20261024 || echo $p
+    tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q arpeggio_ber_20261024 || echo $p
   done | wc -l
 }
-ourcpu() { ps -eo pcpu,args | grep "ap_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
+ourcpu() { ps -eo pcpu,args | grep "arpeggio_ber_20261024" | grep -v grep | awk '{s+=$1} END{print int(s)}'; }
 it=0
 while true; do
   if ! pgrep -f "bash src/supervise_a5.sh" > /dev/null; then

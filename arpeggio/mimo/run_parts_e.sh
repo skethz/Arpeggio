@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run milestone-E BER parts in sequence on GPU5 (untimed; up to three such streams share GPU5 after the cohort).
+# Run ber_e.sh parts in sequence on GPU5 (untimed).
 # Usage: run_parts_e.sh UUID PART...
 R=<SCRATCH>/mimo_ising_20261016; U=$1; shift
 for p in "$@"; do

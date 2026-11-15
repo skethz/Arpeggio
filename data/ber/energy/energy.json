@@ -12,8 +12,8 @@
   "rule": "above idle = segment energy - P_ref * seconds; also given against the before and after idle"
  },
  "items": {
-  "P1_mdiane_kernel": {
-   "label": "Antiphase int16 kernel chain, P1 (x16 20 dB, Ns 32, batch 500)",
+  "P1_mdichord_kernel": {
+   "label": "Chord int16 kernel chain, P1 (x16 20 dB, Ns 32, batch 500)",
    "segments": 3,
    "invalid_dropped": 0,
    "ms_per_det": 0.29796817826061717,
@@ -43,8 +43,8 @@
     21.7051340824456
    ]
   },
-  "P3_mdiane_kernel": {
-   "label": "Antiphase int16 kernel chain, P3 (q32 14 dB, Ns 8, batch 2000)",
+  "P3_mdichord_kernel": {
+   "label": "Chord int16 kernel chain, P3 (q32 14 dB, Ns 8, batch 2000)",
    "segments": 3,
    "invalid_dropped": 0,
    "ms_per_det": 0.005274303349124526,
@@ -74,8 +74,8 @@
     0.9774546961021663
    ]
   },
-  "P2_mdiane_torch": {
-   "label": "Antiphase PyTorch chain, P2 (x32 22 dB, Ns 8, batch 250); no int16 kernel at 32x32 16-QAM",
+  "P2_mdichord_torch": {
+   "label": "Chord PyTorch chain, P2 (x32 22 dB, Ns 8, batch 250); no int16 kernel at 32x32 16-QAM",
    "segments": 3,
    "invalid_dropped": 0,
    "ms_per_det": 55.16022491455078,
@@ -168,9 +168,9 @@
    ]
   }
  },
- "context_add2": {
-  "P1_mdiane_kernel": {
-   "label": "addendum 2 (idle before only, 197.6 W)",
+ "context_idle_before": {
+  "P1_mdichord_kernel": {
+   "label": "idle before only, 197.6 W",
    "segments": 3,
    "invalid_dropped": 0,
    "ms_per_det": 0.3107132789416191,
@@ -191,7 +191,7 @@
    ]
   },
   "P1_abl_noalt_kernel": {
-   "label": "addendum 2 (idle before only, 197.6 W)",
+   "label": "idle before only, 197.6 W",
    "segments": 3,
    "invalid_dropped": 0,
    "ms_per_det": 3.2553287744522095,
@@ -212,7 +212,7 @@
    ]
   },
   "P1_abl_q0_kernel": {
-   "label": "addendum 2 (idle before only, 197.6 W)",
+   "label": "idle before only, 197.6 W",
    "segments": 3,
    "invalid_dropped": 0,
    "ms_per_det": 0.6739806334177653,
@@ -233,7 +233,7 @@
    ]
   },
   "P1_abl_ons_kernel": {
-   "label": "addendum 2 (idle before only, 197.6 W)",
+   "label": "idle before only, 197.6 W",
    "segments": 3,
    "invalid_dropped": 0,
    "ms_per_det": 0.32285889826322856,

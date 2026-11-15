@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# A5.3 Addendum 2 diagnostic (post hoc): one worker on plan_hostb_a53x.json (abl_sao_128_32, P1, seed 102). Launch only on
-# a GPU with >= 6 GB free and no compute process outside ap_ber_20261024 (order GPU2, GPU1, GPU0; never GPU3); yield every
+# A5.3x diagnostic: one worker on plan_hostb_a53x.json (abl_sao_128_32, P1, seed 102). Launch only on
+# a GPU with >= 6 GB free and no compute process outside arpeggio_ber_20261024 (order GPU2, GPU1, GPU0); yield every
 # 60 s on GPU1/GPU2 (logged); exits when the job is done.
-A=<SCRATCH>/ap_ber_20261024
+A=<SCRATCH>/arpeggio_ber_20261024
 PL=$A/results/plan_hostb_a53x.json
 LOG=$A/logs/supervisor_a5.log
 declare -A G=([0]=<GPU_UUID> [1]=<GPU_UUID> [2]=<GPU_UUID>)
 cd $A; source $A/venv/bin/activate
-foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q ap_ber_20261024 || echo $p; done | wc -l; }
+foreign() { for p in $(nvidia-smi --query-compute-apps=gpu_uuid,pid --format=csv,noheader | grep $1 | awk -F', ' '{print $2}'); do tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q arpeggio_ber_20261024 || echo $p; done | wc -l; }
 freemb() { nvidia-smi --query-gpu=uuid,memory.free --format=csv,noheader,nounits | grep $1 | awk -F', ' '{print $2}'; }
 left() { python src/status.py $PL $A/results 2>/dev/null | grep -E "^  abl " | awk '{print $7+$9+$11}'; }
 echo "$(date '+%F %T') A5.3x diagnostic supervisor started (pid $$)" >> $LOG

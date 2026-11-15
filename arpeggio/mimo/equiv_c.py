@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""BER equivalence of the kernel solvers with the PyTorch solvers inside the MDI wrapper (milestone C), held-out seed 21,
+"""BER equivalence of the kernel solvers with the PyTorch solvers inside the MDI wrapper, held-out seed 21,
 same channel draws for all four; MDI settings as published (Table I / DI-MIMO), Ns as given.
-Usage: equiv_c.py ANE_CUBIN AHC_CUBIN OUT.jsonl"""
+Usage: equiv_c.py CHORD_CUBIN AHC_CUBIN OUT.jsonl"""
 import json
 import sys
 import time
@@ -9,16 +9,16 @@ import time
 import torch
 
 import ahcfx
-import anefx
+import chordfx
 import mdi_solvers as ms
 import mimo
 
 torch.backends.cuda.matmul.allow_tf32 = False
-ka = anefx.Kernel(sys.argv[1]); kh = ahcfx.AhcKernel(sys.argv[2])
+ka = chordfx.Kernel(sys.argv[1]); kh = ahcfx.AhcKernel(sys.argv[2])
 fo = open(sys.argv[3], 'a')
 for shape, nt, M, snr, Ns, n, B in (('16x16', 16, 16, 20.0, 64, 4000, 2000), ('32x32', 32, 4, 14.0, 64, 8000, 4000)):
     cfg = ms.MDI[(shape, M)]
-    acc = {impl: [0, 0, 0.0] for impl in ('ahc_torch', 'ahc_kernel', 'ane_torch', 'ane_kernel')}
+    acc = {impl: [0, 0, 0.0] for impl in ('ahc_torch', 'ahc_kernel', 'chord_torch', 'chord_kernel')}
     for bi in range(n // B):
         g = torch.Generator(device='cuda'); g.manual_seed(21 * 1_000_003 + bi)
         b = mimo.make_batch(B, nt, nt, M, snr, g)

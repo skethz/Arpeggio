@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PROTOCOL.md 4.3: picks each tuned variant's setting on the tuning seed (1000, P1, 4000 uses): lowest bit-error count;
+"""Picks each tuned variant's setting on the tuning seed (1000, P1, 4000 uses): lowest bit-error count;
 ties -> fewer erroneous uses -> first in plan order. Writes results/tuned.json (never overwritten: refuses if present)."""
 import json, os, sys
 root, plan, out = sys.argv[1], sys.argv[2], sys.argv[3]

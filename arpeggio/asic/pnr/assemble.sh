@@ -1,7 +1,7 @@
 #!/bin/bash
 # Assemble flow v2 on an ASIC server from the unchanged kit/init prefix of flow/pnr/pnr.tcl plus the v2 body.
 set -e
-A=<SCRATCH>/antiphase_asic_20261017; F=$A/flow_v2_20261024
+A=<SCRATCH>/arpeggio_asic_20261017; F=$A/flow_v2_20261024
 mkdir -p $F/maps
 n=$(grep -n '^globalNetConnect VSS -type tielo -all' $A/flow/pnr/pnr.tcl | head -1 | cut -d: -f1)
 head -n $n $A/flow/pnr/pnr.tcl | sed 's#^set ::env(PNR_SDC) \$SYN/out/final.sdc#set ::env(PNR_SDC) $SYN/out/final.sdc\nif {[info exists ::env(PNR_SDC_OVERRIDE)]} {set ::env(PNR_SDC) $::env(PNR_SDC_OVERRIDE)}#' > $F/pnr_v2.tcl

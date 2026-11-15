@@ -1,5 +1,5 @@
 {
- "note": "A5.8: first-accept SA (rule (2), model F) re-tuned for B = 1 vs Antiphase (i) at P4 = 64x64 16-QAM, 22 dB, Ns 8; seed 344; ratio SA/(i); modeled cycles only; exploratory.",
+ "note": "A5.8: first-accept SA (rule (2), model F) re-tuned for B = 1 vs Chord (i) at P4 = 64x64 16-QAM, 22 dB, Ns 8; seed 344; ratio SA/(i); modeled cycles only.",
  "pick": "abl_far_64_0.1_0.1_0_bal_8",
  "batches": 600,
  "batches_expected": 600,

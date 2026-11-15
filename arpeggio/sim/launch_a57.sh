@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Amendment 7 launcher: one trace_a56.py worker per hostB GPU (UUID-checked, idle required), nice 10, 2 threads, 20% memory.
-# Usage: launch_a57.sh PLAN ROOT TAG   (run from <SCRATCH>/ap_ber_20261024)
+# A5.7 launcher: one trace_a56.py worker per hostB GPU (UUID-checked, idle required), nice 10, 2 threads, 20% memory.
+# Usage: launch_a57.sh PLAN ROOT TAG   (run from <SCRATCH>/arpeggio_ber_20261024)
 set -u
-A=<SCRATCH>/ap_ber_20261024; PL=$1; ROOT=$2; TAG=$3
+A=<SCRATCH>/arpeggio_ber_20261024; PL=$1; ROOT=$2; TAG=$3
 UU=(<GPU_UUID> <GPU_UUID> <GPU_UUID> <GPU_UUID>)
 mkdir -p $A/logs/a57
 for i in 0 1 2 3; do

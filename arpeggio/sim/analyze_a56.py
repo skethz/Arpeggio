@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.6 analysis (PROTOCOL_A56.md section 9). No GPU. Reads what exists; a missing part is left out. Writes ROOT/analysis.json. Usage: analyze_a56.py ROOT"""
+"""A5.6 analysis. No GPU. Reads what exists; a missing part is left out. Writes ROOT/analysis.json. Usage: analyze_a56.py ROOT"""
 import glob
 import json
 import math
@@ -115,7 +115,7 @@ for pt in PT:
                     q = AN.boot_ratio(sv['biterr'][:n].astype(np.int64), r['biterr'][:n].astype(np.int64))
                     row['saved_' + label + '_over_arm'] = dict(uses=n, ratio=q[0], lo=q[1], hi=q[2])
             res['held'].setdefault(pt, {}).setdefault(st, []).append(row)
-    # frozen schedule at other lengths, from A5.4, on the same draws
+    # default schedule at other lengths, from A5.4, on the same draws
     for r0 in res['held'].get(pt, {}).get('HG', []):
         m = r0['name']
         Sk = int(m.split('_')[1])
@@ -144,18 +144,18 @@ for pt in PT:
             q = AN.boot_ratio(be, sv['biterr'][:n].astype(np.int64))
             res['others'].setdefault(pt, {})[m + '/start_only'] = dict(c=cp, uses=n, stop0=float(pas.mean()), ratio=q[0], lo=q[1], hi=q[2], ber=float(be.sum()) / (n * PT[pt]['bpu']),
                                                                          ber_nostop=float(sv['biterr'][:n].astype(np.int64).sum()) / (n * PT[pt]['bpu']))
-# amendment 4: SA and Antiphase, both with the stop at the same c and more anneals, same draws
+# SA and Chord, both with the stop at the same c and more anneals, same draws
 for pt in ('P1', 'P2'):
     cp = sel.get('c', {}).get(pt, {}).get('c')
     pk = sel.get('N', {}).get(pt, {}).get('pick')
     d = os.path.join(ROOT, 'HR', PT[pt]['sh'])
     if cp is None or not pk or not os.path.isdir(d):
         continue
-    ap = run('HN', pt, pk['method'])
-    if ap is None:
+    chord = run('HN', pt, pk['method'])
+    if chord is None:
         continue
-    cya = AN.cyc_table(ap, PT[pt]['Rmax'])
-    bea, Ca, _ = AN.stop(ap, cp, cya)
+    cya = AN.cyc_table(chord, PT[pt]['Rmax'])
+    bea, Ca, _ = AN.stop(chord, cp, cya)
     for m in sorted(os.listdir(d)):
         r = run('HR', pt, m)
         if r is None:
@@ -164,12 +164,12 @@ for pt in ('P1', 'P2'):
         be, C, first = AN.stop(r, cp, cy)
         n = min(len(be), len(bea))
         q = AN.boot_ratio(be[:n], bea[:n])
-        q0 = AN.boot_ratio(r['biterr'][:n].astype(np.int64), ap['biterr'][:n].astype(np.int64))
+        q0 = AN.boot_ratio(r['biterr'][:n].astype(np.int64), chord['biterr'][:n].astype(np.int64))
         p0, x0, y0 = AN.mcnemar(be[:n], bea[:n])
-        row = dict(c=cp, uses=n, antiphase=pk['method'], sa_err_uses=int((be[:n] > 0).sum()), ap_err_uses=int((bea[:n] > 0).sum()), ratio=q[0], lo=q[1], hi=q[2], mcnemar_p=p0, sa_only=x0, ap_only=y0,
-                   nostop_ratio=q0[0], nostop_lo=q0[1], nostop_hi=q0[2], sa_nostop_err_uses=int((r['biterr'][:n] > 0).sum()), ap_nostop_err_uses=int((ap['biterr'][:n] > 0).sum()),
-                   sa_cyc=float(C[:n].mean()), ap_cyc=float(Ca[:n].mean()), sa_p99=float(np.percentile(C[:n], 99)), ap_p99=float(np.percentile(Ca[:n], 99)), sa_max=float(C[:n].max()), ap_max=float(Ca[:n].max()),
-                   sa_stop0=float((first[:n] == 0).mean()), sa_cyc_per_anneal=cy.tolist(), ap_cyc_per_anneal=cya.tolist(), by_c=[AN.stop_row(r, c1, cy) for c1 in AN.C_GRID])
+        row = dict(c=cp, uses=n, chord=pk['method'], sa_err_uses=int((be[:n] > 0).sum()), chord_err_uses=int((bea[:n] > 0).sum()), ratio=q[0], lo=q[1], hi=q[2], mcnemar_p=p0, sa_only=x0, chord_only=y0,
+                   nostop_ratio=q0[0], nostop_lo=q0[1], nostop_hi=q0[2], sa_nostop_err_uses=int((r['biterr'][:n] > 0).sum()), chord_nostop_err_uses=int((chord['biterr'][:n] > 0).sum()),
+                   sa_cyc=float(C[:n].mean()), chord_cyc=float(Ca[:n].mean()), sa_p99=float(np.percentile(C[:n], 99)), chord_p99=float(np.percentile(Ca[:n], 99)), sa_max=float(C[:n].max()), chord_max=float(Ca[:n].max()),
+                   sa_stop0=float((first[:n] == 0).mean()), sa_cyc_per_anneal=cy.tolist(), chord_cyc_per_anneal=cya.tolist(), by_c=[AN.stop_row(r, c1, cy) for c1 in AN.C_GRID])
         res.setdefault('sa_reinvest', {}).setdefault(pt, {})[m] = row
 # (128, Ns) arms on the tuning seed: BER and cycles per stage count, and every c, for the trade between stages, anneals and the stop
 for pt in ('P1', 'P2'):
@@ -200,7 +200,7 @@ for pt, m0 in (('P1', 'prod_fx_xs_32'), ('P2', 'prod_fx_xs_8')):
                                         float_ber=float(fl[:n].sum()) / (n * p['bpu']), ratio=q[0], lo=q[1], hi=q[2], mcnemar_p=mc[0], prod_only=mc[1], float_only=mc[2])
 
 
-# Amendment 5: Table IV's 64x64 row (seed 344, 22 dB, Ns 8): production model against float (i), and MMSE-SIC against both, same draws
+# Table IV's 64x64 row (seed 344, 22 dB, Ns 8): production model against float (i), and MMSE-SIC against both, same draws
 def _contig(d):
     """biterr of the contiguous batches b00000, b00001, ... of one directory; stops at the first missing index."""
     out, bi = [], 0
@@ -212,7 +212,7 @@ def _contig(d):
 
 X64 = {k: _contig(os.path.join(ROOT, s, 'x64', m, 'snr_22.00')) for k, (s, m) in
        dict(prod=('X3P', 'prod_fx_xs_8'), float=('X64F', BASE('P2')), sic=('X64S', 'mmse_sic'),
-            kb32=('X64K', 'kbest32'), kb64=('X64K', 'kbest64'), kb128=('X64K', 'kbest128')).items()}   # K-best: amendment 6, 6 Nov 2026
+            kb32=('X64K', 'kbest32'), kb64=('X64K', 'kbest64'), kb128=('X64K', 'kbest128')).items()}   # K-best
 X64_PAIRS = dict(prod_float=('prod', 'float'), sic_prod=('sic', 'prod'), sic_float=('sic', 'float'))
 for K in (32, 64, 128):
     X64_PAIRS['kb%d_prod' % K] = ('kb%d' % K, 'prod'); X64_PAIRS['kb%d_float' % K] = ('kb%d' % K, 'float')

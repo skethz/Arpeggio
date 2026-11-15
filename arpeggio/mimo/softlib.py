@@ -3,10 +3,10 @@ detect_llr returns raw (uncalibrated, unclipped except for numerical guards) LLR
 the MSB first within each real dimension, and the hard decision. Methods:
   mmse      Gaussian max-log (no calibration: its LLRs are already calibrated, results/... calibration check)
   kbestK    K-best list + MMSE + single-bit-flip neighbours of the best (mimo.list_llr)
-  aneNA     Anechoic (hard schedule) anneals' best states + MMSE + bit-flip neighbours (mimo.list_llr)
-  saneNA    Anechoic's rule as an explorer, max-log over all visited states (mimo.anechoic_soft / trajectory_llr)
+  aneNA     Chord (hard schedule) anneals' best states + MMSE + bit-flip neighbours (mimo.list_llr)
+  saneNA    Chord's rule as an explorer, max-log over all visited states (mimo.chord_soft / trajectory_llr)
   cimNA / ahcNA  Princeton's solvers' anneals' best states + MMSE + bit-flip neighbours (mimo.list_llr)
-  anedNA / ahcdNA / cimdNA  the same on Princeton's delta formulation (mimo.ising_delta, K = 1; Anechoic with phases)"""
+  anedNA / ahcdNA / cimdNA  the same on Princeton's delta formulation (mimo.ising_delta, K = 1; Chord with phases)"""
 import numpy as np
 import torch
 
@@ -36,7 +36,7 @@ def detect_llr(b, method, gs, cfg):
         na = int(method[4:])
         if method.startswith('aned'):
             an = cfg['aned']
-            S_ = mimo.anechoic(Id, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an.get('kappa', 0.0), lam=an.get('lam', 0.0),
+            S_ = mimo.chord(Id, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an.get('kappa', 0.0), lam=an.get('lam', 0.0),
                                gen=gs, phases=an.get('phases', 2))
         elif method.startswith('ahcd'):
             S_ = mimo.ahc(Id, na, gen=gs)
@@ -47,14 +47,14 @@ def detect_llr(b, method, gs, cfg):
     I = mimo.ising(b, z)
     if method.startswith('sane'):
         sa = cfg['sane']
-        bl, bd, m0, m1 = mimo.anechoic_soft(I, b, int(method[4:]), sa['S'], sa.get('tmult', 1.0), sa['q'], gen=gs,
+        bl, bd, m0, m1 = mimo.chord_soft(I, b, int(method[4:]), sa['S'], sa.get('tmult', 1.0), sa['q'], gen=gs,
                                             t_abs=sa.get('t_abs'), reg=sa.get('reg', False), warm=sa.get('warm', False))
         l_hat, llr = mimo.trajectory_llr(b, bl, bd, m0, m1, lm, clip=BIG)
         return llr, l_hat
-    na = int(method[3:])
-    if method.startswith('ane'):
-        an = cfg['ane']
-        S_ = mimo.anechoic(I, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an.get('kappa', 0.0), lam=an.get('lam', 0.0), gen=gs)
+    na = int(method[5:] if method.startswith('chord') else method[3:])
+    if method.startswith('chord'):
+        an = cfg['chord']
+        S_ = mimo.chord(I, na, an['S'], an['t0'], an['t1'], an['q'], kappa=an.get('kappa', 0.0), lam=an.get('lam', 0.0), gen=gs)
     elif method.startswith('cim'):
         S_ = mimo.cim(I, na, As=cfg['cim_as'], pump=cfg['cim_pump'], gen=gs)
     elif method.startswith('ahc'):

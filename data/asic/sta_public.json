@@ -1,5 +1,5 @@
 {
- "method": "Innovus 25.11 STA on the restored routed DB (hostD sha256-identical copies), analysis only. SS view = SSG 0.72 V 125 C std cells + SSG macro views + RCmax at 125 C (server MMMC, PNR_CORNER=SSG). Constraints = each engine's routed SDC rescaled by sdc_scale.py (md5 ce77aa59) to 50 ps steps + set_propagated_clock. OCV + CPPR, post-route extraction, timeDesign -postRoute. I/O source-latency rules (amendment A2): R2 = -(mean register clock-pin insertion in that corner), R1 = saved TT latency file, R0 = none. Primary = R2 if it reproduces the accepted TT WNS within 5 ps, else R1.",
+ "method": "Innovus 25.11 STA on the restored routed DB. SS view = SSG 0.72 V 125 C std cells + SSG macro views + RCmax at 125 C (server MMMC, PNR_CORNER=SSG). Constraints = each engine's routed SDC rescaled by sdc_scale.py (md5 ce77aa59) to 50 ps steps + set_propagated_clock. OCV + CPPR, post-route extraction, timeDesign -postRoute. I/O source-latency rules: R2 = -(mean register clock-pin insertion in that corner), R1 = saved TT latency file, R0 = none. Primary = R2 if it reproduces the accepted TT WNS within 5 ps, else R1.",
  "D32": {
   "accepted_tt_ps": 1150,
   "saved_view_tt": {
@@ -310,9 +310,9 @@
    }
   }
  },
- "fast_corner_hold": "not checked: no FF macro views exist (macro views only TT and SSG); not generated (would need the caller's go-ahead)",
+ "fast_corner_hold": "not checked: no FF macro views exist (macro views only TT and SSG)",
  "D128": {
-  "routed_db": "ape_d128_p1200_r4",
+  "routed_db": "chord_d128_p1200_r4",
   "accepted_tt_ps": 1200,
   "saved_view_tt": {
    "setup_ns": {
