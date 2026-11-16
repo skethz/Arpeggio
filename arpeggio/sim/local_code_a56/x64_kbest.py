@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """A5.6: K-best (Guo & Nilsson 2006, arpx.detect 'kbest<K>', tree.kbest2,
-numba CPU, the path of every saved K-best run) on the draws of Table IV's row "D128 X64": 64x64 16-QAM, 22 dB, seed 344, batches
+numba CPU, the path of every saved K-best run) on the draws of Table IV's row 6: 64x64 16-QAM, 22 dB, seed 344, batches
 of 500 (arpx.draw, the draws of X3P x64, X64F and X64S). CPU only. Stop as X3: after the batch that reaches --min-vec erroneous uses,
 or at --batches. Writes ROOT/X64K/x64/kbest<K>/snr_22.00/bNNNNN.npz (biterr per use); resumes; done.json at the end.
 Usage: x64_kbest.py ROOT --K 128 [--batches 600] [--min-vec 2000] [--seed 344] [--snr 22] [--B 500]"""

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """A5.6: MMSE-SIC (mimo.mmse_sic, per='real', the paper's baseline and MDI's own SIC guess) on the draws of
-Table IV's row "D128 X64": 64x64 16-QAM, 22 dB, seed 344, batches of 500 (arpx.draw, the draws x3_prod.py used). Writes
+Table IV's row 6: 64x64 16-QAM, 22 dB, seed 344, batches of 500 (arpx.draw, the draws x3_prod.py used). Writes
 ROOT/X64S/x64/mmse_sic/snr_22.00/bNNNNN.npz (biterr per use); resumes; done.json at the end.
 Usage: x64_sic.py ROOT [--batches 600] [--seed 344] [--snr 22] [--B 500]"""
 import argparse

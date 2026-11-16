@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A5.14 kernel: first-accept SA with commit width W (rule (2) only).
+"""A5.14 kernel: first-accept SA committing up to W accepted lanes per test (rule (2) only; this W is not the paper's commit width).
 One test cycle tests every remaining lane of one copy bank against the current fields. The first min(W, accepted) accepted lanes
 in scan order are committed one after another, each a field-update cycle with its energy change taken from the fields at its
 commit (so lanes after the first commit act on a stale test, as parallel flips do). The lanes after the last committed lane are
