@@ -28,7 +28,7 @@ ETH AI Center, ETH Zurich
 
 ## <a name="environment"></a> 📢 Environment
 
-- Simulation: Python 3.12 with NumPy 2.5, PyTorch 2.11 (CUDA 12.8 build) and SciPy 1.18. The CUDA kernels are built to cubins with the CUDA 13.4 nvcc wheel (`nvidia-cuda-nvcc`) in the same environment (`arpeggio/mimo/build_kernel.sh`, `arpeggio/sim/build_sm120.sh`). Error counts ran on NVIDIA RTX 5090 and B200 GPUs; timed numbers come from one B200.
+- Simulation: Python 3.12 with NumPy 2.5, Numba 0.68 (K-best and sphere decoder), PyTorch 2.11 (CUDA 12.8 build) and SciPy 1.18. The CUDA kernels are built to cubins with the CUDA 13.4 nvcc wheel (`nvidia-cuda-nvcc`) in the same environment (`arpeggio/mimo/build_kernel.sh`, `arpeggio/sim/build_sm120.sh`). Error counts ran on NVIDIA RTX 5090 and B200 GPUs; timed numbers come from one B200.
 - RTL cycle checks: Icarus Verilog or Verilator.
 - Physical design: Genus and Innovus 25.11 and Conformal 25.10 with the GF22 kit (not included).
 - Figures: Matplotlib, PyMuPDF and pdfTeX with TikZ.

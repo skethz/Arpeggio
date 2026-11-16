@@ -1,4 +1,5 @@
 numpy
+numba
 scipy
 torch
 matplotlib
