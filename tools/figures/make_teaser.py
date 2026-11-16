@@ -210,7 +210,7 @@ box(0, y, W, ah, fc=TINT, r=1.5)
 ytop4 = y
 y = y + 5.2
 # Panel 4 sets Chord (best-case parallel flips) beside first-accept SA on the same
-# tests (Section V-B; Witte 1991, Sohn 1995). Schematic, N = 8 spins: pale cells are tested, dark cells flip; both test one copy's D = 4 spins
+# tests (Section III-C; Witte 1991, Sohn 1995). Schematic, N = 8 spins: pale cells are tested, dark cells flip; both test one copy's D = 4 spins
 # per step (gauge 4/8). Chord flips every passing spin; first-accept flips the first passing one, re-tests, and keeps the copy until none passes.
 # Arpeggio re-tests only the spins after the flipped one, with no re-test after a flip on the copy's
 # last spin, each copy once per sweep (Section III-C, C_FA). The re-test columns show only those spins; the gauge's 4/8 is a pass's first test.
@@ -405,7 +405,7 @@ ax_d = axes(53, 130, pt2, pb2)
 # SA navy circle. Right of zero, tinted: Chord needs less SNR. Numbers sit in one column, signed.
 # Row names put the user count first ('32-user K-best'), so 32 is not read as K-best's candidate count.
 rows = [
-    ('MDI-MIMO, $10^{-3}$', [0, 1.35, 0.5], NAVY, '^', '0 to +1.35'),   # published curves, Section V-C; 0.25 unresolved, drawn at 0
+    ('MDI-MIMO, $10^{-3}$', [0, 1.35, 0.5], NAVY, '^', '0 to +1.35'),   # published curves, Section V-C; 0.26 unresolved, drawn at 0
     ('32-user K-best', [2.23, 1.70, 0.98, 0.78], DARK, 's', '+0.78 to +2.23'),   # paired, table2_pairs.csv: 16-QAM 2.23/1.70, QPSK 0.98/0.78
     ('16-user K-best', [0, -1.60, 0, -0.07], DARK, 's', '0 to \u22121.60'),   # paired (table2_pairs.csv): 16-QAM 10^-3 unresolved (0), 10^-4 -1.60; QPSK 10^-3 unresolved (0), 10^-4 -0.07 [-0.17, -0.01]
     ('SA, equal sweeps', [-0.44, -1.40, -1.27, -0.88], NAVY, 'o', '\u22120.44 to \u22121.40'),   # a5/a53.json tab2_*, a5/a5.json a5a.tab2_x32

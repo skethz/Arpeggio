@@ -28,7 +28,7 @@ ETH AI Center, ETH Zurich
 
 ## <a name="environment"></a> 📢 Environment
 
-- Simulation: Python 3.12 with NumPy 2.5, Numba 0.68 (K-best and sphere decoder), PyTorch 2.11 (CUDA 12.8 build) and SciPy 1.18. The CUDA kernels are built to cubins with the CUDA 13.4 nvcc wheel (`nvidia-cuda-nvcc`) in the same environment (`arpeggio/mimo/build_kernel.sh`, `arpeggio/sim/build_sm120.sh`). Error counts ran on NVIDIA RTX 5090 and B200 GPUs; timed numbers come from one B200.
+- Simulation: Python 3.12 with NumPy 2.5, Numba 0.68 (K-best and sphere decoder), PyTorch 2.11 (CUDA 12.8 build) and SciPy 1.18. The CUDA kernels are built to cubins with the CUDA 13.4 nvcc wheel (`nvidia-cuda-nvcc`) in the same environment (`arpeggio/mimo/build_kernel.sh`, `arpeggio/sim/build_sm120.sh`). Error counts ran on NVIDIA RTX 5090 and B200 GPUs (K-best and the sphere decoder on CPUs); timed numbers come from one B200.
 - RTL: Verilator for the cycle checks; Questa 2025.3 for the testbenches and the switching activity behind Table IV's power.
 - Physical design: Genus and Innovus 25.11 and Conformal 25.10 with the GF22 kit (not included).
 - Figures: Matplotlib, PyMuPDF, Ghostscript (Fig. 2 bottom) and pdfTeX with TikZ.
@@ -66,8 +66,10 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | `data/ber/a5/`, `a54/`, `a55/`, `a56/` | The price-of-parallelism experiments: flip policies, colorings and budgets, schedule lengths, equal-cycle SA and first-accept, early stop and the 64-user runs. |
 | `data/ber/ablation/`, `mechanism/`, `regime/`, `energy/`, `equivalence/`, `fidelity/` | Ablation of copy coloring and pinning, oscillation traces, the PIMI regime map, energy inputs, kernel equivalence, and our MDI-AHC and MMSE-SIC against the published curves. |
 | `data/results/` | A5.8 (64 users), A5.9 and A5.10 (RTL cycles), A5.12 (parallel-trial cost), A5.13 (fixed point), A5.14–A5.16 (commit width, re-tuned Chord at 32 users), A5.17 (k-row commits), A5.19 (re-tuned Chord at 64 users; default Chord at 64 and 16 users), A5.20 (k-row commits at 64 users), A5.21 (one-comparator SA at P1 and P2). |
-| `data/asic/` | GF22 records: equivalence, static timing, activity-based power, energy per decision and fairness; A5.18 same-clock Chord/Arpeggio pairs at D = 32, 64 and 128. |
+| `data/asic/` | GF22 records: equivalence, static timing, activity-based power, energy per decision and fairness; A5.18 same-clock Chord/Arpeggio pairs at D = 32, 64 and 128, with their sign-off (`a518/SIGNOFF_D32_D64.md`, `a518/RESULTS_D128.md`). |
 | `data/layout/` | GF22 layout exports with their [provenance](data/layout/PROVENANCE.md). |
+
+Some data files keep earlier labels: `alternation` is copy coloring, `half_step` a round, and `ML (sphere decoder)` the sphere-decoder proxy. In `data/ber/ablation/`, (ii) alternation off, (iv) dimension-scaled pinning and (ix) sequential Metropolis SA are Table II's Copy coloring off, Coord.-scaled q and One-comparator SA. `data/ber/table2/table2.tex` and `table2_ci.tex` are the tables Table III was made from: they add a one-stage Chord row, leave out the SA rows (from `data/ber/a5/`), and their (a)/(b) marks are not Table III's notes.
 
 ## <a name="code"></a> 🔩 Code
 
@@ -114,7 +116,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | **Chord** | 21.1/24.2 | 20.9/23.6 | – | – |
 | SA, 128 sweeps | – | 19.6/22.7 | – | – |
 
-–: not run. Confidence intervals and footnotes are in the paper and in `data/ber/table2/`.
+–: not run. Crossing CIs are in `data/ber/table2/` and the SA rows' data in `data/ber/a5/`; footnotes are in the paper. Each sphere-decoder run reaches 100 erroneous uses or 10⁷ bits; above 18 dB at 16-QAM, the fallback for unfinished searches leaves the proxy 98 down to 1 erroneous uses per point.
 
 ### Routed GF22 Chord and Arpeggio engines, TT corner (Table IV)
 
@@ -130,9 +132,9 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | Arpeggio, D = 64 | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.6×10⁻⁴ | 1,000 (645) | 0.378 | 172 | 14.7 | 2,540 | 8.6 |
 | Arpeggio, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 2.7×10⁻⁴ | 833 (556) | 0.732 | 243 | 30.0 | 7,290 | 4.8 |
 
-Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's), in fixed point, on the workloads of Chord's rows 3, 5 and 6, each routed at the clock of the Chord engine it is compared with in Section V-B: 1.00 ns at D = 32 and 64, 1.20 ns at D = 128 (the D = 32 Chord row above is the 1.15 ns build; the 1.00 ns Chord at D = 32 had one closure pass). Arpeggio's cycles are those of Chord's rows 3, 5 and 6 scaled by the Section V-B RTL cycle ratios; its power is measured on 20 captured MDI sub-problems per K, as is that of the Section V-B Chord engines at the same clocks (1.00/1.00/1.20 ns: 67.2/21.8/41.8 µs per detection, 91.9/174/206 mW); on the detection streams of rows 3, 5 and 6, Chord draws 1/6/26 % more. A decision is one test of one spin (one per spin and sweep).
+Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's), in fixed point, on the workloads of Chord's rows 3, 5 and 6, each routed at the clock of the Chord engine it is compared with in Section V-B: 1.00 ns at D = 32 and 64, 1.20 ns at D = 128 (the D = 32 Chord row above is the 1.15 ns build; the 1.00 ns Chord at D = 32 had one closure pass). Arpeggio's cycles are those of Chord's rows 3, 5 and 6 scaled by the Section V-B RTL cycle ratios; its power is measured on 20 captured MDI sub-problems per K, as is that of the Section V-B Chord engines at the same clocks (1.00/1.00/1.20 ns: 67.2/21.8/41.8 µs per detection, 91.9/174/206 mW); on the detection streams of rows 3, 5 and 6, Chord draws 1/6/26 % more. Rows 8 and 9 had one closure pass; in row 9, one internal path misses SS hold by 0.2 ps. A decision is one test of one spin (one per spin and sweep).
 
-<img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 engines by RTL function">
+<img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 Chord engines by RTL function">
 
 ### The price of parallel flips
 
