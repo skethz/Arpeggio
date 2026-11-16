@@ -63,7 +63,11 @@ def content_xrefs(doc):
 
 def main(in_dir, out_dir):
     for name in FIGS:
-        doc = fitz.open(Path(in_dir) / f'{name}.pdf')
+        src = Path(in_dir) / f'{name}.pdf'
+        if not src.exists():          # e.g. mechanism.pdf, which no script here draws
+            print(name, 'skipped: no', src)
+            continue
+        doc = fitz.open(src)
         total = 0
         for x in content_xrefs(doc):
             new, n = recolour_stream(doc.xref_stream(x))

@@ -45,7 +45,7 @@ The figures are in [`figures/`](figures/).
 
 | Paper | Script | Data |
 | --- | --- | --- |
-| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/`, `data/ber/table2/`, `data/ber/a5/`, `data/asic/a518/` |
+| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/`; panels (d) and (e) hold values typed from `data/ber/table2/`, `data/ber/a5/` and `data/asic/a518/` |
 | Fig. 2 (top) | [decision_flow_concept.tex](tools/figures/decision_flow_concept.tex) (pdfTeX), then [recolour_figures.py](tools/figures/recolour_figures.py) | TikZ source |
 | Fig. 2 (bottom) | [make_layout.py](tools/figures/make_layout.py) | `data/layout/` |
 | Fig. 3 | [make_price.py](tools/figures/make_price.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/a5/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/` |
@@ -87,13 +87,13 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | A5.8 | First-accept at 64 users | `data/results/a58/` |
 | A5.9, A5.10 | RTL cycles; fused first-accept | `data/results/a59/`, `a510/` |
 | A5.12, A5.13 | Parallel-trial cost; fixed-point first-accept | `data/results/a512/`, `a513/`, `a513_fixed/` |
-| A5.14–A5.16 | Commit width; Arpeggio against re-tuned and default Chord at 32 users; fixed point at P1 | `data/results/a514/` |
+| A5.14–A5.16 | Commit width; Arpeggio against re-tuned and default Chord at 32 users; fixed point at P1, P2 and 64 users | `data/results/a514/` |
 | A5.17 | Chord with k-row commits (cycle model) | `data/results/a517/` |
 | A5.19 | Arpeggio against re-tuned Chord at 64 users; against default Chord at 64 and 16 users | `data/results/a519/` |
 | A5.20 | Arpeggio against re-tuned Chord with k-row commits (k = 2, 4, all) at 64 users | `data/results/a520/` |
 | A5.21 | One-comparator SA against default Chord at P1 and P2, 300,000 paired uses per point | `data/results/a521/` |
 | GF22 | Equivalence, activity power, slow-corner clock and fairness of the engines | `data/asic/` |
-| A5.11, A5.18 | Arpeggio through the GF22 flow at Chord's clocks | `data/asic/a518/` |
+| A5.11, A5.18 | Arpeggio through the GF22 flow: each engine at its own clock (A5.11), then at the clock of the Chord engine it is compared with (A5.18) | `data/asic/a518/` |
 
 ## <a name="results"></a> 📈 Results
 
@@ -129,7 +129,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | Arpeggio, D = 64 | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.6×10⁻⁴ | 1,000 (645) | 0.378 | 172 | 14.7 | 2,540 | 8.6 |
 | Arpeggio, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 2.7×10⁻⁴ | 833 (556) | 0.732 | 243 | 30.0 | 7,290 | 4.8 |
 
-Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's), in fixed point, routed at Chord's clocks on the workloads of Chord's rows 3, 5 and 6. A decision is one test of one spin (one per spin and sweep).
+Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's), in fixed point, on the workloads of Chord's rows 3, 5 and 6, each routed at the clock of the Chord engine it is compared with in Section V-B: 1.00 ns at D = 32 and 64, 1.20 ns at D = 128 (the D = 32 Chord row above is the 1.15 ns build). A decision is one test of one spin (one per spin and sweep).
 
 <img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 engines by RTL function">
 
