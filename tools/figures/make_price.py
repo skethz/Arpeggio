@@ -7,10 +7,12 @@ the compressed series as a gray reference. Writes raw/ here.
     - rule (2) first-accept per-S picks under F (F-R, the existing comparators): filled diamonds;
       F picks are not joined: under F, x depends on the temperature, not only on S;
     - ring: the best pick within budget B = 1 under each model (stage A + B), the ratios quoted in the text; the one-comparator
-      SA ring is A5.21's measurement of the same pick (seed 2028, 300,000 paired uses per point);
+      SA ring is A5.21's measurement of the same pick (seed 2028, 300,000 paired uses per point); the rule (2) ring at P1/P2
+      is the same pick over 300,000 paired uses (P1: A5.19, seed 2028; P2: A5.15, seed 2027), x per K on those uses;
     - gray: A5's 128-sweep schedule compressed over S under E.
     Horizontal bars span K = 1..3 (x per K from flips.json, seed 1000 batch 50); vertical bars are paired 95 % CIs.
-Data: a55/analysis.json (points.*.per_s, budget, picks.*.x.per_K); a5/a5.json, a5/a53.json; results_a521/analysis.json.
+Data: a55/analysis.json (points.*.per_s, budget, picks.*.x.per_K); a5/a5.json, a5/a53.json; results_a521/analysis.json;
+results_a519/analysis.json; results_a514/analysis_a515_a516_20261110.json.
 """
 import json
 import math
@@ -34,6 +36,22 @@ A53 = json.load(open(DATA / 'a53.json'))
 A55 = json.load(open(DATA.parent / 'a55' / 'analysis.json'))['points']
 # one-comparator SA at B = 1, P1/P2: the same picks over 300,000 paired uses per point (A5.21); the cycles (x) are unchanged
 A521 = json.load(open(DATA.parent.parent / 'results_a521' / 'analysis.json'))['points']
+# rule (2) first-accept at B = 1, P1/P2: the same picks over 300,000 paired uses per point (P1 A5.19 A16/C0, P2 A5.15 A32/C0);
+# x is their held-out cycle factor per K on those uses
+_A519 = json.load(open(DATA.parent.parent / 'results_a519' / 'analysis.json'))
+_A515 = json.load(open(DATA.parent.parent / 'results_a514' / 'analysis_a515_a516_20261110.json'))['A515']
+assert not _A519['P1']['A16_C0']['partial'] and _A515['A32_C0']['uses'] == 300000
+
+
+def _x3(per_K):
+    v = [per_K[k] for k in sorted(per_K)]
+    return min(v), sum(v) / len(v), max(v)
+
+
+FR1 = {'P1': dict(method=_A519['select']['held1']['A16'], x3=_x3(_A519['P1']['x']['A16']['x_per_K']),
+                  **{k: _A519['P1']['A16_C0'][k] for k in ('ratio', 'lo', 'hi')}),
+       'P2': dict(method=_A515['methods']['A32'], x3=_x3(_A515['x']['A32']['per_K']),
+                  **{k: _A515['A32_C0'][k] for k in ('ratio', 'lo', 'hi')})}
 SWEEPS = ['1', '2', '4', '8', '16', '32', '64', '128']
 PT_COL, SA_COL, CHORD_COL, OLD_COL = fs.COMP_BLUE, fs.COMP_ORANGE, fs.OURS, fs.BASE2
 # First-accept SA has its own colour; parallel trial is navy like one-comparator SA. The recolour maps
@@ -127,6 +145,10 @@ def frontier(ax, point, shape, pick, old_series, title):
             assert n['SA'] == r['method'] and not n['partial'], (point, n['SA'], r['method'])
             r = dict(method=r['method'], ratio=n['ratio'], lo=n['lo'], hi=n['hi'])
         x3 = a55_x3(point, r['method'], model)
+        if key == 'F-R/1' and point in FR1:
+            n = FR1[point]
+            assert n['method'] == r['method'], (point, n['method'], r['method'])
+            r, x3 = dict(method=r['method'], ratio=n['ratio'], lo=n['lo'], hi=n['hi']), n['x3']
         mk = {'E/1': 'o', 'F-R/1': 'D', 'F-M/1': '^'}[key]
         col = SA_COL if model == 'E' else ARPEGGIO_COL
         errpt(ax, x3, a55_rec(r), col, mk, ms=2.6, mfc='white' if key == 'F-M/1' else None, zorder=4)

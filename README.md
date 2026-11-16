@@ -45,10 +45,10 @@ The figures are in [`figures/`](figures/).
 
 | Paper | Script | Data |
 | --- | --- | --- |
-| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/ber/table2/`, `data/ber/a5/`, `data/asic/a518/` |
+| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/`, `data/ber/table2/`, `data/ber/a5/`, `data/asic/a518/` |
 | Fig. 2 (top) | [decision_flow_concept.tex](tools/figures/decision_flow_concept.tex) (pdfTeX), then [recolour_figures.py](tools/figures/recolour_figures.py) | TikZ source |
 | Fig. 2 (bottom) | [make_layout.py](tools/figures/make_layout.py) | `data/layout/` |
-| Fig. 3 | [make_price.py](tools/figures/make_price.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/a5/`, `data/ber/a55/`, `data/results/a521/` |
+| Fig. 3 | [make_price.py](tools/figures/make_price.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/a5/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/` |
 | Fig. 4 | [make_ber.py](tools/figures/make_ber.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/table2/` |
 | Table I | – | Summary of Section V; the data of Fig. 3, Tables II–IV and `data/results/` |
 | Table II | – | `data/ber/ablation/`, `data/ber/a5/`, `data/ber/a56/` |
@@ -87,7 +87,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | A5.8 | First-accept at 64 users | `data/results/a58/` |
 | A5.9, A5.10 | RTL cycles; fused first-accept | `data/results/a59/`, `a510/` |
 | A5.12, A5.13 | Parallel-trial cost; fixed-point first-accept | `data/results/a512/`, `a513/`, `a513_fixed/` |
-| A5.14–A5.16 | Commit width; Arpeggio against re-tuned Chord at 32 users; fixed point at P1 | `data/results/a514/` |
+| A5.14–A5.16 | Commit width; Arpeggio against re-tuned and default Chord at 32 users; fixed point at P1 | `data/results/a514/` |
 | A5.17 | Chord with k-row commits (cycle model) | `data/results/a517/` |
 | A5.19 | Arpeggio against re-tuned Chord at 64 users; against default Chord at 64 and 16 users | `data/results/a519/` |
 | A5.20 | Arpeggio against re-tuned Chord with k-row commits (k = 2, 4, all) at 64 users | `data/results/a520/` |
