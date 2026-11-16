@@ -9,7 +9,7 @@ ETH AI Center, ETH Zurich
 [![Figures](https://img.shields.io/badge/Figures-5-8C1515)](figures/)
 [![Results](https://img.shields.io/badge/Results-Tables-8C1515)](#results)
 
-> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable; heuristic Ising detectors often test spins at once (deciding if each flips its sign) and flip them together. Yet synchronous flips can oscillate, annealing tests one spin at a time, and each flip updates every local field: do parallel flips pay? Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies; one active copy per coordinate (*copy coloring*) and pinning stabilize parallel flips. Two policies on it differ in flips per parallel test: all (*Chord*) or, by the existing first-accept rule, one (*Arpeggio*). Within Chord's cycles, parallel tests pay: Chord has 2.2–4.5 times lower bit error rates than one-at-a-time annealing, at 16 and 32 users (16-ary quadrature amplitude modulation). Counterintuitively, flipping all does not: Arpeggio beats default Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks) and, at no more modeled cycles, re-tuned Chord at 32 and 64.
+> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable; heuristic Ising detectors often test spins at once (deciding if each flips its sign) and flip them together. Yet synchronous flips can oscillate, annealing tests one spin at a time, and each flip updates all local fields in a cycle: do parallel flips pay? Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies; one active copy per coordinate (*copy coloring*) and pinning stabilize parallel flips. Two policies flip all (*Chord*) or, by the existing first-accept rule, one (*Arpeggio*) per parallel test. Within Chord's modeled cycles, parallel tests pay: 2.2–4.5 times lower bit error rates than one-at-a-time annealing at 16 and 32 users (16-ary quadrature amplitude modulation). Counterintuitively, flipping all does not: Arpeggio beats default Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks) and, at no more modeled cycles, re-tuned Chord at 32 and 64.
 
 <p align="center">
   <img src="figures/teaser.png" width="620" alt="Why parallel flips oscillate, how copy coloring and pinning stabilize them, and how Chord and Arpeggio compare">
@@ -94,7 +94,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | A5.20 | Arpeggio against re-tuned Chord with k-row commits (k = 2, 4, all) at 64 users | `data/results/a520/` |
 | A5.21 | One-comparator SA against default Chord at P1 and P2, 300,000 paired uses per point | `data/results/a521/` |
 | GF22 | Equivalence, activity power, slow-corner clock and fairness of the engines | `data/asic/` |
-| A5.11, A5.18 | Arpeggio through the GF22 flow: each engine at its own clock (A5.11; scripts in `arpeggio/asic/a511/`, numbers not used in the paper), then at the clock of the Chord engine it is compared with (A5.18) | `data/asic/a518/` |
+| A5.11, A5.18 | Arpeggio through the GF22 flow: each engine at its own clock (A5.11; scripts in `arpeggio/asic/a511/`; Table IV's D = 32 Arpeggio row reuses its area and power, its own-clock ratios are not used), then at the clock of the Chord engine it is compared with (A5.18) | `data/asic/a518/` |
 
 ## <a name="results"></a> 📈 Results
 
@@ -130,7 +130,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | Arpeggio, D = 64 | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.6×10⁻⁴ | 1,000 (645) | 0.378 | 172 | 14.7 | 2,540 | 8.6 |
 | Arpeggio, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 2.7×10⁻⁴ | 833 (556) | 0.732 | 243 | 30.0 | 7,290 | 4.8 |
 
-Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's), in fixed point, on the workloads of Chord's rows 3, 5 and 6, each routed at the clock of the Chord engine it is compared with in Section V-B: 1.00 ns at D = 32 and 64, 1.20 ns at D = 128 (the D = 32 Chord row above is the 1.15 ns build). A decision is one test of one spin (one per spin and sweep).
+Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's), in fixed point, on the workloads of Chord's rows 3, 5 and 6, each routed at the clock of the Chord engine it is compared with in Section V-B: 1.00 ns at D = 32 and 64, 1.20 ns at D = 128 (the D = 32 Chord row above is the 1.15 ns build). Arpeggio's power is measured on 20 captured MDI sub-problems per K, as is that of the Section V-B Chord engines at the same clocks (1.00/1.00/1.20 ns: 67.2/21.8/41.8 µs per detection, 91.9/174/206 mW); on the detection streams of rows 3, 5 and 6, Chord draws 1/6/26 % more. A decision is one test of one spin (one per spin and sweep).
 
 <img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 engines by RTL function">
 
