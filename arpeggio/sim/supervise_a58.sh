@@ -10,7 +10,7 @@ L=$A/logs/a58
 PY=$A/venv/bin/python
 XF=$A/results/a56/X64F/x64/a56_128_0.3_0.3_0.4_0_alt_8/snr_22.00
 W=${A58_WORKERS:-4}
-CUT3=1794308400                       # 10 Nov 2026 12:00 CET
+CUT3=1794308400                       # time of cut 3 (Unix seconds)
 GPUS=(<GPU_UUID> <GPU_UUID>)
 mkdir -p "$R/pids" "$L"
 log() { echo "$(date '+%m-%d %H:%M:%S') $*" >> "$L/supervisor.log"; }

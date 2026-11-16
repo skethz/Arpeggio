@@ -2,7 +2,7 @@
 """A5.19 analysis. Pure function of saved batches; no GPU.
 Each comparison pairs its two arms on the batch indices both have (P4: seed 2028, batches of 500; P1: batches of 2,000); x_F pairs
 an arm with C0 the same way. If the time cut ended the run (fewer batches than planned), each comparison is flagged partial, and a
-replication whose CI contains both 1 and the A5.8/A5.5 estimate (A64/C0 0.783, A5.8, seed 344; A16/C0 0.464, A5.5, seed 102) is 'inconclusive
+comparison whose CI contains both 1 and the A5.8/A5.5 estimate (A64/C0 0.783, A5.8, seed 344; A16/C0 0.464, A5.5, seed 102) is 'inconclusive
 (partial run)' instead of 'no detected difference'. Ratio of summed bit errors with a56an.boot_ratio (4,000 replicates, seed 12345) and exact
 McNemar (a56an.mcnemar). Held-out cycles per K from the arms' counters: x = (steps or tests + flips) / anneals over default Chord's cost
 (P4: A5.8 ref_cost on seed 1000; P1: L_K (1 + phi_K)), and x_F = the same over C0's own held-out cost (P4 only; P1's C0 has no counters).

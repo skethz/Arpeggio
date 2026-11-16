@@ -28,8 +28,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[3]
 WORK = Path(__file__).resolve().parent
+DATA = WORK.parents[1] / 'data'   # the repository's data/
+OUT = WORK / 'out'                # raw figures; recolour_figures.py writes the final ones
 TEXT_W, COL_W = 7.16, 3.5
 
 # --- palette roles -------------------------------------------------------------------------------------------------
@@ -121,7 +122,7 @@ def _fixed_bbox(fig, name):
 
 def save(fig, paper, name, dpi=600):
     assert paper == 'Chord'
-    out = ROOT / 'figures'
+    out = OUT
     out.mkdir(exist_ok=True)
     meta = {'Author': '', 'Creator': '', 'Producer': '', 'Title': name}
     bbox = _fixed_bbox(fig, name) if name in PRINTED else 'tight'

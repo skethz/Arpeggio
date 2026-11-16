@@ -1,5 +1,5 @@
 """Fig. 3(a,b) with A5.5's SA re-tuned per sweep count: SA series under E and under F, F-R and F-M marked apart,
-the compressed series as a gray reference. Writes raw/ here.
+the compressed series as a gray reference. Writes to out/.
 
 (a), (b) BER relative to Chord (i) against modeled cycles per anneal relative to Chord, held-out seed 102:
     - SA re-tuned per S (per-S picks, stage A on seed 1000), cost E = S N + F_SA (Eq. (4)): filled circles, solid;
@@ -11,8 +11,8 @@ the compressed series as a gray reference. Writes raw/ here.
       is the same pick over 300,000 paired uses (P1: A5.19, seed 2028; P2: A5.15, seed 2027), x per K on those uses;
     - gray: A5's 128-sweep schedule compressed over S under E.
     Horizontal bars span K = 1..3 (x per K from flips.json, seed 1000 batch 50); vertical bars are paired 95 % CIs.
-Data: a55/analysis.json (points.*.per_s, budget, picks.*.x.per_K); a5/a5.json, a5/a53.json; results_a521/analysis.json;
-results_a519/analysis.json; results_a514/analysis_a515_a516_20261110.json.
+Data: a55/analysis.json (points.*.per_s, budget, picks.*.x.per_K); a5/a5.json, a5/a53.json (all in data/ber/);
+data/results/a521/analysis.json; data/results/a519/analysis.json; data/results/a514/analysis_a515_a516_20261110.json.
 """
 import json
 import math
@@ -30,16 +30,17 @@ fs.apply('price')
 # Figure 1.83 in tall, x labels close to their ticks, (a,b) floor 0.0025; the page height is set here.
 fs.PRINTED['price'] = (516.0, 511.547, 125.2)
 FIG_H, BOT_PT, XLABEL_PAD, Y_FLOOR = 1.83, 27.3, 1.5, 0.0025
-DATA = fs.ROOT / 'work' / 'plan_20261024' / 'arpeggio_ber' / 'data' / 'a5'
+DATA = fs.DATA / 'ber' / 'a5'
+RES = fs.DATA / 'results'
 A5 = json.load(open(DATA / 'a5.json'))
 A53 = json.load(open(DATA / 'a53.json'))
 A55 = json.load(open(DATA.parent / 'a55' / 'analysis.json'))['points']
 # one-comparator SA at B = 1, P1/P2: the same picks over 300,000 paired uses per point (A5.21); the cycles (x) are unchanged
-A521 = json.load(open(DATA.parent.parent / 'results_a521' / 'analysis.json'))['points']
+A521 = json.load(open(RES / 'a521' / 'analysis.json'))['points']
 # rule (2) first-accept at B = 1, P1/P2: the same picks over 300,000 paired uses per point (P1 A5.19 A16/C0, P2 A5.15 A32/C0);
 # x is their held-out cycle factor per K on those uses
-_A519 = json.load(open(DATA.parent.parent / 'results_a519' / 'analysis.json'))
-_A515 = json.load(open(DATA.parent.parent / 'results_a514' / 'analysis_a515_a516_20261110.json'))['A515']
+_A519 = json.load(open(RES / 'a519' / 'analysis.json'))
+_A515 = json.load(open(RES / 'a514' / 'analysis_a515_a516_20261110.json'))['A515']
 assert not _A519['P1']['A16_C0']['partial'] and _A515['A32_C0']['uses'] == 300000
 
 
@@ -222,7 +223,7 @@ def main():
         handles.append(Line2D([], [], color=col, lw=0.8, ls=ls, marker=mk, ms=2.8, label=lab))
         b1 = A5['a5b'][point]['controls']['b1 dimension colours, copies in phase (tuned)']
         errpt(ax, (1.0, 1.0, 1.0), b1, col, mk, ms=3.0, mfc='white')
-    # (c) star in the same colour as (a, b) and the (b) legend; the P-colors points stay blue (caption: 'blue; star: Chord')
+    # (c) star in the same colour as (a, b) and the (b) legend; the P-colors points are drawn in Chord's colour (caption: 'red')
     ax.plot([1], [1], marker='*', color=STAR_COL, ms=8.5, mec=fs.SURF, mew=0.4, zorder=5, ls='none')
     ax.axhline(1, **fs.REF)
     ax.set_xscale('log'); ax.set_yscale('log')
@@ -244,7 +245,8 @@ def main():
     fs.panel_title(ax, 'c', 'Color count, re-tuned on one grid')
     for a in axs:
         a.xaxis.set_label_coords(0.5, -0.155)
-    out = Path(__file__).resolve().parent / 'raw'
+    out = fs.OUT
+    out.mkdir(exist_ok=True)
     meta = {'Author': '', 'Creator': '', 'Producer': '', 'Title': 'price'}
     fig.savefig(out / 'price.pdf', metadata=meta, dpi=600,
                 bbox_inches=fs._fixed_bbox(fig, 'price') if 'price' in fs.PRINTED else 'tight')

@@ -12,8 +12,9 @@ from matplotlib.patches import Patch
 import figstyle as fs
 import layoutlib as ll
 
+fs.BASE1, fs.INK = '#53565A', '#000000'   # the printed figure's frame gray and text colour (recolour_figures.py's DARK, BLACK)
 fs.apply('asic_layout_r4')
-P = fs.ROOT / 'Arpeggio_DAC27' / 'data' / 'asic_layout_r4'
+P = fs.DATA / 'layout'
 # Categorical RTL-function map: the supplied palette is all blues and grays, which merge on the map, so each logic
 # function gets its own hue family. Blue is the palette's; orange, green and yellow are added for this figure only.
 COLORS = {'Coupling and schedule memory': '#53565A', 'Multipliers (decision or MAC)': '#0077C8',
@@ -124,6 +125,4 @@ for name, *_ in CASES:
           'scale %.4f in/mm' % (S * 1e3))
 print('figure %.2f x %.2f in' % (FW, FH))
 fs.save(fig, 'Chord', 'asic_layout_r4', dpi=500)
-import os
-from pathlib import Path
-fs.jpeg_compress_pdf((Path(os.environ['FIG_OUT']) if 'FIG_OUT' in os.environ else fs.ROOT / 'Arpeggio_DAC27' / 'figures') / 'asic_layout_r4.pdf')
+fs.jpeg_compress_pdf(fs.OUT / 'asic_layout_r4.pdf')

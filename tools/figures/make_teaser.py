@@ -5,8 +5,9 @@ Data (plain values below are as printed in the paper):
   (a), (b) ROOT/mechanism/mech_traces_{examples,population}.csv;
            87-99 % and 0.1 %: mech_traces_summary.json.
   (c)      a55/analysis.json, budget B = 1 picks under E and F-R (the rings of Fig. 3(a), (b)); A5.5; the E picks' ratios
-           from results_a521/analysis.json (A5.21, 300,000 paired uses per point); the F-R picks' ratios from
-           results_a519/analysis.json (P1, A5.19) and results_a514/analysis_a515_a516_20261110.json (P2, A5.15), same basis.
+           from data/results/a521/analysis.json (A5.21, 300,000 paired uses per point); the F-R picks' ratios from
+           data/results/a519/analysis.json (P1, A5.19) and data/results/a514/analysis_a515_a516_20261110.json (P2, A5.15),
+           same basis.
   (d)      Sections V-B and V-C, Table III (table2.csv; a5/a53.json tab2_*; a5/a5.json a5a.tab2_x32).
   (e)      A5.18 part 2 routed Arpeggio over Chord, both at 1.00 ns: rho_t 0.842744/0.676901, rho_E 0.888282/0.668024
            (data/asic/a518/d32_d64.json); 64 users: D128 pair at 1.20 ns, rho_t 0.718156,
@@ -30,7 +31,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Polygon, Rectangle
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[2] / 'work' / 'plan_20261024' / 'arpeggio_ber' / 'data'
+ROOT = HERE.parents[1] / 'data' / 'ber'
+RES = HERE.parents[1] / 'data' / 'results'
 OURS, NAVY, DARK, MID, PALE, LIGHT, TINT, INK = '#8C1515', '#002B49', '#53565A', '#A0A2A4', '#CBCCCD', '#F2F4F7', '#F1E3E3', '#000000'
 # Palette: Chord #8C1515 (OURS; TINT its 12% tint), first-accept SA #1966FF (ARPEGGIO).
 ARPEGGIO = '#1966FF'
@@ -342,13 +344,13 @@ ax_b.text(250, 11, 'no pinning', ha='right', va='bottom', fontsize=TXT)
 #     on Chord's D comparators); Chord is the line at 1x.
 A55 = json.load(open(ROOT / 'a55' / 'analysis.json'))['points']
 # one-comparator SA at B = 1: the same picks over 300,000 paired uses per point (A5.21), as Fig. 3(a), (b)'s rings
-A521 = json.load(open(ROOT.parent / 'results_a521' / 'analysis.json'))['points']
+A521 = json.load(open(RES / 'a521' / 'analysis.json'))['points']
 for _P in ('P1', 'P2'):
     assert A521[_P]['SA'] == A55[_P]['budget']['E/1']['method'] and not A521[_P]['partial']
 E1 = {P: A521[P]['ratio'] for P in ('P1', 'P2')}
 # rule (2) first-accept at B = 1: the same picks over 300,000 paired uses per point (P1 A5.19 A16/C0, P2 A5.15 A32/C0)
-_A519 = json.load(open(ROOT.parent / 'results_a519' / 'analysis.json'))
-_A515 = json.load(open(ROOT.parent / 'results_a514' / 'analysis_a515_a516_20261110.json'))['A515']
+_A519 = json.load(open(RES / 'a519' / 'analysis.json'))
+_A515 = json.load(open(RES / 'a514' / 'analysis_a515_a516_20261110.json'))['A515']
 assert _A519['select']['held1']['A16'] == A55['P1']['budget']['F-R/1']['method'] and not _A519['P1']['A16_C0']['partial']
 assert _A515['methods']['A32'] == A55['P2']['budget']['F-R/1']['method'] and _A515['A32_C0']['uses'] == 300000
 FR1 = {'P1': _A519['P1']['A16_C0']['ratio'], 'P2': _A515['A32_C0']['ratio']}
@@ -466,6 +468,7 @@ ax_e.text(E_X1 + 2.4, pb2 + 0.07 * PH, 'users', transform=ax.transData, ha='left
 end = pb2 + 9
 print(f'content ends at {end:.1f} of {H:.1f} pt')
 meta = {'Author': '', 'Creator': '', 'Producer': '', 'Title': 'teaser'}
+(HERE / 'out').mkdir(exist_ok=True)
 fig.savefig(HERE / 'out' / 'teaser.pdf', metadata=meta)
 fig.savefig(HERE / 'out' / 'teaser.png', dpi=400)
 

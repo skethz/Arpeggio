@@ -1,5 +1,5 @@
 {
- "note": "A5.4 analysis; modeled cycles (L + F for Chord, S N + F_SA for SA, Fig. 3 data); cycle mean over K is geometric, as Fig. 3 plots it; seed 102, flips seed 1000.",
+ "note": "A5.4 analysis; modeled cycles (L + F for Chord, S N + F_SA for SA); cycle mean over K is geometric; seed 102, flips seed 1000.",
  "points": {
   "P1": {
    "rows": [

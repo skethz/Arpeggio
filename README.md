@@ -28,10 +28,10 @@ ETH AI Center, ETH Zurich
 
 ## <a name="environment"></a> 📢 Environment
 
-- Simulation: Python 3.12 with NumPy 2.5, Numba 0.68 (K-best and sphere decoder), PyTorch 2.11 (CUDA 12.8 build) and SciPy 1.18. The CUDA kernels are built to cubins with the CUDA 13.4 nvcc wheel (`nvidia-cuda-nvcc`) in the same environment (`arpeggio/mimo/build_kernel.sh`, `arpeggio/sim/build_sm120.sh`). Error counts ran on NVIDIA RTX 5090 and B200 GPUs (K-best and the sphere decoder on CPUs); timed numbers come from one B200.
+- Simulation: Python 3.12 with NumPy 2.5, Numba 0.68 (K-best and sphere decoder), PyTorch 2.11 (CUDA 12.8 build) and SciPy 1.18. The CUDA kernels are built to cubins with the CUDA 13.4 nvcc wheel (`nvidia-cuda-nvcc`) in the same environment (`arpeggio/mimo/build_kernel.sh`, `arpeggio/sim/build_sm120.sh`). Error counts ran on NVIDIA RTX 5090 and B200 GPUs (K-best, the sphere decoder and Chord's fixed-point model on CPUs); timed numbers come from one B200.
 - RTL: Verilator for the cycle checks; Questa 2025.3 for the testbenches and the switching activity behind Table IV's power.
 - Physical design: Genus and Innovus 25.11 and Conformal 25.10 with the GF22 kit (not included).
-- Figures: Matplotlib, PyMuPDF, Ghostscript (Fig. 2 bottom) and pdfTeX with TikZ.
+- Figures: Matplotlib 3.10, PyMuPDF 1.26, Pillow 10.4, Ghostscript 10.06 (Fig. 2 bottom) and pdfTeX with TikZ.
 
 ```bash
 conda create -n arpeggio python=3.12 -y
@@ -56,7 +56,7 @@ The figures are in [`figures/`](figures/).
 | Table III | – | `data/ber/table2/`, `data/ber/a5/` |
 | Table IV | – | `data/asic/`, `data/ber/a56/`, `data/ber/reported_comparison.json` |
 
-The figure scripts are the ones that drew the paper's figures. Each reads its data through the path constants at its top, which point to the authors' tree; set them to the folders above to rerun a script.
+The figure scripts are the ones that drew the paper's figures. In `tools/figures/`, `make_teaser.py`, `make_layout.py`, `make_price.py` and `make_ber.py` read `data/` and write to `out/`; after `pdflatex -output-directory=out decision_flow_concept.tex`, `mkdir -p final && python recolour_figures.py out final` gives Figs. 2 (top), 3 and 4, and `out/` holds Figs. 1 and 2 (bottom). All five match the PDFs in `figures/` pixel for pixel.
 
 ## <a name="data"></a> Data
 
@@ -69,14 +69,14 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | `data/asic/` | GF22 records: equivalence, static timing, activity-based power, energy per decision and fairness; A5.18 same-clock Chord/Arpeggio pairs at D = 32, 64 and 128, with their sign-off (`a518/SIGNOFF_D32_D64.md`, `a518/RESULTS_D128.md`). |
 | `data/layout/` | GF22 layout exports with their [provenance](data/layout/PROVENANCE.md). |
 
-Some data files keep earlier labels: `alternation` is copy coloring, `half_step` a round, and `ML (sphere decoder)` the sphere-decoder proxy. In `data/ber/ablation/`, (ii) alternation off, (iv) dimension-scaled pinning and (ix) sequential Metropolis SA are Table II's Copy coloring off, Coord.-scaled q and One-comparator SA. `data/ber/table2/table2.tex` and `table2_ci.tex` are the tables Table III was made from: they add a one-stage Chord row, leave out the SA rows (from `data/ber/a5/`), and their (a)/(b) marks are not Table III's notes.
+Some data files keep earlier labels: `alternation` is copy coloring, `half_step` a round, and `ML (sphere decoder)` the sphere-decoder proxy. In `data/ber/ablation/`, (ii) alternation off, (iv) dimension-scaled pinning and (ix) sequential Metropolis SA are Table II's Copy coloring off, Coord.-scaled q (before its per-point re-tune in `data/ber/a5/a5.json`, key `c2`, `iv_retuned_P1` to `P3`) and One-comparator SA. In method keys such as `abl_far_64_0.1_0.1_0_bal_8`, `rand` is a random start and `bal` the d = 0 start (half of each coordinate's copies at +1). Parallel trial starts at random, except `abl_ptb_*` in `data/ber/a55/` (d = 0, re-tuned per point). `data/ber/table2/table2.tex` and `table2_ci.tex` are the tables Table III was made from: they add a one-stage Chord row, leave out the SA rows (from `data/ber/a5/`), and their (a)/(b) marks are not Table III's notes.
 
 ## <a name="code"></a> 🔩 Code
 
 | Folder | Contents |
 | --- | --- |
 | [`arpeggio/mimo/`](arpeggio/mimo/) | Channel and detection model, the MDI wrapper, Chord's fixed-point reference and CUDA kernel (`chordfx.py`, `chord_kernel.cu`), the AHC and PIMI kernels we compare with, K-best, MMSE-SIC and the sphere-decoder proxy, tuning and BER sweeps. |
-| [`arpeggio/sim/`](arpeggio/sim/) | The cycle model and flip policies (`arpx*.py`, `arpeggiofx.py`, `x3model/`), runners, supervisors and analyses of the A5.x experiments; `local_code_a5*/` hold the code each experiment ran. |
+| [`arpeggio/sim/`](arpeggio/sim/) | The cycle model and flip policies (`arpx*.py`, `arpeggiofx.py`, `x3model/`), runners, supervisors and analyses of the A5.x experiments; `local_code_a5*/` hold each experiment's code, renamed to the paper's terms (placeholders, comments and unreported outputs aside). |
 | [`arpeggio/rtl/`](arpeggio/rtl/) | Engine RTL: `engine/chord_engine.sv` (Chord), `engine/arpeggio_engine.sv` and `engine_a2/arpeggio_engine.sv` (Arpeggio), a behavioral memory model, testbenches and the RTL cycle checks of A5.5, A5.9, A5.10 and A5.18. |
 | [`arpeggio/asic/`](arpeggio/asic/) | Synthesis (`syn/`), place and route (`pnr/`), gate-level equivalence, timing and power (`gate/`), the A5.11 and A5.18 runs and the layout export scripts (`layout/`). |
 
@@ -116,7 +116,7 @@ Some data files keep earlier labels: `alternation` is copy coloring, `half_step`
 | **Chord** | 21.1/24.2 | 20.9/23.6 | – | – |
 | SA, 128 sweeps | – | 19.6/22.7 | – | – |
 
-–: not run. Crossing CIs are in `data/ber/table2/` and the SA rows' data in `data/ber/a5/`; footnotes are in the paper. Each sphere-decoder run reaches 100 erroneous uses or 10⁷ bits; above 18 dB at 16-QAM, the fallback for unfinished searches leaves the proxy 98 down to 1 erroneous uses per point.
+–: not run. Crossing CIs are in `data/ber/table2/` and the SA rows' data in `data/ber/a5/`; footnotes are in the paper. Each sphere-decoder run reaches 100 erroneous uses or 10⁷ bits; above 18 dB at 16-QAM, the fallback for unfinished searches leaves the proxy 98 or fewer erroneous uses per point (Fig. 4 omits points with none).
 
 ### Routed GF22 Chord and Arpeggio engines, TT corner (Table IV)
 
@@ -146,7 +146,7 @@ Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's),
 
 ## <a name="reproducibility"></a> ✅ Reproducibility
 
-- Site-specific values are placeholders: hosts `hostA`, `hostB`, `hostC`, `hostD`, `hostE`; `<SCRATCH>`, `<USER>`, `<GPU_UUID>`, `<LOCAL>`, `<PROJECT>` and `<TOOL_LAUNCHER>`. Scripts that contain them do not run until they are set.
+- Site-specific values are placeholders: hosts `hostA`, `hostB`, `hostC`, `hostD`, `hostE`; `<SCRATCH>`, `<SCRATCH_MOUNT>`, `<USER>`, `<GPU_UUID>`, `<LOCAL>`, `<PROJECT>` and `<TOOL_LAUNCHER>`; kit names `<KIT_MACRO_PIN_LAYER>`, `<KIT_LIB_PREFIX>` and `<KIT_CELL_PREFIX>` (`arpeggio/asic/pnr/`). Scripts that contain them need them set.
 - No library, LEF, technology, cell, macro or layer name of the GF22 kit is included. The synthesis script reads them from `<KIT_SYN_SETUP>`, and the place-and-route body (`arpeggio/asic/pnr/pnr_v2_body.tcl`) is appended on the server to a kit-specific prefix that is not included. The memory wrapper with the kit macros is not included; `arpeggio/rtl/engine/engine_mem_behav.sv` is its behavioral model. Layout exports contain no instance, pin or net labels.
 - Logs and run directories stay on the servers.
 

@@ -10,7 +10,7 @@ P = dict(pt='P4', sh='x64', snr=22.0, Ns=8, B=500, bpu=256, Rmax=3)
 REF, REF_STREAM = 'a56_128_0.3_0.3_0.4_0_alt_8', 'mdichord8'
 SR = (8, 16, 32, 64, 128)
 XPROBE, BUD = 1.25, 1.0
-CUT1 = 1794157200                                                         # 8 Nov 2026 18:00 CET
+CUT1 = 1794157200                                                         # time of cut 1 (Unix seconds)
 NOW = float(os.environ.get('A58_NOW', time.time()))
 NA, NCHUNK, CHUNK = 8, 12, 50                                              # stage A batches; held-out chunks of 50 batches of 500
 

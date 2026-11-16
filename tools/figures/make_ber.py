@@ -1,9 +1,10 @@
 """Fig. 4: BER against SNR inside the MDI wrapper, 16x16 and 32x32 16-QAM (held-out seed 101).
 
 Includes the held-out width-128 sweep, with bootstrap CIs recomputed from saved per-use error counts.
-Points are the Table III runs (>= 100 erroneous uses and >= 100 bit errors per point, capped at 1e7 bits); vertical
+Points are the Table III runs (>= 100 erroneous uses and >= 100 bit errors per point, capped at 1e7 bits; after its
+fallback, the sphere-decoder proxy keeps fewer above 18 dB at 16-QAM); vertical
 bars are 95 % cluster-bootstrap CIs; zero-error points are not drawn.
-Data: table2/table2_curves.csv.
+Data: data/ber/table2/table2_curves.csv.
 """
 import csv
 from collections import defaultdict
@@ -17,7 +18,7 @@ fs.apply('ber')
 # Figure 1.78 in tall, a 44 pt bottom margin and the x label close to its ticks; the page height is set here.
 fs.PRINTED['ber'] = (252.0, 256.29, 124.6)
 FIG_H, TOP_PT, BOT_PT, XLABEL_PAD = 1.78, 14.0, 44.0, 1.5
-DATA = fs.ROOT.parent / 'work' / 'plan_20261024' / 'arpeggio_ber' / 'data' / 'table2' / 'table2_curves.csv'
+DATA = fs.DATA / 'ber' / 'table2' / 'table2_curves.csv'
 
 SERIES = [  # (row in table2_curves.csv, label, colour, linestyle, marker, line width)
     # baselines gray (told apart by marker and dash), the published MDI-AHC solver purple, Chord green
@@ -38,7 +39,7 @@ def load():
         for r in csv.DictReader(f):
             d[(r['shape'], r['row'])].append((float(r['snr_dB']), float(r['ber']), float(r['boot95_lo']),
                                               float(r['boot95_hi'])))
-    with open(fs.WORK.parent / 'data' / 'kbest128_curves.csv') as f:
+    with open(DATA.parent / 'kbest128_curves.csv') as f:
         for r in csv.DictReader(f):
             d[(r['shape'], r['row'])].append(tuple(float(r[k]) for k in ('snr_dB', 'ber', 'boot95_lo', 'boot95_hi')))
     return {k: np.array(sorted(v)) for k, v in d.items()}

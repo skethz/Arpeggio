@@ -5,7 +5,7 @@ Writes RESULTS_DIR/a54/analysis.json.
 
 Reported per point:
   - per Sk: uses, BER, ratio to (i) on the common prefix (paired cluster bootstrap, AN.boot_ratio) and McNemar;
-    cycle ratio (L + F) / (L_128 + F_128) per K from a54/flips.json; its geometric mean over K (Fig. 3 plots this mean);
+    cycle ratio (L + F) / (L_128 + F_128) per K from a54/flips.json; its geometric mean over K;
     the paired ratio to the next and the second-next doubling (saturation rule).
   - per SA S >= 4: the Sk whose geometric-mean cycle ratio is nearest SA's on a log scale, and the paired Chord/SA ratio on common uses."""
 import glob
@@ -68,8 +68,8 @@ def geo(v):
     return float(math.exp(np.mean(np.log(v))))
 
 
-out = dict(note='A5.4 analysis; modeled cycles (L + F for Chord, S N + F_SA for SA, Fig. 3 data); '
-                'cycle mean over K is geometric, as Fig. 3 plots it; seed 102, flips seed 1000.', points={})
+out = dict(note='A5.4 analysis; modeled cycles (L + F for Chord, S N + F_SA for SA); '
+                'cycle mean over K is geometric; seed 102, flips seed 1000.', points={})
 for pt, p in PT.items():
     ref = load('abl/%s/%s/snr_%05.2f' % (p['sh'], p['ref'], p['snr']))
     arms = {Sk: load('a54/abl/%s/abl_anel_%d_%d/snr_%05.2f' % (p['sh'], Sk, p['Ns'], p['snr'])) for Sk in p['grid']}
