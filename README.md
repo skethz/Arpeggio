@@ -29,14 +29,15 @@ ETH AI Center, ETH Zurich
 ## <a name="environment"></a> 📢 Environment
 
 - Simulation: Python 3.12 with NumPy 2.5, Numba 0.68 (K-best and sphere decoder), PyTorch 2.11 (CUDA 12.8 build) and SciPy 1.18. The CUDA kernels are built to cubins with the CUDA 13.4 nvcc wheel (`nvidia-cuda-nvcc`) in the same environment (`arpeggio/mimo/build_kernel.sh`, `arpeggio/sim/build_sm120.sh`). Error counts ran on NVIDIA RTX 5090 and B200 GPUs; timed numbers come from one B200.
-- RTL cycle checks: Icarus Verilog or Verilator.
+- RTL: Verilator for the cycle checks; Questa 2025.3 for the testbenches and the switching activity behind Table IV's power.
 - Physical design: Genus and Innovus 25.11 and Conformal 25.10 with the GF22 kit (not included).
-- Figures: Matplotlib, PyMuPDF and pdfTeX with TikZ.
+- Figures: Matplotlib, PyMuPDF, Ghostscript (Fig. 2 bottom) and pdfTeX with TikZ.
 
 ```bash
 conda create -n arpeggio python=3.12 -y
 conda activate arpeggio
 pip install -r requirements.txt
+pip install nvidia-cuda-nvcc==13.4.92   # Linux: CUDA kernel builds
 ```
 
 ## <a name="paper-figures-and-tables"></a> 🧩 Paper Figures and Tables
@@ -45,7 +46,7 @@ The figures are in [`figures/`](figures/).
 
 | Paper | Script | Data |
 | --- | --- | --- |
-| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/`; panels (d) and (e) hold values typed from `data/ber/table2/`, `data/ber/a5/` and `data/asic/a518/` |
+| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/`; panels (d) and (e) hold values typed from `data/ber/table2/`, `data/ber/fidelity/`, `data/ber/a5/` and `data/asic/a518/` |
 | Fig. 2 (top) | [decision_flow_concept.tex](tools/figures/decision_flow_concept.tex) (pdfTeX), then [recolour_figures.py](tools/figures/recolour_figures.py) | TikZ source |
 | Fig. 2 (bottom) | [make_layout.py](tools/figures/make_layout.py) | `data/layout/` |
 | Fig. 3 | [make_price.py](tools/figures/make_price.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/a5/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/` |
@@ -63,7 +64,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | --- | --- |
 | `data/ber/table2/` | Held-out BER curves, SNR at BER 10⁻³/10⁻⁴ with bootstrap CIs, paired SNR differences, K-best with 128 candidates. |
 | `data/ber/a5/`, `a54/`, `a55/`, `a56/` | The price-of-parallelism experiments: flip policies, colorings and budgets, schedule lengths, equal-cycle SA and first-accept, early stop and the 64-user runs. |
-| `data/ber/ablation/`, `mechanism/`, `regime/`, `energy/`, `equivalence/`, `fidelity/` | Ablation of copy coloring and pinning, oscillation traces, the PIMI regime map, energy inputs, kernel equivalence and fixed-point fidelity. |
+| `data/ber/ablation/`, `mechanism/`, `regime/`, `energy/`, `equivalence/`, `fidelity/` | Ablation of copy coloring and pinning, oscillation traces, the PIMI regime map, energy inputs, kernel equivalence, and our MDI-AHC and MMSE-SIC against the published curves. |
 | `data/results/` | A5.8 (64 users), A5.9 and A5.10 (RTL cycles), A5.12 (parallel-trial cost), A5.13 (fixed point), A5.14–A5.16 (commit width, re-tuned Chord at 32 users), A5.17 (k-row commits), A5.19 (re-tuned Chord at 64 users; default Chord at 64 and 16 users), A5.20 (k-row commits at 64 users), A5.21 (one-comparator SA at P1 and P2). |
 | `data/asic/` | GF22 records: equivalence, static timing, activity-based power, energy per decision and fairness; A5.18 same-clock Chord/Arpeggio pairs at D = 32, 64 and 128. |
 | `data/layout/` | GF22 layout exports with their [provenance](data/layout/PROVENANCE.md). |
@@ -88,12 +89,12 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | A5.9, A5.10 | RTL cycles; fused first-accept | `data/results/a59/`, `a510/` |
 | A5.12, A5.13 | Parallel-trial cost; fixed-point first-accept | `data/results/a512/`, `a513/`, `a513_fixed/` |
 | A5.14–A5.16 | Commit width; Arpeggio against re-tuned and default Chord at 32 users; fixed point at P1, P2 and 64 users | `data/results/a514/` |
-| A5.17 | Chord with k-row commits (cycle model) | `data/results/a517/` |
+| A5.17 | Chord with k-row commits (cycle model); Arpeggio against re-tuned Chord with k-row commits at 32 users | `data/results/a517/` |
 | A5.19 | Arpeggio against re-tuned Chord at 64 users; against default Chord at 64 and 16 users | `data/results/a519/` |
 | A5.20 | Arpeggio against re-tuned Chord with k-row commits (k = 2, 4, all) at 64 users | `data/results/a520/` |
 | A5.21 | One-comparator SA against default Chord at P1 and P2, 300,000 paired uses per point | `data/results/a521/` |
 | GF22 | Equivalence, activity power, slow-corner clock and fairness of the engines | `data/asic/` |
-| A5.11, A5.18 | Arpeggio through the GF22 flow: each engine at its own clock (A5.11), then at the clock of the Chord engine it is compared with (A5.18) | `data/asic/a518/` |
+| A5.11, A5.18 | Arpeggio through the GF22 flow: each engine at its own clock (A5.11; scripts in `arpeggio/asic/a511/`, numbers not used in the paper), then at the clock of the Chord engine it is compared with (A5.18) | `data/asic/a518/` |
 
 ## <a name="results"></a> 📈 Results
 
