@@ -6,10 +6,11 @@ the compressed series as a gray reference. Writes raw/ here.
     - the same Metropolis picks under first-accept cost F = tests + F_SA (F-M, a Metropolis unit per lane): open triangles;
     - rule (2) first-accept per-S picks under F (F-R, the existing comparators): filled diamonds;
       F picks are not joined: under F, x depends on the temperature, not only on S;
-    - ring: the best pick within budget B = 1 under each model (stage A + B), the ratios quoted in the text;
+    - ring: the best pick within budget B = 1 under each model (stage A + B), the ratios quoted in the text; the one-comparator
+      SA ring is A5.21's measurement of the same pick (seed 2028, 300,000 paired uses per point);
     - gray: A5's 128-sweep schedule compressed over S under E.
     Horizontal bars span K = 1..3 (x per K from flips.json, seed 1000 batch 50); vertical bars are paired 95 % CIs.
-Data: a55/analysis.json (points.*.per_s, budget, picks.*.x.per_K); a5/a5.json, a5/a53.json.
+Data: a55/analysis.json (points.*.per_s, budget, picks.*.x.per_K); a5/a5.json, a5/a53.json; results_a521/analysis.json.
 """
 import json
 import math
@@ -31,6 +32,8 @@ DATA = fs.ROOT / 'work' / 'plan_20261024' / 'arpeggio_ber' / 'data' / 'a5'
 A5 = json.load(open(DATA / 'a5.json'))
 A53 = json.load(open(DATA / 'a53.json'))
 A55 = json.load(open(DATA.parent / 'a55' / 'analysis.json'))['points']
+# one-comparator SA at B = 1, P1/P2: the same picks over 300,000 paired uses per point (A5.21); the cycles (x) are unchanged
+A521 = json.load(open(DATA.parent.parent / 'results_a521' / 'analysis.json'))['points']
 SWEEPS = ['1', '2', '4', '8', '16', '32', '64', '128']
 PT_COL, SA_COL, CHORD_COL, OLD_COL = fs.COMP_BLUE, fs.COMP_ORANGE, fs.OURS, fs.BASE2
 # First-accept SA has its own colour; parallel trial is navy like one-comparator SA. The recolour maps
@@ -119,6 +122,10 @@ def frontier(ax, point, shape, pick, old_series, title):
     b = A55[point]['budget']
     for key, model in (('E/1', 'E'), ('F-R/1', 'F'), ('F-M/1', 'F')):
         r = b[key]
+        if key == 'E/1':
+            n = A521[point]
+            assert n['SA'] == r['method'] and not n['partial'], (point, n['SA'], r['method'])
+            r = dict(method=r['method'], ratio=n['ratio'], lo=n['lo'], hi=n['hi'])
         x3 = a55_x3(point, r['method'], model)
         mk = {'E/1': 'o', 'F-R/1': 'D', 'F-M/1': '^'}[key]
         col = SA_COL if model == 'E' else ARPEGGIO_COL

@@ -1,0 +1,17 @@
+{
+ "gates": {
+  "g1": true,
+  "g2": true,
+  "g3": true,
+  "g4": true
+ },
+ "gate_failed": [],
+ "held": {
+  "P1/C0": "mdichord32",
+  "P1/SA": "abl_fam_4_0.3_0.15_rand_32",
+  "P2/C0": "mdichord8",
+  "P2/SA": "abl_fam_2_0.2_0.2_bal_8"
+ },
+ "held_done": true,
+ "stop": false
+}

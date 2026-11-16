@@ -4,7 +4,8 @@ Panels follow the Introduction: Background, Challenge, Research Question, Approa
 Data (plain values below are as printed in the paper):
   (a), (b) ROOT/mechanism/mech_traces_{examples,population}.csv;
            87-99 % and 0.1 %: mech_traces_summary.json.
-  (c)      a55/analysis.json, budget B = 1 picks under E and F-R (the rings of Fig. 3(a), (b)); A5.5.
+  (c)      a55/analysis.json, budget B = 1 picks under E and F-R (the rings of Fig. 3(a), (b)); A5.5; the E picks' ratios
+           from results_a521/analysis.json (A5.21, 300,000 paired uses per point).
   (d)      Sections V-B and V-C, Table III (table2.csv; a5/a53.json tab2_*; a5/a5.json a5a.tab2_x32).
   (e)      A5.18 part 2 routed Arpeggio over Chord, both at 1.00 ns: rho_t 0.842744/0.676901, rho_E 0.888282/0.668024
            (data/asic/a518/d32_d64.json); 64 users: D128 pair at 1.20 ns, rho_t 0.718156,
@@ -339,6 +340,11 @@ ax_b.text(250, 11, 'no pinning', ha='right', va='bottom', fontsize=TXT)
 #     x = users (16, 32); one line per SA hardware: serial HW (one comparator, Eq. (4)) and Chord HW (first-accept with rule (2)
 #     on Chord's D comparators); Chord is the line at 1x.
 A55 = json.load(open(ROOT / 'a55' / 'analysis.json'))['points']
+# one-comparator SA at B = 1: the same picks over 300,000 paired uses per point (A5.21), as Fig. 3(a), (b)'s rings
+A521 = json.load(open(ROOT.parent / 'results_a521' / 'analysis.json'))['points']
+for _P in ('P1', 'P2'):
+    assert A521[_P]['SA'] == A55[_P]['budget']['E/1']['method'] and not A521[_P]['partial']
+E1 = {P: A521[P]['ratio'] for P in ('P1', 'P2')}
 # users on x; one line per SA hardware, labelled in place; Chord is the line at 1
 ax_c = axes(186, 250, pt, pb)
 # First-accept has its own colour (ARPEGGIO);
@@ -350,7 +356,7 @@ XU = {'P1': 0, 'P2': 1}
 # first-accept dotted: dashed blue is (b)'s Chord without pinning
 for key, mk, ms, ls, col in (('E/1', 'o', 2.6, '-', NAVY), ('F-R/1', 'D', 2.3, (0, (1, 1.2)), ARPEGGIO)):
     xs = [XU[P] for P in ('P1', 'P2')]
-    ys = [A55[P]['budget'][key]['ratio'] for P in ('P1', 'P2')]
+    ys = [E1[P] if key == 'E/1' else A55[P]['budget'][key]['ratio'] for P in ('P1', 'P2')]
     # no interval bars: at this height they hide behind the markers; Fig. 3 carries the CIs
     ax_c.plot(xs, ys, color=col, lw=0.6, ls=ls, zorder=2)
     ax_c.plot(xs, ys, mk, ms=ms, mfc=col, mec=col, mew=0.5, ls='none', zorder=3)
@@ -362,7 +368,7 @@ ax_c.set_xticklabels(['16', '32'])
 ax_c.set_yticks([1, 10])
 ax_c.set_yticklabels(['1\u00d7', '10\u00d7'])   # a ratio to Chord, not a raw BER
 ax_c.minorticks_off()
-e1, e2 = A55['P1']['budget']['E/1']['ratio'], A55['P2']['budget']['E/1']['ratio']
+e1, e2 = E1['P1'], E1['P2']
 f1, f2 = A55['P1']['budget']['F-R/1']['ratio'], A55['P2']['budget']['F-R/1']['ratio']
 _r = fig.canvas.get_renderer()
 def _pair(x, y, a, b, sz=6.0):

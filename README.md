@@ -9,7 +9,7 @@ ETH AI Center, ETH Zurich
 [![Figures](https://img.shields.io/badge/Figures-5-8C1515)](figures/)
 [![Results](https://img.shields.io/badge/Results-Tables-8C1515)](#results)
 
-> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable; heuristic Ising detectors often test spins at once (deciding if each flips its sign) and flip them together. Yet synchronous flips can oscillate, annealing tests one spin at a time, and each flip updates every local field: do parallel flips pay? Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies; one active copy per coordinate (*copy coloring*) and pinning stabilize parallel flips. Two policies on it differ in flips per parallel test: all (*Chord*) or, by the existing first-accept rule, one (*Arpeggio*). Within Chord's cycles, parallel tests pay: Chord has 2.5–5.2 times lower bit error rates than one-at-a-time annealing, at 16 and 32 users (16-ary quadrature amplitude modulation). Counterintuitively, flipping all does not: Arpeggio beats default Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks) and, at no more modeled cycles, re-tuned Chord at 32 and 64.
+> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable; heuristic Ising detectors often test spins at once (deciding if each flips its sign) and flip them together. Yet synchronous flips can oscillate, annealing tests one spin at a time, and each flip updates every local field: do parallel flips pay? Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies; one active copy per coordinate (*copy coloring*) and pinning stabilize parallel flips. Two policies on it differ in flips per parallel test: all (*Chord*) or, by the existing first-accept rule, one (*Arpeggio*). Within Chord's cycles, parallel tests pay: Chord has 2.2–4.5 times lower bit error rates than one-at-a-time annealing, at 16 and 32 users (16-ary quadrature amplitude modulation). Counterintuitively, flipping all does not: Arpeggio beats default Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks) and, at no more modeled cycles, re-tuned Chord at 32 and 64.
 
 <p align="center">
   <img src="figures/teaser.png" width="620" alt="Why parallel flips oscillate, how copy coloring and pinning stabilize them, and how Chord and Arpeggio compare">
@@ -45,10 +45,10 @@ The figures are in [`figures/`](figures/).
 
 | Paper | Script | Data |
 | --- | --- | --- |
-| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/ber/table2/`, `data/ber/a5/`, `data/asic/a518/` |
+| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/ber/table2/`, `data/ber/a5/`, `data/asic/a518/` |
 | Fig. 2 (top) | [decision_flow_concept.tex](tools/figures/decision_flow_concept.tex) (pdfTeX), then [recolour_figures.py](tools/figures/recolour_figures.py) | TikZ source |
 | Fig. 2 (bottom) | [make_layout.py](tools/figures/make_layout.py) | `data/layout/` |
-| Fig. 3 | [make_price.py](tools/figures/make_price.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/a5/`, `data/ber/a55/` |
+| Fig. 3 | [make_price.py](tools/figures/make_price.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/a5/`, `data/ber/a55/`, `data/results/a521/` |
 | Fig. 4 | [make_ber.py](tools/figures/make_ber.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/table2/` |
 | Table I | – | Summary of Section V; the data of Fig. 3, Tables II–IV and `data/results/` |
 | Table II | – | `data/ber/ablation/`, `data/ber/a5/`, `data/ber/a56/` |
@@ -64,7 +64,7 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | `data/ber/table2/` | Held-out BER curves, SNR at BER 10⁻³/10⁻⁴ with bootstrap CIs, paired SNR differences, K-best with 128 candidates. |
 | `data/ber/a5/`, `a54/`, `a55/`, `a56/` | The price-of-parallelism experiments: flip policies, colorings and budgets, schedule lengths, equal-cycle SA and first-accept, early stop and the 64-user runs. |
 | `data/ber/ablation/`, `mechanism/`, `regime/`, `energy/`, `equivalence/`, `fidelity/` | Ablation of copy coloring and pinning, oscillation traces, the PIMI regime map, energy inputs, kernel equivalence and fixed-point fidelity. |
-| `data/results/` | A5.8 (64 users), A5.9 and A5.10 (RTL cycles), A5.12 (parallel-trial cost), A5.13 (fixed point), A5.14–A5.16 (commit width, re-tuned Chord at 32 users), A5.17 (k-row commits), A5.19 (re-tuned Chord at 64 users; default Chord at 64 and 16 users). |
+| `data/results/` | A5.8 (64 users), A5.9 and A5.10 (RTL cycles), A5.12 (parallel-trial cost), A5.13 (fixed point), A5.14–A5.16 (commit width, re-tuned Chord at 32 users), A5.17 (k-row commits), A5.19 (re-tuned Chord at 64 users; default Chord at 64 and 16 users), A5.20 (k-row commits at 64 users), A5.21 (one-comparator SA at P1 and P2). |
 | `data/asic/` | GF22 records: equivalence, static timing, activity-based power, energy per decision and fairness; A5.18 same-clock Chord/Arpeggio pairs at D = 32, 64 and 128. |
 | `data/layout/` | GF22 layout exports with their [provenance](data/layout/PROVENANCE.md). |
 
@@ -90,6 +90,8 @@ The figure scripts are the ones that drew the paper's figures. Each reads its da
 | A5.14–A5.16 | Commit width; Arpeggio against re-tuned Chord at 32 users; fixed point at P1 | `data/results/a514/` |
 | A5.17 | Chord with k-row commits (cycle model) | `data/results/a517/` |
 | A5.19 | Arpeggio against re-tuned Chord at 64 users; against default Chord at 64 and 16 users | `data/results/a519/` |
+| A5.20 | Arpeggio against re-tuned Chord with k-row commits (k = 2, 4, all) at 64 users | `data/results/a520/` |
+| A5.21 | One-comparator SA against default Chord at P1 and P2, 300,000 paired uses per point | `data/results/a521/` |
 | GF22 | Equivalence, activity power, slow-corner clock and fairness of the engines | `data/asic/` |
 | A5.11, A5.18 | Arpeggio through the GF22 flow at Chord's clocks | `data/asic/a518/` |
 
