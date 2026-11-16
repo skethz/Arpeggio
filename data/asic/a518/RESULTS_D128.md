@@ -19,7 +19,7 @@ Numbers come from `d128_rows.py` and are saved in `d128_pair_1200.json`.
 - **ρ_t = 0.7182, ρ_E = 0.8452 → Arpeggio leads.**
 - With the production-run cycle ratio, 291,594 / 539,220 = 0.5408, ρ_t = 0.5408 and ρ_E = 0.6364.
 
-## Arpeggio row 6 (64 users, x64 22 dB, MDI N_s 8)
+## Table IV row 9: Arpeggio (64 users, x64 22 dB, MDI N_s 8)
 | | Arpeggio (1.20 ns, one closure pass) | Chord, Table IV printed row (1.20 ns) | ratio |
 |---|---|---|---|
 | BER | 2.66e-4 (20,405 / 76.8 M bits, seed 344) | as Table IV | |
