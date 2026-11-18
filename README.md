@@ -73,9 +73,21 @@ Some data files and code comments keep earlier labels: `alternation` (`alternati
 
 ## <a name="code"></a> 🔩 Code
 
+### Model and update rules
+
+The real-valued model is `y = H x + n`: `y` is the received vector, `x` contains transmitted constellation levels, `H` is the channel matrix, and `n` is white Gaussian noise. Separating real and imaginary components gives `D = 2 N_t` coordinates for `N_t` users; `H` has `2 N_r` rows for `N_r` receive antennas.
+
+Delta encoding corrects a guess `x_g` by `d = M s`, giving the candidate `x_g + d` before constellation clipping. A radius of `K` constellation-level steps uses `P = 2 K` spins per coordinate, each valued at -1 or +1, for `N = P D` spins in total. `M` sums each coordinate's copies. A single flip changes its correction by ±2, one constellation-level step; the copies together span ±K steps. The Gram matrix is `G = H^T H`.
+
+Detection minimizes the squared residual `||y - H x||²`, not bit-error rate directly. In the Ising energy, `h` contains individual-spin biases and `J` contains pairwise couplings with a zero diagonal. The local field `u = h + 2 J s` gives the energy change `ΔE_i = 2 s_i u_i` for flipping spin `i` alone. Negative changes lower energy. The stochastic cellular automaton accepts a flip when `s_i u_i + q < r_i`, using independent uniform draws from `[-2T, 2T)`. At `T = 0`, `r_i = 0`, so pinning `q ≥ 0` requires an energy decrease greater than `2q`; positive temperature can permit energy-increasing moves. Simultaneous flips interact, so their joint energy change need not equal the sum of the single-spin changes.
+
+### Flip policies and implementation
+
 Both policies use copy coloring: one copy per coordinate is active in each round. **Chord** tests the active spins against one field snapshot and commits every accepted flip sequentially, without re-testing. It tracks the best state at completed-round boundaries. **Arpeggio** uses the existing first-accept simulated annealing rule: it commits the first accepted flip in index order, updates the fields, and re-tests later spins. The ASIC shares one Gram matrix **G** across spin copies. Each coordinate's copies share one field lane, with one field-update cycle per committed flip; the CUDA kernel instead stores **J** as 16-bit integers in shared memory.
 
 The MDI wrapper clips candidates to the constellation and returns the candidate with the smallest squared residual, including starting guesses even when no sub-problems are formed.
+
+An anneal is one randomized spin search. The standard 16-QAM MDI configuration starts from MMSE and MMSE-SIC guesses; QPSK uses MMSE only. Each stage recomputes each current guess's radius before allocating anneals. Each generated sub-problem receives `ceil(N_s / (R_1 + R_2))` anneals from the nominal stage budget `N_s`; for the single-guess QPSK configuration, `R_2 = 0`. If no sub-problems are formed, the existing guesses remain candidates. See [`mdi`](arpeggio/mimo/mimo.py) and the [MDI configurations](arpeggio/mimo/mdi_solvers.py).
 
 | Folder | Contents |
 | --- | --- |
@@ -144,7 +156,9 @@ Arpeggio rows: the paper's B = 1 settings (a cycle budget equal to default Chord
 
 ### The price of parallel flips
 
-The comparisons distinguish default Chord's cycle budget, re-tuned Chord's larger budget, and routed execution time. Arpeggio's lower BER than default Chord at 16 and 64 users is supported by routed results at equal clocks; its wins over re-tuned Chord at 32 and 64 users use the cycle model. Under the evaluated budgets, these comparisons favor Arpeggio on this engine. The model charges field updates per flip; its parallel-trial estimate omits the flip-update cost, favoring parallel trial.
+The comparisons distinguish default Chord's cycle budget, re-tuned Chord's larger budget, and routed execution time. At 16 and 64 users, Arpeggio's BER advantage over default Chord is paired with lower routed time at equal clocks; wins over re-tuned Chord at 32 and 64 users use the cycle model. The equal-clock comparison uses matched Chord builds and common stimuli, with RTL cycles for the time ratios. Under the evaluated budgets, these comparisons favor Arpeggio's parallel tests and sequential flips on this engine. With fixed field lanes, the cycle model charges one cycle per decision step and one per flip that updates all fields from one coupling row; the parallel-trial estimate omits this flip-update cost, favoring parallel trial.
+
+SA is re-tuned separately at each fixed sweep count. Chord commit-width sensitivity (`W` flips per cycle) is a cycle-model projection; the routed engines each commit one flip per cycle. The B200 PIMI kernel uses published trial and step counts, whereas the Table II ablation embeds PIMI in MDI.
 
 The estimates exclude schedule loading, MMSE, MMSE-SIC, radius selection, mapping, candidate selection, transfers and stalls. Arpeggio's re-tests consume energy but do not count as new spin decisions, so energy per decision and energy per detection measure different costs.
 
