@@ -9,7 +9,7 @@ ETH AI Center, ETH Zurich
 [![Figures](https://img.shields.io/badge/Figures-5-8C1515)](figures/)
 [![Results](https://img.shields.io/badge/Results-Tables-8C1515)](#results)
 
-> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable; heuristic Ising detectors often test spins at once (deciding if each flips its sign) and flip them together. Yet synchronous flips can oscillate, annealing tests one spin at a time, and each flip updates all local fields in a cycle: do parallel flips pay? Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies; one active copy per coordinate (*copy coloring*) and pinning stabilize parallel flips. Two policies flip all (*Chord*) or, by the existing first-accept rule, one (*Arpeggio*) per parallel test. Within Chord's modeled cycles, parallel tests pay: 2.2–4.5 times lower bit error rates than one-at-a-time annealing at 16 and 32 users (16-ary quadrature amplitude modulation). Counterintuitively, flipping all does not: Arpeggio beats default Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks) and, at no more modeled cycles, re-tuned Chord at 32 and 64.
+> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable, motivating heuristic Ising detectors that test and flip spins in parallel. Synchronous flips can oscillate, however, and each flip requires a field-update cycle. Our *delta-encoded Ising engine* stores one Gram matrix for all spin copies. *Copy coloring* activates one copy per coordinate, while pinning penalizes flips; together they stabilize parallel updates. *Chord* commits all accepted flips; *Arpeggio* uses the existing first-accept rule to commit one and re-test the remaining spins. Within Chord's modeled cycle budget, its bit error rate is 2.2–4.5 times lower than one-at-a-time annealing's at 16 and 32 users with 16-ary quadrature amplitude modulation. Yet Arpeggio achieves lower error rates than default Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks). It also outperforms re-tuned Chord at 32 and 64 users using no more modeled cycles.
 
 <p align="center">
   <img src="figures/teaser.png" width="620" alt="Why parallel flips oscillate, how copy coloring and pinning stabilize them, and how Chord and Arpeggio compare">
@@ -73,6 +73,8 @@ Some data files and code comments keep earlier labels: `alternation` (`alternati
 
 ## <a name="code"></a> 🔩 Code
 
+Both policies use copy coloring: one copy per coordinate is active in each round. **Chord** tests the active spins against one field snapshot and commits every accepted flip sequentially, without re-testing. **Arpeggio** uses first-accept simulated annealing: it commits the first accepted flip in index order, updates the fields, and re-tests later spins. The ASIC stores one Gram matrix **G** for all copies; the CUDA kernel instead stores **J** as 16-bit integers in shared memory.
+
 | Folder | Contents |
 | --- | --- |
 | [`arpeggio/mimo/`](arpeggio/mimo/) | Channel and detection model, the MDI wrapper, Chord's fixed-point reference and CUDA kernel (`chordfx.py`, `chord_kernel.cu`), the AHC and PIMI kernels we compare with, K-best, MMSE-SIC and the sphere-decoder proxy, tuning and BER sweeps. |
@@ -118,6 +120,8 @@ Some data files and code comments keep earlier labels: `alternation` (`alternati
 
 –: not run. Crossing CIs are in `data/ber/table2/` and the SA rows' data in `data/ber/a5/`; footnotes are in the paper. Each sphere-decoder run reaches 100 erroneous uses or 10⁷ bits; above 18 dB at 16-QAM, the fallback for unfinished searches leaves the proxy 98 or fewer erroneous uses per point (Fig. 4 omits points with none).
 
+Table III's SA settings were selected on the scored uses, which favors SA. Reported confidence intervals are bootstrapped over channel uses, paired where uses are shared; an unresolved comparison means the paired interval includes equality. For capped sphere searches, the fallback uses the other detectors' lowest-metric output if it improves on the transmitted solution's metric; otherwise it counts the search as correct. This proxy is neither exact ML BER nor a proven lower bound.
+
 ### Routed GF22 Chord and Arpeggio engines, TT corner (Table IV)
 
 | Engine | Workload | BER | Clock, TT (SS), MHz | Die, mm² | Power, mW | Time/det., µs | Energy/det., nJ | pJ/decision |
@@ -137,6 +141,10 @@ Arpeggio rows: the paper's B = 1 settings (a cycle budget of one times Chord's),
 <img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 Chord engines by RTL function">
 
 ### The price of parallel flips
+
+The comparisons distinguish default Chord's cycle budget, re-tuned Chord's larger budget, and routed execution time. Arpeggio's lower BER than default Chord at 16 and 64 users is supported by routed results at equal clocks; its wins over re-tuned Chord at 32 and 64 users use the cycle model. The model charges field updates per flip; its parallel-trial estimate omits the flip-update cost, favoring parallel trial.
+
+The estimates exclude schedule loading, MMSE, MMSE-SIC, radius selection, mapping, candidate selection, transfers and stalls. Arpeggio's re-tests consume energy but do not count as new spin decisions, so energy per decision and energy per detection measure different costs.
 
 <img src="figures/price.png" width="980" alt="BER against modeled cycles for Chord, Arpeggio, sequential SA, parallel trial and colorings">
 
