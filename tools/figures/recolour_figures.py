@@ -9,7 +9,7 @@ from pathlib import Path
 
 import fitz
 
-FIGS = ['mechanism', 'decision_flow_concept', 'price', 'ber']
+FIGS = ['price', 'ber']
 BLUE, NAVY, CYAN = '0077C8', '002B49', '00A3E0'
 DARK, LIGHT, BLACK, WHITE = '53565A', 'F2F4F7', '000000', 'FFFFFF'
 TINT = 'E0EFF8'   # 12% of BLUE on white: flow boxes of our method
@@ -36,20 +36,21 @@ def to_hex(vals):
     return '%02X%02X%02X' % tuple(round(float(v) * 255) for v in vals)
 
 
-def to_ops(hex6, stroke):
+def to_ops(hex6, stroke, precision):
     r, g, b = (int(hex6[i:i + 2], 16) / 255 for i in (0, 2, 4))
-    return ('%.6f %.6f %.6f %s' % (r, g, b, 'RG' if stroke else 'rg')).encode()
+    operator = 'RG' if stroke else 'rg'
+    return f'{r:.{precision}f} {g:.{precision}f} {b:.{precision}f} {operator}'.encode()
 
 
-def swap(old, stroke):
+def swap(old, stroke, precision):
     if old not in MAP:
         raise SystemExit(f'unmapped colour #{old}')
-    return to_ops(MAP[old], stroke)
+    return to_ops(MAP[old], stroke, precision)
 
 
-def recolour_stream(data):
-    data, n1 = RGB.subn(lambda m: swap(to_hex(m.group(1, 2, 3)), m.group(4) == b'RG'), data)
-    data, n2 = GRAY.subn(lambda m: swap(to_hex([m.group(1)] * 3), m.group(2) == b'G'), data)
+def recolour_stream(data, precision=6):
+    data, n1 = RGB.subn(lambda m: swap(to_hex(m.group(1, 2, 3)), m.group(4) == b'RG', precision), data)
+    data, n2 = GRAY.subn(lambda m: swap(to_hex([m.group(1)] * 3), m.group(2) == b'G', precision), data)
     return data, n1 + n2
 
 
@@ -64,16 +65,22 @@ def content_xrefs(doc):
 def main(in_dir, out_dir):
     for name in FIGS:
         src = Path(in_dir) / f'{name}.pdf'
-        if not src.exists():          # e.g. mechanism.pdf, which no script here draws
+        if not src.exists():
             print(name, 'skipped: no', src)
             continue
         doc = fitz.open(src)
+        # Preserve the RGB precision of each published PDF.
+        precision = 10 if name == "price" else 6
         total = 0
         for x in content_xrefs(doc):
-            new, n = recolour_stream(doc.xref_stream(x))
+            new, n = recolour_stream(doc.xref_stream(x), precision)
             total += n
             doc.update_stream(x, new)
-        doc.save(Path(out_dir) / f'{name}.pdf', garbage=3, deflate=True)
+        output = Path(out_dir) / f'{name}.pdf'
+        doc.save(output, garbage=3, deflate=True)
+        doc.close()
+        with fitz.open(output) as rendered:
+            rendered[0].get_pixmap(dpi=200, alpha=False).save(output.with_suffix('.png'))
         print(name, total, 'colour operators')
 
 

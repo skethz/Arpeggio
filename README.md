@@ -9,10 +9,10 @@ ETH AI Center, ETH Zurich
 [![Figures](https://img.shields.io/badge/Figures-5-8C1515)](figures/)
 [![Results](https://img.shields.io/badge/Results-Tables-8C1515)](#results)
 
-> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable, motivating heuristic Ising detectors that test and flip spins in parallel. Synchronous flips can oscillate and require field updates. Our *delta-encoded Ising engine* shares one Gram matrix across spin copies and updates fields in one cycle per flip. *Copy coloring* activates one copy per coordinate, while pinning penalizes flips; together they stabilize parallel updates. *Chord* commits all accepted flips; *Arpeggio* follows the existing first-accept rule, committing one and re-testing later spins. Within Chord's modeled cycle budget, its bit error rate is 2.2–4.5 times lower than one-at-a-time annealing's at 16 and 32 users with 16-ary quadrature amplitude modulation. Yet Arpeggio achieves lower error rates than default Chord at 16 and 64 users in 16 and 28 percent less time (routed, equal clocks). It also outperforms re-tuned Chord at 32 and 64 users using no more modeled cycles.
+> **Abstract:** Multiuser multiple-input multiple-output receivers must separate interfering streams with limited computation. Exact detection is intractable. Heuristic Ising detectors flip binary spins, but applying all parallel flip decisions can cause oscillations. Our *delta-encoded Ising engine* shares one Gram matrix across spin copies. Both policies test in parallel, commit one flip per cycle and update all fields. *Chord* commits all flips accepted from one snapshot. Activating one copy per coordinate (*copy coloring*) and penalizing flips (pinning) stabilize its updates. *Arpeggio* uses the existing first-accept rule and re-tests later spins after each flip. Within Chord's modeled cycle budget, one-at-a-time annealing has 2.2 times Chord's bit error rate at 16 users and 4.5 times at 32 with 16-ary quadrature amplitude modulation. Arpeggio achieves lower error rates than default Chord at 16 and 64 users in 16 and 28 percent less time, respectively (post-layout estimates at equal clocks). It also achieves lower error rates than re-tuned Chord at 32 and 64 users using no more modeled cycles.
 
 <p align="center">
-  <img src="figures/teaser.png" width="620" alt="Why parallel flips oscillate, how copy coloring and pinning stabilize them, and how Chord and Arpeggio compare">
+  <img src="figures/teaser.png" width="620" alt="Chord flip returns and energy gap, BER under the default Chord cycle budget, and matched Arpeggio/Chord time and energy per detection">
 </p>
 
 ## 📑 Contents
@@ -46,8 +46,8 @@ The figures are in [`figures/`](figures/).
 
 | Paper | Script | Data |
 | --- | --- | --- |
-| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | `data/ber/mechanism/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/`; panels (d) and (e) hold values typed from `data/ber/table2/`, `data/ber/fidelity/`, `data/ber/a5/` and `data/asic/a518/` |
-| Fig. 2 (top) | [decision_flow_concept.tex](tools/figures/decision_flow_concept.tex) (pdfTeX), then [recolour_figures.py](tools/figures/recolour_figures.py) | TikZ source |
+| Fig. 1 | [make_teaser.py](tools/figures/make_teaser.py) | (a,b) flip returns and mean energy gap from `data/ber/mechanism/`. (c) 16-QAM BER within default Chord’s modeled cycle budget from `data/results/a521/`, `data/results/a519/` and `data/results/a514/`. (d) post-layout time and energy per detection at matched clocks and stimuli from `data/asic/a518/`. |
+| Fig. 2 (top) | [decision_flow_concept.tex](tools/figures/decision_flow_concept.tex) (pdfTeX) | Chord and Arpeggio control flow on the shared datapath. |
 | Fig. 2 (bottom) | [make_layout.py](tools/figures/make_layout.py) | `data/layout/` |
 | Fig. 3 | [make_price.py](tools/figures/make_price.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/a5/`, `data/ber/a55/`, `data/results/a521/`, `data/results/a519/`, `data/results/a514/` |
 | Fig. 4 | [make_ber.py](tools/figures/make_ber.py), then [recolour_figures.py](tools/figures/recolour_figures.py) | `data/ber/table2/` |
@@ -56,7 +56,19 @@ The figures are in [`figures/`](figures/).
 | Table III | – | `data/ber/table2/`, `data/ber/a5/` |
 | Table IV | – | `data/asic/`, `data/ber/a56/`, `data/ber/reported_comparison.json` |
 
-The figure scripts are the ones that drew the paper's figures. In `tools/figures/`, `make_teaser.py`, `make_layout.py`, `make_price.py` and `make_ber.py` read `data/` and write to `out/`; after `pdflatex -output-directory=out decision_flow_concept.tex`, `mkdir -p final && python recolour_figures.py out final` gives Figs. 2 (top), 3 and 4, and `out/` holds Figs. 1 and 2 (bottom). All five match the PDFs in `figures/` pixel for pixel.
+To rebuild the five figure assets, run the following in `tools/figures/`. Fig. 2 has separate diagram and layout files.
+
+```bash
+mkdir -p out final
+python make_teaser.py
+pdflatex -output-directory=out decision_flow_concept.tex
+python make_layout.py
+python make_price.py
+python make_ber.py
+python recolour_figures.py out final
+```
+
+The PDFs for Figs. 1 and 2 are in `out/`. The final PDFs and color previews for Figs. 3 and 4 are in `final/`.
 
 ## <a name="data"></a> Data
 
@@ -118,6 +130,8 @@ An anneal is one randomized spin search. The standard 16-QAM MDI configuration s
 
 ### SNR (dB) at BER 10⁻³/10⁻⁴ (Table III)
 
+Section V-B compares Arpeggio and Chord under modeled cycle budgets at fixed SNRs. Section V-C sweeps SNR for Chord and MDI-AHC with the same MDI wrapper and anneal counts to determine the SNR required for each BER target (Table III and Fig. 4).
+
 | Detector | 16-QAM 16×16 | 16-QAM 32×32 | QPSK 16×16 | QPSK 32×32 |
 | --- | ---: | ---: | ---: | ---: |
 | MMSE-SIC | 24.5/27.2 | 25.1/27.3 | 14.7/16.8 | 14.9/17.1 |
@@ -138,27 +152,35 @@ Table III's SA settings were selected on the scored uses, which favors SA. One c
 
 ### Routed GF22 Chord and Arpeggio engines, TT corner (Table IV)
 
-| Engine | Workload | BER | Clock, TT (SS), MHz | Die, mm² | Power, mW | Time/det., µs | Energy/det., nJ | pJ/decision |
-| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Chord, D = 32 | 16×16 16-QAM, 31.02 dB, K = 1, N<sub>s</sub> = 4 | 8.7×10⁻⁴ | 870 (571) | 0.190 | 63.6 | 1.42 | 90.6 | 2.8 |
-| | 16×16 16-QAM, 31.02 dB, MDI, N<sub>s</sub> = 8 | 0 obs. | | | 64.9 | 1.00 | 65.1 | 2.9 |
-| | 16×16 16-QAM, 20 dB, MDI, N<sub>s</sub> = 32 | 6.7×10⁻⁴ | | | 71.1 | 77.2 | 5,490 | 2.7 |
-| Chord, D = 64 | 32×32 QPSK, 14 dB, one-stage MDI, N<sub>s</sub> = 8 | 0 obs. | 1,000 (667) | 0.366 | 179 | 2.55 | 456 | 3.5 |
-| | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.7×10⁻⁴ | | | 185 | 21.8 | 4,030 | 3.4 |
-| Chord, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.1×10⁻⁴ | 833 (556) | 0.728 | 260 | 41.8 | 10,840 | 3.6 |
-| Arpeggio, D = 32 | 16×16 16-QAM, 20 dB, MDI, N<sub>s</sub> = 32 | 3.6×10⁻⁴ | 1,000 (645) | 0.187 | 96.9 | 56.6 | 5,480 | 5.4 |
-| Arpeggio, D = 64 | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.6×10⁻⁴ | 1,000 (645) | 0.378 | 172 | 14.7 | 2,540 | 8.6 |
-| Arpeggio, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 2.7×10⁻⁴ | 833 (556) | 0.732 | 243 | 30.0 | 7,290 | 4.8 |
+| Engine | Workload | BER | Clock, TT (SS), MHz | Die, mm² | Power, mW | Time/det., µs | Energy/det., nJ | Det./s/mm² | pJ/nominal decision |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Chord, D = 32 | 16×16 16-QAM, 31.02 dB, K = 1, N<sub>s</sub> = 4 | 8.7×10⁻⁴ | 870 (571) | 0.190 | 63.6 | 1.42 | 90.6 | 3.7×10⁶ | 2.8 |
+|  | 16×16 16-QAM, 31.02 dB, MDI, N<sub>s</sub> = 8 | 0 obs. |  |  | 64.9 | 1.00 | 65.1 | 5.2×10⁶ | 2.9 |
+|  | 16×16 16-QAM, 20 dB, MDI, N<sub>s</sub> = 32 | 6.7×10⁻⁴ |  |  | 71.1 | 77.2 | 5,490 | 6.8×10⁴ | 2.7 |
+| Chord, D = 64 | 32×32 QPSK, 14 dB, one-stage MDI, N<sub>s</sub> = 8 | 0 obs. | 1,000 (667) | 0.366 | 179 | 2.55 | 456 | 1.1×10⁶ | 3.5 |
+|  | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.7×10⁻⁴ |  |  | 185 | 21.8 | 4,030 | 1.3×10⁵ | 3.4 |
+| Chord, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.1×10⁻⁴ | 833 (556) | 0.728 | 260 | 41.8 | 10,840 | 3.3×10⁴ | 3.6 |
+| Arpeggio, D = 32 | 16×16 16-QAM, 20 dB, MDI, N<sub>s</sub> = 32 | 3.6×10⁻⁴ | 1,000 (645) | 0.187 | 96.9 | 56.6 | 5,480 | 9.4×10⁴ | 5.4 |
+| Arpeggio, D = 64 | 32×32 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 3.6×10⁻⁴ | 1,000 (645) | 0.378 | 172 | 14.7 | 2,540 | 1.8×10⁵ | 8.6 |
+| Arpeggio, D = 128 | 64×64 16-QAM, 22 dB, MDI, N<sub>s</sub> = 8 | 2.7×10⁻⁴ | 833 (556) | 0.732 | 243 | 30.0 | 7,290 | 4.6×10⁴ | 4.8 |
 
-Arpeggio rows: the paper's B = 1 settings (a cycle budget equal to default Chord's), in fixed point, on the workloads of Chord's rows 3, 5 and 6, each routed at the clock of the Chord engine it is compared with in Section V-B: 1.00 ns at D = 32 and 64, 1.20 ns at D = 128 (the D = 32 Chord row above is the 1.15 ns build; the 1.00 ns Chord at D = 32 had one closure pass). Arpeggio's cycles are those of Chord's rows 3, 5 and 6 scaled by the Section V-B RTL cycle ratios; its power is measured on 20 captured MDI sub-problems per K, as is that of the Section V-B Chord engines at the same clocks (1.00/1.00/1.20 ns: 67.2/21.8/41.8 µs per detection, 91.9/174/206 mW); on the detection streams of rows 3, 5 and 6, Chord draws 1/6/26 % more. Rows 8 and 9 had one closure pass; in row 9, one internal path misses SS hold by 0.2 ps. A decision is one per spin and sweep; Arpeggio's re-tests after a flip are not counted.
+Arpeggio rows: the paper's B = 1 settings (a cycle budget equal to default Chord's), in fixed point, on the workloads of Chord's rows 3, 5 and 6, each routed at the clock of the Chord engine it is compared with in Section V-B: 1.00 ns at D = 32 and 64, 1.20 ns at D = 128 (the D = 32 Chord row above is the 1.15 ns build; the 1.00 ns Chord at D = 32 had one closure pass). Arpeggio's cycles are those of Chord's rows 3, 5 and 6 scaled by the Section V-B RTL cycle ratios; its post-layout power is estimated from activity on 20 captured MDI sub-problems per K, as is that of the Section V-B Chord engines at the same clocks (1.00/1.00/1.20 ns: 67.2/21.8/41.8 µs per detection, 91.9/174/206 mW); on the detection streams of rows 3, 5 and 6, Chord draws 1/6/26 % more. Rows 8 and 9 had one closure pass; in row 9, one internal path misses SS hold by 0.2 ps. A decision is one per spin and sweep; Arpeggio's re-tests after a flip are not counted.
+
+At matched clocks and stimuli, Arpeggio takes 0.84/0.68/0.72× default Chord’s time and uses 0.89/0.67/0.85× its energy per detection at 16/32/64 users. On the 64-user replay inputs, the Arpeggio/Chord cycle ratio was 0.62 in RTL and 0.48 in the model (1.29× using unrounded ratios).
+
+For 16-QAM, the paired 95% CI upper bounds on Chord’s fixed-point/floating-point BER ratio are 1.04/1.07/0.99 at 16/32/64 users, all below the 1.10 cutoff. Arpeggio passes at 32/64 users. Its 16-user ratio is 1.02× [0.93, 1.12].
+
+For a fully occupied 100 MHz NR carrier (30 kHz spacing, 3,276 subcarriers and 28,000 symbols/s), applying the 16-user P1 mean of 56.6 µs/detection at 20 dB and N<sub>s</sub> = 32 gives about 5,200 Arpeggio engines, 970 mm² and 500 W (86 nJ/bit), excluding host work. At N<sub>s</sub> = 8 the estimates give about 20 nJ/bit for 32-user Arpeggio at 22 dB and 1.02 nJ/bit for 16-user Chord at 31.02 dB. In that Chord workload the radius rule skips sub-problems on most uses, giving a mean of 1.00 µs/detection.
 
 <img src="figures/asic_layout_r4.png" width="620" alt="Routed GF22 layouts of the D=32, 64 and 128 Chord engines by RTL function">
 
 ### The price of parallel flips
 
-The comparisons distinguish default Chord's cycle budget, re-tuned Chord's larger budget, and routed execution time. At 16 and 64 users, Arpeggio's BER advantage over default Chord is paired with lower routed time at equal clocks; wins over re-tuned Chord at 32 and 64 users use the cycle model. The equal-clock comparison uses matched Chord builds and common stimuli, with RTL cycles for the time ratios. Under the evaluated budgets, these comparisons favor Arpeggio's parallel tests and sequential flips on this engine. With fixed field lanes, the cycle model charges one cycle per decision step and one per flip that updates all fields from one coupling row; the parallel-trial estimate omits this flip-update cost, favoring parallel trial.
+At fixed SNRs and within default Chord’s modeled cycle budget, the Arpeggio/Chord BER ratios are 0.54× [0.49, 0.59] at 16 users, 0.97× [0.89, 1.07] at 32 and 0.82× [0.74, 0.89] at 64, all in 16-QAM. The paired 95% interval includes 1 at 32 users. Arpeggio achieves lower BER than re-tuned Chord at 32/64 users within the re-tuned Chord cycle budget. In Fig. 3, larger markers denote the B = 1 picks. Filled squares mark cycle-matched parallel trial and open squares mark flip-matched parallel trial.
 
-SA is re-tuned separately at each fixed sweep count. Chord commit-width sensitivity (`W` flips per cycle) is a cycle-model projection; the routed engines each commit one flip per cycle. The B200 PIMI kernel uses published trial and step counts, whereas the Table II ablation embeds PIMI in MDI.
+With fixed field lanes, the cycle model charges one cycle per decision step and one per flip that updates all fields from a coupling row. The parallel-trial estimate omits this flip-update cost, favoring parallel trial.
+
+SA is re-tuned separately at each fixed sweep count. Chord commit-width sensitivity (`W` flips per cycle) is a cycle-model projection; the routed engines each commit one flip per cycle. The B200 PIMI kernel uses published trial and step counts, whereas the Table II ablation embeds PIMI in MDI. At 31.02 dB, the Chord/PIMI GPU time ratios are 0.92–0.93× for K = 1 and 12–18× for multi-stage Chord, mostly in the wrapper.
 
 The estimates exclude schedule loading, MMSE, MMSE-SIC, radius selection, mapping, candidate selection, transfers and stalls. Arpeggio's re-tests consume energy but do not count as new spin decisions, so energy per decision and energy per detection measure different costs.
 

@@ -4,10 +4,10 @@ the compressed series as a gray reference. Writes to out/.
 (a), (b) BER relative to Chord (i) against modeled cycles per anneal relative to Chord, held-out seed 102:
     - SA re-tuned per S (per-S picks, stage A on seed 1000), cost E = S N + F_SA (Eq. (4)): filled circles, solid;
     - the same Metropolis picks under first-accept cost F = tests + F_SA (F-M, a Metropolis unit per lane): open triangles;
-    - rule (2) first-accept per-S picks under F (F-R, the existing comparators): filled diamonds;
+    - rule (2) first-accept per-S picks under F (F-R, the existing comparators): filled triangles;
       F picks are not joined: under F, x depends on the temperature, not only on S;
-    - ring: the best pick within budget B = 1 under each model (stage A + B), the ratios quoted in the text; the one-comparator
-      SA ring is A5.21's measurement of the same pick (seed 2028, 300,000 paired uses per point); the rule (2) ring at P1/P2
+    - large marker: the best pick within budget B = 1 under each model (stage A + B), the ratios quoted in the text; the one-comparator
+      SA marker uses A5.21's measurement of the same pick (seed 2028, 300,000 paired uses per point); the rule (2) marker at P1/P2
       is the same pick over 300,000 paired uses (P1: A5.19, seed 2028; P2: A5.15, seed 2027), x per K on those uses;
     - gray: A5's 128-sweep schedule compressed over S under E.
     Horizontal bars span K = 1..3 (x per K from flips.json, seed 1000 batch 50); vertical bars are paired 95 % CIs.
@@ -56,14 +56,14 @@ FR1 = {'P1': dict(method=_A519['select']['held1']['A16'], x3=_x3(_A519['P1']['x'
 SWEEPS = ['1', '2', '4', '8', '16', '32', '64', '128']
 PT_COL, SA_COL, CHORD_COL, OLD_COL = fs.COMP_BLUE, fs.COMP_ORANGE, fs.OURS, fs.BASE2
 # First-accept SA has its own colour; parallel trial is navy like one-comparator SA. The recolour maps
-# OURS -> #8C1515 and COMP_BLUE -> #1966FF, and the Chord star is Chord's colour.
+# OURS -> #8C1515 and COMP_BLUE -> #1966FF, and the Chord marker is Chord's colour.
 ARPEGGIO_COL, STAR_COL = fs.COMP_BLUE, fs.OURS
 PT_COL = fs.COMP_ORANGE
 # S-label offsets (x factor, y factor, ha, va) where the default (below the point) would collide
-# P1 '4' sits up-right of its ringed point, away from the S = 3 point
+# P1 '4' sits up-right of its enlarged marker, away from the S = 3 point
 SLAB = {('P1', '1'): (1 / 1.18, 1.0, 'right', 'center'), ('P1', '4'): (1.22, 1.2, 'left', 'bottom'),
         ('P1', '16'): (1.0, 1.42, 'center', 'bottom'), ('P2', '1'): (1.0, 1.28, 'center', 'bottom'),
-        ('P2', '4'): (1 / 1.03, 1.16, 'center', 'bottom')}   # above its circle, clear of the first-accept diamond
+        ('P2', '4'): (1 / 1.03, 1.16, 'center', 'bottom')}   # above its circle, clear of the first-accept triangle
 C1X = float(np.exp(np.mean(np.log([1 / 2, 1 / 4, 1 / 6]))))   # c = 1 at P = 2, 4, 6
 
 
@@ -86,13 +86,13 @@ def pt_span(shape, budget):
     return min(out), float(np.mean(out)), max(out)   # arithmetic mean over K
 
 
-NEAR = []   # markers drawn near (1, 1), redrawn above the Chord star
+NEAR = []   # markers drawn near (1, 1), redrawn above the Chord marker
 
 
 def errpt(ax, x3, rec, color, marker, ms=3.4, zorder=3, mfc=None):
     lo, x, hi = x3
     y = rec['ratio']
-    if abs(math.log10(x)) < 0.10 and abs(math.log10(y)) < 0.18:   # inside the star's extent on (a, b)'s log axes
+    if abs(math.log10(x)) < 0.10 and abs(math.log10(y)) < 0.18:   # inside the Chord marker's extent on (a, b)'s log axes
         NEAR.append((ax, x, y, color, marker, ms, mfc))
     ylo, yhi = rec['ratio_ci']
     ax.errorbar([x], [y], xerr=[[x - lo], [hi - x]], yerr=[[y - ylo], [yhi - y]], fmt=marker, color=color, ms=ms,
@@ -121,15 +121,15 @@ def frontier(ax, point, shape, pick, old_series, title):
         xs.append(x3[1]); ys.append(rec['ratio'])
     ax.plot(xs, ys, color=OLD_COL, lw=0.7, zorder=1.5)
     ps = A55[point]['per_s']
-    # SA re-tuned per S: E (filled circles, solid), F-M (open triangles, dotted), F-R (diamonds, dashed)
+    # SA re-tuned per S: E (filled circles, solid), F-M (open triangles, dotted), F-R (filled triangles)
     for arm, model, mk, ls, mfc, lab in (('fam', 'E', 'o', '-', None, True), ('fam', 'F', '^', (0, (1, 1.2)), 'white', False),
-                                         ('far', 'F', 'D', (0, (3, 1.5)), None, False)):
+                                         ('far', 'F', '^', (0, (3, 1.5)), None, False)):
         col = SA_COL if model == 'E' else ARPEGGIO_COL
         xs, ys = [], []
         for S in [s for s in ('1', '2', '3', '4', '8', '16', '32', '64', '128') if f'{arm}/{s}' in ps]:
             r = ps[f'{arm}/{S}']
             x3 = a55_x3(point, r['method'], model)
-            errpt(ax, x3, a55_rec(r), col, mk, ms=2.6 if mk != 'D' else 2.3, mfc=mfc)
+            errpt(ax, x3, a55_rec(r), col, mk, ms=2.6, mfc=mfc)
             xs.append(x3[1]); ys.append(r['ratio'])
             if lab and S in ('1', '4', '16', '64', '128'):
                 # S labels name the one-comparator (dark) points, in their colour, clear of the gray series
@@ -137,7 +137,7 @@ def frontier(ax, point, shape, pick, old_series, title):
                 ax.text(x3[1] * dx, r['ratio'] * dy, S, fontsize=fs.ANNOT, color=SA_COL, ha=ha, va=va)
         if ls == '-':                 # E is a series in S; under F, x depends on T, so the picks are not joined
             ax.plot(xs, ys, color=SA_COL, lw=0.7, zorder=2)
-    # rings: best pick within B = 1 under each model (the ratios quoted in the text)
+    # Enlarge the best pick within B = 1 under each model.
     b = A55[point]['budget']
     for key, model in (('E/1', 'E'), ('F-R/1', 'F'), ('F-M/1', 'F')):
         r = b[key]
@@ -150,18 +150,16 @@ def frontier(ax, point, shape, pick, old_series, title):
             n = FR1[point]
             assert n['method'] == r['method'], (point, n['method'], r['method'])
             r, x3 = dict(method=r['method'], ratio=n['ratio'], lo=n['lo'], hi=n['hi']), n['x3']
-        mk = {'E/1': 'o', 'F-R/1': 'D', 'F-M/1': '^'}[key]
+        mk = {'E/1': 'o', 'F-R/1': '^', 'F-M/1': '^'}[key]
         col = SA_COL if model == 'E' else ARPEGGIO_COL
-        errpt(ax, x3, a55_rec(r), col, mk, ms=2.6, mfc='white' if key == 'F-M/1' else None, zorder=4)
-        # rings above the surface halos of points redrawn near (1, 1), so no ring looks broken
-        ax.plot([x3[1]], [r['ratio']], marker='o', ms=6.4, mfc='none', mec=col, mew=0.6, ls='none', zorder=6.5)
+        errpt(ax, x3, a55_rec(r), col, mk, ms=5.0, mfc='white' if key == 'F-M/1' else None, zorder=6.5)
     d = A5['a5d'][point]
     errpt(ax, pt_span(shape, 'cycles'), d['parallel trial, equal modelled cycles, P1-tuned'], PT_COL, 's',
           ms=3.0)
     errpt(ax, pt_span(shape, 'flips'), d['parallel trial, equal flips, P1-tuned'], PT_COL, 's', ms=3.0, mfc='white')
-    ax.plot([1], [1], marker='*', color=STAR_COL, ms=8.5, mec=fs.SURF, mew=0.4, zorder=5, ls='none')
+    ax.plot([1], [1], marker='+', color=STAR_COL, ms=6.0, mec=STAR_COL, mew=1.0, zorder=5, ls='none')
     for a, x, y, c, mk, ms, mfc in [n for n in NEAR if n[0] is ax]:
-        # drawn again above the star with a surface rim, so a point near (1, 1) stays visible (as in (c))
+        # drawn again above the Chord marker with a surface rim, so a point near (1, 1) stays visible (as in (c))
         a.plot([x], [y], marker=mk, color=fs.SURF, ms=ms + 1.4, mec=fs.SURF, zorder=5.9, ls='none')   # surface halo
         a.plot([x], [y], marker=mk, color=c, ms=ms, mfc=mfc if mfc else c, mec=c, zorder=6, ls='none')
     ax.axhline(1, **fs.REF)
@@ -186,10 +184,10 @@ def main():
         ax.set_ylim(Y_FLOOR, 40)   # the floor keeps the (a) legend under every error bar
     axs[0].set_ylabel('BER relative to Chord')
     key = [Line2D([], [], color=SA_COL, lw=0.7, marker='o', ms=2.6, label='SA, one comparator'),
-           Line2D([], [], color=ARPEGGIO_COL, ls='none', marker='D', ms=2.3, label='Arpeggio, rule (2)'),
+           Line2D([], [], color=ARPEGGIO_COL, ls='none', marker='^', ms=2.6, label='Arpeggio, rule (2)'),
            Line2D([], [], color=ARPEGGIO_COL, ls='none', marker='^', ms=2.6, mfc='white',
                   label='Arpeggio, Metropolis'),
-           Line2D([], [], color=fs.INK, ls='none', marker='o', ms=6.4, mfc='none', mew=0.6, label='$B=1$ pick'),
+           Line2D([], [], color=fs.INK, ls='none', marker='o', ms=5.0, mfc=fs.INK, label='Large: $B=1$ pick'),
            Line2D([], [], color=OLD_COL, lw=0.7, marker='o', ms=2.2, label='SA, 128-sweep schedule compressed')]
     # opaque legend boxes between the dotted guides (zorder 0.6) and the data (zorder >= 2), and a y floor so the
     # (a) legend sits below every error bar: no guide or error bar crosses legend text
@@ -198,7 +196,7 @@ def main():
                   labelspacing=0.22, borderaxespad=0.15, borderpad=0.2, **LEG).set_zorder(1.6)
     key2 = [Line2D([], [], color=PT_COL, ls='none', marker='s', ms=3.0, label='parallel trial, equal cycles'),
             Line2D([], [], color=PT_COL, ls='none', marker='s', ms=3.0, mfc='white', label='parallel trial, equal flips'),
-            Line2D([], [], color=STAR_COL, ls='none', marker='*', ms=6.5, mec=fs.SURF, mew=0.4, label='Chord')]
+            Line2D([], [], color=STAR_COL, ls='none', marker='+', ms=6.0, mec=STAR_COL, mew=1.0, label='Chord')]
     axs[1].legend(handles=key2, loc='lower left', handlelength=1.2, handletextpad=0.4,
                   labelspacing=0.22, borderaxespad=0.15, borderpad=0.2, **LEG).set_zorder(1.6)
 
@@ -214,7 +212,7 @@ def main():
             x3 = (1 / 6, C1X, 1 / 2) if m == 0 else (m, m, m)
             if m == 1:
                 errpt(ax, x3, rec, CHORD_COL, mk, ms=3.2, zorder=4)
-                # drawn again above the Chord star with a surface rim, so the 16-user point near (1, 1) stays visible
+                # drawn again above the Chord marker with a surface rim, so the 16-user point near (1, 1) stays visible
                 ax.plot([x3[1]], [rec['ratio']], marker=mk, color=CHORD_COL, ms=3.2, mec=fs.SURF, mew=0.5, zorder=6, ls='none')
             else:
                 errpt(ax, x3, rec, col, mk, ms=2.8)
@@ -223,8 +221,8 @@ def main():
         handles.append(Line2D([], [], color=col, lw=0.8, ls=ls, marker=mk, ms=2.8, label=lab))
         b1 = A5['a5b'][point]['controls']['b1 dimension colours, copies in phase (tuned)']
         errpt(ax, (1.0, 1.0, 1.0), b1, col, mk, ms=3.0, mfc='white')
-    # (c) star in the same colour as (a, b) and the (b) legend; the P-colors points are drawn in Chord's colour (caption: 'red')
-    ax.plot([1], [1], marker='*', color=STAR_COL, ms=8.5, mec=fs.SURF, mew=0.4, zorder=5, ls='none')
+    # Use the same Chord marker in all panels. The P-colors points also use Chord's colour.
+    ax.plot([1], [1], marker='+', color=STAR_COL, ms=6.0, mec=STAR_COL, mew=1.0, zorder=5, ls='none')
     ax.axhline(1, **fs.REF)
     ax.set_xscale('log'); ax.set_yscale('log')
     ax.set_xlim(0.13, 50); ax.set_ylim(0.15, 40)
@@ -247,7 +245,7 @@ def main():
         a.xaxis.set_label_coords(0.5, -0.155)
     out = fs.OUT
     out.mkdir(exist_ok=True)
-    meta = {'Author': '', 'Creator': '', 'Producer': '', 'Title': 'price'}
+    meta = {'Author': '', 'Creator': '', 'Producer': '', 'Title': 'price', 'CreationDate': None, 'ModDate': None}
     fig.savefig(out / 'price.pdf', metadata=meta, dpi=600,
                 bbox_inches=fs._fixed_bbox(fig, 'price') if 'price' in fs.PRINTED else 'tight')
     fig.savefig(out / 'price.png', dpi=200, bbox_inches='tight')

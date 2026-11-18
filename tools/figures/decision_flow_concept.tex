@@ -1,72 +1,38 @@
+% Two policy controllers on the common delta-encoded datapath.
+% Conceptual only; no new experimental result.
 \documentclass[tikz,border=3pt]{standalone}
 \usepackage{amsmath,amssymb}
 \usepackage{newtxtext,newtxmath}
-\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
-\definecolor{ink}{HTML}{202A32}
-\definecolor{muted}{HTML}{57636C}
-\definecolor{edge}{HTML}{ABB4BA}
-\definecolor{papergray}{HTML}{F2F4F5}
-\definecolor{green}{HTML}{76B900}
-\definecolor{darkgreen}{HTML}{456F00}
-\definecolor{tint}{HTML}{E8F1CC}
+\usetikzlibrary{arrows.meta,calc}
+\definecolor{chord}{HTML}{8C1515}
+\definecolor{arpeggio}{HTML}{1966FF}
+\definecolor{muted}{HTML}{53565A}
+\definecolor{edge}{HTML}{A0A2A4}
+\definecolor{papergray}{HTML}{F2F4F7}
+\ifdefined\pdfinfoomitdate\pdfinfoomitdate=1\fi
+\ifdefined\pdftrailerid\pdftrailerid{}\fi
+\ifdefined\pdfsuppressptexinfo\pdfsuppressptexinfo=15\fi
 \begin{document}
-
 \begin{tikzpicture}[x=1mm,y=-1mm,
- font=\fontsize{8}{9.1}\selectfont,text=ink,
- arr/.style={-{Stealth[length=1.35mm,width=.95mm]},draw=ink,line width=.5pt},
- box/.style={draw=edge,line width=.45pt,rounded corners=.7mm,fill=white,align=center,inner sep=1.3pt},
- act/.style={box,draw=darkgreen,fill=tint},
- tag/.style={font=\fontsize{8}{9.1}\selectfont,text=muted,align=center},
- head/.style={font=\fontsize{8}{9.1}\selectfont\bfseries,anchor=west,inner sep=0pt}
-]
-\path[use as bounding box] (0,0) rectangle (88,40);
-\node[head] at (0,1.5) {Parallel decisions; ordered commits with current fields};
-\node[head] at (0,7) {1. Select one copy};
-\node[head] at (30,7) {2. Freeze decisions};
-\node[head] at (61,7) {3. Commit each flip};
-% An illustrative P=4, D=4 slice; one row is selected, dimensions remain parallel.
-\node[tag] at (17.7,10.7) {coordinates $m$};
-\foreach \x/\m in {10.5/1,15.5/2,20.5/3,25.5/4} {
- \node[font=\fontsize{8}{9.1}\selectfont,text=muted] at (\x,14) {$m_{\m}$};
-}
-\foreach \y/\c in {18/0,22/1,26/2,30/3} {
- \node[tag,anchor=east,inner sep=0pt] at (7.7,\y) {$c=\c$};
- \foreach \x in {10.5,15.5,20.5,25.5} {
-  \draw[draw=edge,fill=papergray,line width=.35pt,rounded corners=.25mm]
-    (\x-2.15,\y-1.65) rectangle (\x+2.15,\y+1.65);
- }
-}
-\foreach \x/\val in {10.5/+,15.5/+,20.5/-,25.5/-} {
- \draw[draw=darkgreen,fill=tint,line width=.65pt,rounded corners=.25mm]
-    (\x-2.15,20.35) rectangle (\x+2.15,23.65);
- \node[font=\fontsize{8}{8}\selectfont,text=darkgreen,inner sep=0pt] at (\x,22) {$\val$};
-}
-\node[tag] at (14,33.5) {$c=k\bmod P$};
-\draw[arr] (27.7,22) -- (29.6,22) -- (29.6,17) -- (31,17);
-% Every decision uses the start-of-round field snapshot.
-\node[act,minimum width=26mm,minimum height=11mm] (dec) at (44,17)
-  {$D$ parallel tests\\one snapshot $\mathbf v^{(k)}$};
-\node[tag,inner ysep=.35mm] (frozen) at (44,27) {Frozen set $\mathcal M$};
-\foreach \x/\v in {35/1,41/0,47/1,53/0} {
- \ifnum\v=1
-  \node[act,minimum width=5mm,minimum height=4.2mm,inner sep=0pt] at (\x,31.4) {\v};
- \else
-  \node[box,fill=papergray,minimum width=5mm,minimum height=4.2mm,inner sep=0pt] at (\x,31.4) {\v};
- \fi
-}
-\draw[arr] (dec.south) -- (frozen.north);
-\draw[arr] (56,31.4) -- (59,31.4) -- (59,17) -- (61,17);
-% Current fields, not a frozen snapshot, determine each committed energy increment.
-\node[box,minimum width=25mm,minimum height=12mm] (commit) at (73.5,17)
-  {Pop one $m$ from $\mathcal M$\\$\Delta E$ uses current $\mathbf v$\\update $E$ and $s_{c,m}$};
-\node[act,minimum width=25mm,minimum height=7mm] (fields) at (73.5,29)
-  {Refresh all $D$ fields\\$\mathbf v\leftarrow\mathbf v+4s^{\rm old}_{c,m}\mathbf G_{:,m}$};
-\draw[arr] (commit.south) -- (fields.north);
-\draw[arr] (fields.east) -- (87.5,29) -- (87.5,17) -- (commit.east);
-% Only a finished batch starts a fresh decision phase; no reconsideration inside F.
-\draw[arr] (fields.south) -- (73.5,39) -- (14,39) -- (14,35.2);
-\node[tag,inner xsep=2pt] at (44,36.8)
-  {Next round: advance bank, decide again};
+ font=\fontsize{8}{9.1}\selectfont,
+ arr/.style={-{Stealth[length=1.25mm,width=.9mm]},line width=.5pt},
+ box/.style={draw=edge,line width=.45pt,rounded corners=.7mm,align=center,inner sep=1pt},
+ head/.style={font=\fontsize{8}{9.1}\selectfont\bfseries,anchor=west,inner sep=0pt}]
+\path[use as bounding box] (0,0) rectangle (88,25);
+\node[head,text=chord] at (0,5) {Chord};
+\node[box,draw=chord,fill=chord!8,minimum width=28mm,minimum height=8.5mm] (ctest) at (34,5)
+ {Test $D$ spins;\\freeze decisions};
+\node[box,draw=chord,fill=chord!8,minimum width=32mm,minimum height=8.5mm] (cflip) at (72,5)
+ {Commit frozen flips;\\no re-testing};
+\draw[arr,draw=chord] (ctest.east) -- (cflip.west);
+\node[head,text=arpeggio] at (0,16) {Arpeggio};
+\node[box,draw=arpeggio,fill=arpeggio!7,minimum width=28mm,minimum height=8.5mm] (atest) at (34,16)
+ {Test unvisited spins\\on current fields};
+\node[box,draw=arpeggio,fill=arpeggio!7,minimum width=32mm,minimum height=8.5mm] (aflip) at (72,16)
+ {Flip first accepted\\in index order};
+\draw[arr,draw=arpeggio] (atest.east) -- (aflip.west);
+\draw[arr,draw=arpeggio] (aflip.south) -- (72,23) -- (34,23) -- (atest.south);
+\node[fill=white,inner sep=.4pt,text=arpeggio,font=\fontsize{7}{8}\selectfont] at (53,23)
+ {if later spins remain};
 \end{tikzpicture}
-
 \end{document}
